@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "421435899283",
+    "project_id": "taxi-vip-rental",
+    "storage_bucket": "taxi-vip-rental.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421435899283:android:b2fa5f3f93e879d8627c66",
+        "android_client_info": {
+          "package_name": "com.viptaxi.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "421435899283-0l2sscsrqlr8rk7lmsrfjp6jgi7c4ql4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCShB9l8hrxtXFZnBkSphdWpzF_HCFxngU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "421435899283-0l2sscsrqlr8rk7lmsrfjp6jgi7c4ql4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
