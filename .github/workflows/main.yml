@@ -1,0 +1,93 @@
+name: Build VIP apps
+
+# สร้างไฟล์ APK ของแอปคนขับ และเผยแพร่ระบบหลังบ้าน + แอปคนขับเวอร์ชันเว็บขึ้น GitHub Pages
+# ทำงานอัตโนมัติทุกครั้งที่อัปโหลดไฟล์ใหม่เข้า main หรือกด Run workflow เองในแท็บ Actions
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android:
+    name: Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Copy Firebase settings into the app
+        run: cp firebase-config.js driver/www/firebase-config.js
+
+      - name: Install Capacitor
+        working-directory: driver
+        run: npm install --no-audit --no-fund
+
+      - name: Create Android project
+        working-directory: driver
+        run: |
+          if [ ! -d android ]; then npx cap add android; fi
+          npx capacitor-assets generate --android || echo "icon generation skipped"
+          npx cap sync android
+
+      - name: Set version number
+        working-directory: driver/android
+        run: |
+          sed -i "s/versionCode 1$/versionCode ${{ github.run_number }}/" app/build.gradle
+          sed -i "s/versionName \"1.0\"/versionName \"1.0.${{ github.run_number }}\"/" app/build.gradle
+
+      - name: Build APK
+        working-directory: driver/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Name the APK
+        run: cp driver/android/app/build/outputs/apk/debug/app-debug.apk "VIP-Driver-1.0.${{ github.run_number }}.apk"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VIP-Driver-APK
+          path: VIP-Driver-*.apk
+          retention-days: 30
+
+  pages:
+    name: Web (office system + driver web app)
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Assemble site
+        run: |
+          mkdir -p site/driver
+          cp admin/index.html firebase-config.js site/
+          cp driver/www/index.html firebase-config.js site/driver/
+          touch site/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4
