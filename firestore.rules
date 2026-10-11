@@ -1,0 +1,114 @@
+rules_version = '2';
+// กฎความปลอดภัยของฐานข้อมูล VIP Taxi
+// พนักงาน (staff) เห็นข้อมูลทั้งหมด ผู้จัดการแก้ข้อมูลหลักได้ พนักงานเก็บเงินออกบิลและรับชำระได้
+// คนขับ (driverAuth) เห็นเฉพาะข้อมูลของตัวเอง และส่งสลิปหรือคำขอได้เท่านั้น
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function staffPath() { return /databases/$(database)/documents/staff/$(request.auth.uid); }
+    function isStaff() { return signedIn() && exists(staffPath()); }
+    function role() { return get(staffPath()).data.role; }
+    function isManager() { return isStaff() && role() in ['owner', 'manager']; }
+    function isOwner() { return isStaff() && role() == 'owner'; }
+    function driverPath() { return /databases/$(database)/documents/driverAuth/$(request.auth.uid); }
+    function isDriver() { return signedIn() && exists(driverPath()); }
+    function myDriverId() { return get(driverPath()).data.driverId; }
+
+    // first-run: the very first account becomes the owner, only once
+    match /meta/bootstrap {
+      allow get: if true;
+      allow create: if signedIn()
+        && !exists(/databases/$(database)/documents/meta/bootstrap)
+        && request.resource.data.owner == request.auth.uid
+        && getAfter(staffPath()).data.role == 'owner';
+      allow update, delete: if false;
+    }
+
+    match /staff/{uid} {
+      allow read: if isStaff() || (signedIn() && request.auth.uid == uid);
+      allow create: if (isManager() && request.resource.data.role in ['manager', 'cashier'])
+        || (signedIn() && request.auth.uid == uid
+            && request.resource.data.role == 'owner'
+            && !exists(/databases/$(database)/documents/meta/bootstrap)
+            && existsAfter(/databases/$(database)/documents/meta/bootstrap));
+      allow update: if isOwner() && resource.data.role != 'owner' && request.resource.data.role in ['manager', 'cashier'];
+      allow delete: if isOwner() && resource.data.role != 'owner';
+    }
+
+    // driver app login lookup: phone hash -> login email (single get only, no listing)
+    match /loginKey/{key} {
+      allow get: if true;
+      allow list: if false;
+      allow write: if isManager();
+    }
+    match /driverAuth/{uid} {
+      allow read: if isStaff() || (signedIn() && request.auth.uid == uid);
+      allow write: if isManager();
+    }
+
+    match /drivers/{id} {
+      allow read: if isStaff() || (isDriver() && myDriverId() == id);
+      allow write: if isManager();
+    }
+    match /cars/{id} {
+      allow read: if isStaff() || isDriver();
+      allow write: if isManager();
+    }
+    match /bills/{id} {
+      allow read: if isStaff() || (isDriver() && resource.data.driverId == myDriverId());
+      allow create, update: if isStaff();
+      allow delete: if isManager();
+    }
+    match /config/{doc} {
+      allow read: if signedIn();
+      allow write: if isManager();
+    }
+    match /campaigns/{id} {
+      allow read: if signedIn();
+      allow write: if isManager();
+    }
+    match /offdays/{id} {
+      allow read: if isStaff();
+      allow write: if isManager();
+    }
+    match /swaps/{id} {
+      allow read: if isStaff();
+      allow write: if isManager();
+    }
+    match /maint/{id} {
+      allow read: if isStaff();
+      allow write: if isManager();
+    }
+    match /state/{doc} {
+      allow read, write: if isStaff();
+    }
+    match /logs/{doc} {
+      allow read, write: if isStaff();
+    }
+
+    // payment slips sent from the driver app
+    match /payreq/{id} {
+      allow read: if isStaff() || (isDriver() && resource.data.driverId == myDriverId());
+      allow create: if isDriver()
+        && request.resource.data.driverId == myDriverId()
+        && request.resource.data.status == 'pending'
+        && request.resource.data.slip is string
+        && request.resource.data.slip.size() < 900000;
+      allow update: if isStaff();
+      allow delete: if isManager();
+    }
+
+    // leave / breakdown requests sent from the driver app
+    match /requests/{id} {
+      allow read: if isStaff() || (isDriver() && resource.data.driverId == myDriverId());
+      allow create: if isDriver()
+        && request.resource.data.driverId == myDriverId()
+        && request.resource.data.status == 'pending'
+        && request.resource.data.kind in ['leave', 'breakdown']
+        && (request.resource.data.photo == null || (request.resource.data.photo is string && request.resource.data.photo.size() < 700000));
+      allow update: if isStaff();
+      allow delete: if isManager();
+    }
+  }
+}
