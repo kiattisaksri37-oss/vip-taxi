@@ -28,6 +28,10 @@ jobs:
       - name: Copy Firebase settings into the app
         run: cp vip-taxi/firebase-config.js vip-taxi/driver/www/firebase-config.js
 
+      - name: Turn push on only if google-services.json exists
+        run: |
+          if [ -f vip-taxi/driver/google-services.json ]; then echo "window.PUSH_ENABLED=true;" > vip-taxi/driver/www/push-enabled.js; else echo "window.PUSH_ENABLED=false;" > vip-taxi/driver/www/push-enabled.js; fi
+
       - name: Install Capacitor
         working-directory: vip-taxi/driver
         run: npm install --no-audit --no-fund
@@ -38,6 +42,11 @@ jobs:
           if [ ! -d android ]; then npx cap add android; fi
           npx capacitor-assets generate --android || echo "icon generation skipped"
           npx cap sync android
+
+      - name: Add push notification settings
+        run: |
+          if [ -f vip-taxi/driver/google-services.json ]; then cp vip-taxi/driver/google-services.json vip-taxi/driver/android/app/google-services.json; echo "google-services.json added"; else echo "no google-services.json - building without push"; fi
+          grep -q POST_NOTIFICATIONS vip-taxi/driver/android/app/src/main/AndroidManifest.xml || sed -i 's#</manifest>#    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n</manifest>#' vip-taxi/driver/android/app/src/main/AndroidManifest.xml
 
       - name: Set version number
         working-directory: vip-taxi/driver/android
