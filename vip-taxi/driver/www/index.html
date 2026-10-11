@@ -396,13 +396,13 @@ function toast(m,k=''){const t=document.createElement('div');t.className='toast 
 
 /* ===== login ===== */
 function loginView(){return `<div class="login"><div class="top"><span class="logo">VIP</span><h1>VIP Driver</h1><div style="opacity:.85;margin-top:4px">แอปสำหรับผู้เช่าขับ ดูบิล จ่ายค่าเช่า และแจ้งเรื่องถึงบริษัท</div></div>
-  <div class="box form"><label class="fld"><span>เบอร์มือถือ</span><input type="tel" id="lgPhone" inputmode="numeric" autocomplete="tel" placeholder="08x-xxx-xxxx"></label>
-  <label class="fld"><span>รหัส PIN 6 หลัก</span><input type="password" id="lgPin" inputmode="numeric" maxlength="6" autocomplete="current-password" placeholder="••••••"></label>
+  <div class="box form"><label class="fld"><span>รหัสคนขับ (ID)</span><input type="text" id="lgPhone" autocapitalize="characters" autocomplete="username" placeholder="เช่น D260001"></label>
+  <label class="fld"><span>รหัสผ่าน (เบอร์โทรศัพท์ของคุณ)</span><input type="password" id="lgPin" inputmode="numeric" maxlength="20" autocomplete="current-password" placeholder="เช่น 0987654321"></label>
   <div class="err" id="lgErr"></div><button class="btn pri block" id="lgGo">เข้าสู่ระบบ</button>
-  <div class="small muted" style="text-align:center">ยังไม่มีรหัส PIN หรือลืมรหัส ติดต่อเจ้าหน้าที่บริษัท</div></div></div>`}
+  <div class="small muted" style="text-align:center">ยังไม่มีรหัส หรือลืมรหัสผ่าน ติดต่อเจ้าหน้าที่บริษัท</div></div></div>`}
 function bindLogin(){const go=document.getElementById('lgGo');const run=async()=>{const err=document.getElementById('lgErr');err.textContent='';
-  const ph=document.getElementById('lgPhone').value.replace(/\D/g,''),pin=document.getElementById('lgPin').value.trim();
-  if(ph.length<9){err.textContent='ใส่เบอร์มือถือให้ครบ';return}if(!/^\d{6}$/.test(pin)){err.textContent='PIN ต้องเป็นตัวเลข 6 หลัก';return}
+  const ph=document.getElementById('lgPhone').value.trim(),pin=document.getElementById('lgPin').value.trim();
+  if(ph.length<4){err.textContent='ใส่รหัสคนขับ (ID) ก่อน';return}if(pin.length<6){err.textContent='ใส่รหัสผ่านให้ครบ';return}
   if(!fb){Object.assign(A,demoData());A.mode='demo';A.tab='home';render();return}
   go.disabled=true;go.textContent='กำลังเข้าสู่ระบบ…';try{await fbLogin(ph,pin)}catch(e){err.textContent=e.message||'เข้าสู่ระบบไม่สำเร็จ';go.disabled=false;go.textContent='เข้าสู่ระบบ'}};
   go.onclick=run;document.getElementById('lgPin').onkeydown=e=>{if(e.key==='Enter')run()}}
@@ -412,9 +412,10 @@ const FBV='10.12.2';
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('load '+src));document.head.appendChild(s)})}
 async function sha256(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
 const normPhone=p=>{p=String(p).replace(/\D/g,'');if(p.startsWith('66'))p='0'+p.slice(2);return p};
-async function fbLogin(phone,pin){const key=await sha256('vip:'+normPhone(phone));const s=await fb.fs.doc('loginKey/'+key).get();
-  if(!s.exists)throw new Error('ไม่พบเบอร์นี้ในระบบ ติดต่อเจ้าหน้าที่เพื่อเปิดบัญชี');
-  try{await fb.auth.signInWithEmailAndPassword(s.data().email,pin)}catch(e){throw new Error(e.code==='auth/too-many-requests'?'ลองผิดหลายครั้ง กรุณารอสักครู่':'PIN ไม่ถูกต้อง')}}
+const loginId=v=>{v=String(v).trim();return /^[\d\s\-+]+$/.test(v)?normPhone(v):v.toUpperCase().replace(/\s/g,'')};
+async function fbLogin(phone,pin){const key=await sha256('vip:'+loginId(phone));const s=await fb.fs.doc('loginKey/'+key).get();
+  if(!s.exists)throw new Error('ไม่พบรหัสคนขับนี้ในระบบ ติดต่อเจ้าหน้าที่เพื่อเปิดบัญชี');
+  try{await fb.auth.signInWithEmailAndPassword(s.data().email,pin)}catch(e){throw new Error(e.code==='auth/too-many-requests'?'ลองผิดหลายครั้ง กรุณารอสักครู่':'รหัสผ่านไม่ถูกต้อง')}}
 async function fbStart(cfg){
   await loadScript(`https://www.gstatic.com/firebasejs/${FBV}/firebase-app-compat.js`);
   await Promise.all([loadScript(`https://www.gstatic.com/firebasejs/${FBV}/firebase-auth-compat.js`),loadScript(`https://www.gstatic.com/firebasejs/${FBV}/firebase-firestore-compat.js`)]);
@@ -496,7 +497,7 @@ document.addEventListener('click',async e=>{const tb=e.target.closest('[data-tab
     if(!f||!t||t<f){err.textContent='ตรวจวันที่ให้ถูกต้อง';return}if(!r){err.textContent='ใส่รายละเอียดก่อนส่ง';return}a.disabled=true;
     try{await addDoc('requests',{driverId:A.driverId||A.driver.id,carId:A.driver?.carId||null,kind:k,from:f,to:t,reason:r,photo:A.rqPhoto||null,status:'pending',createdAt:new Date().toISOString(),authUid:A.user?.uid||null});A.rqPhoto=null;closeSheet();toast('ส่งคำขอแล้ว');A.tab='req';render()}catch(x){console.error(x);err.textContent='ส่งไม่สำเร็จ ลองอีกครั้ง';a.disabled=false}return}
   if(act==='savePin'){const o=document.getElementById('pOld').value,n=document.getElementById('pNew').value,n2=document.getElementById('pNew2').value,err=document.getElementById('pErr');
-    if(!/^\d{6}$/.test(n)){err.textContent='PIN ใหม่ต้องเป็นตัวเลข 6 หลัก';return}if(n!==n2){err.textContent='PIN ใหม่ทั้งสองช่องไม่ตรงกัน';return}
+    if(n.length<6){err.textContent='รหัสผ่านใหม่ต้องมี 6 ตัวขึ้นไป';return}if(n!==n2){err.textContent='PIN ใหม่ทั้งสองช่องไม่ตรงกัน';return}
     try{const u=fb.auth.currentUser;await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email,o));await u.updatePassword(n);closeSheet();toast('เปลี่ยน PIN แล้ว')}catch(x){err.textContent=x.code==='auth/wrong-password'||x.code==='auth/invalid-credential'?'PIN ปัจจุบันไม่ถูกต้อง':'เปลี่ยน PIN ไม่สำเร็จ'}return}
 });
 document.addEventListener('change',async e=>{const el=e.target;
