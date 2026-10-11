@@ -57,6 +57,15 @@ button,input,select,textarea{font:inherit;color:inherit}
 .hero .btn{background:#fff;color:#1747c9;border-color:#fff;font-weight:600}
 .hero .btn.ghost{background:rgba(255,255,255,.16);color:#fff;border-color:rgba(255,255,255,.4)}
 .who{display:flex;align-items:center;gap:12px}
+.bell{position:relative;border:0;background:rgba(255,255,255,.2);color:#fff;width:42px;height:42px;border-radius:14px;display:grid;place-items:center;cursor:pointer;flex:none}
+.bell svg{width:22px;height:22px}
+.bell .bb{position:absolute;top:-4px;right:-4px;background:var(--bad);color:#fff;font-size:10px;border-radius:99px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 4px;border:2px solid #fff}
+.nt{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer;align-items:flex-start}
+.nt:last-child{border-bottom:0}
+.nt .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);margin-top:6px;flex:none}
+.nt .dot.rd{background:transparent}
+.nt b{display:block}
+.nt small{color:var(--muted);display:block}
 .av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#1747c9;font-family:var(--f-display);font-weight:600;font-size:18px;flex:none}
 .plate{display:inline-flex;flex-direction:column;align-items:center;border:1.5px solid #0f1b3d;border-radius:6px;padding:1px 8px;line-height:1.15;background:#fff;color:#0f1b3d;min-width:78px}
 .plate b{font-family:var(--f-display);font-size:13.5px;font-weight:600}
@@ -178,7 +187,7 @@ const TH_D=['อา','จ','อ','พ','พฤ','ศ','ส'];
 const TYPE={rent:'ค่าเช่ารายวัน',insurance:'ค่าประกัน',other:'ค่าอื่นๆ'};
 const ST={paid:'ชำระแล้ว',partial:'ชำระบางส่วน',overdue:'เกินกำหนด',open:'รอชำระ',void:'ยกเลิก'};
 const RQ={pending:'รอตรวจสอบ',approved:'อนุมัติแล้ว',rejected:'ไม่อนุมัติ'};
-const DEF_LATE={on:true,types:['rent','insurance','other'],mode:'perDay',amount:50,grace:0,cap:500};
+const DEF_LATE={on:true,types:['rent','insurance','other'],mode:'perDay',amount:50,grace:0,cap:500,tOn:false,tTypes:['rent'],tiers:[]};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const r2=n=>Math.round((+n||0)*100)/100;
 const money=n=>(+n||0).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -196,13 +205,17 @@ function bahtText(num){const N=['ศูนย์','หนึ่ง','สอง',
   const read=str=>{str=str.replace(/^0+/,'');if(!str)return '';if(str.length>6)return read(str.slice(0,-6))+'ล้าน'+seg(str.slice(-6));return seg(str)};
   num=r2(Math.abs(num));const [b,s]=num.toFixed(2).split('.');const bt=read(b),st=read(s);if(!bt&&!st)return 'ศูนย์บาทถ้วน';return (bt?bt+'บาท':'')+(st?st+'สตางค์':'ถ้วน')}
 const lateCfg=()=>({...DEF_LATE,...((A.cfg||{}).late||{})});
-function ruleFor(type){const L=lateCfg();return L.on&&L.types.includes(type)&&+L.amount>0?{mode:L.mode,amount:+L.amount,grace:+L.grace||0,cap:+L.cap||0}:null}
+function ruleFor(type){const L=lateCfg();if(!L.on)return null;const day=L.types.includes(type)&&+L.amount>0;
+  const tiers=L.tOn&&(L.tTypes||[]).includes(type)?(L.tiers||[]).filter(t=>/^\d{1,2}:\d{2}$/.test(t.time||'')&&+t.amount>0).map(t=>({time:t.time,amount:+t.amount,label:t.label||'ค่าปรับตามช่วงเวลา'})):[];
+  if(!day&&!tiers.length)return null;return {mode:L.mode,amount:day?+L.amount:0,grace:+L.grace||0,cap:+L.cap||0,tiers}}
 const bTotal=b=>Math.max(0,r2((b.items||[]).reduce((s,i)=>s+(+i.qty||0)*(+i.price||0),0)-(+b.discount||0)));
 const bPaid=b=>r2((b.payments||[]).reduce((s,p)=>s+(+p.amount||0),0));
-function lateInfo(b){const z={fee:0,days:0};if(b.void||!b.dueDate||b.waiveLate)return z;const R=b.lateRule===null?null:(b.lateRule||ruleFor(b.type));if(!R||!(+R.amount>0))return z;
-  const P=bTotal(b);if(P<=0)return z;let stop=today(),cum=0;for(const p of (b.payments||[]).slice().sort((a,c)=>(a.date||'').localeCompare(c.date||''))){cum+=+p.amount||0;if(cum>=P-0.004){stop=p.date;break}}
-  const late=diffDays(b.dueDate,stop),days=late-(+R.grace||0);if(days<=0)return {fee:0,days:Math.max(0,late)};
-  let fee=R.mode==='flat'?+R.amount:R.mode==='percent'?P*(+R.amount)/100*days:days*(+R.amount);if(+R.cap>0)fee=Math.min(fee,+R.cap);return {fee:r2(fee),days:late}}
+const payStamp=p=>p.at||((p.date||'')+'T00:00:00');
+function lateInfo(b){const z={fee:0,days:0,dayFee:0,tiers:[]};if(b.void||!b.dueDate||b.waiveLate)return z;const R=b.lateRule===null?null:(b.lateRule||ruleFor(b.type));if(!R)return z;
+  const P=bTotal(b);if(P<=0)return z;let stop=today(),cum=0,stopAt=null;for(const p of (b.payments||[]).slice().sort((a,c)=>payStamp(a).localeCompare(payStamp(c)))){cum+=+p.amount||0;if(cum>=P-0.004){stop=p.date;stopAt=payStamp(p);break}}
+  let dayFee=0,late=0;if(+R.amount>0){late=diffDays(b.dueDate,stop);const days=late-(+R.grace||0);if(days>0){dayFee=R.mode==='flat'?+R.amount:R.mode==='percent'?P*(+R.amount)/100*days:days*(+R.amount);if(+R.cap>0)dayFee=Math.min(dayFee,+R.cap)}}
+  const now=new Date(),tiers=[];for(const t of (R.tiers||[])){const trig=new Date(b.dueDate+'T'+String(t.time).padStart(5,'0')+':00');if(isNaN(trig)||trig>now)continue;if(stopAt&&new Date(stopAt)<=trig)continue;tiers.push({time:t.time,amount:+t.amount,label:t.label})}
+  return {fee:r2(dayFee+tiers.reduce((s,t)=>s+t.amount,0)),dayFee:r2(dayFee),days:Math.max(0,late),tiers}}
 const bFee=b=>lateInfo(b).fee, bDue=b=>r2(bTotal(b)+bFee(b)), bBal=b=>b.void?0:Math.max(0,r2(bDue(b)-bPaid(b)));
 function bSt(b){if(b.void)return 'void';const t=bDue(b),p=bPaid(b);if(t-p<=0.004)return 'paid';if(b.dueDate&&b.dueDate<today())return 'overdue';if(p>0)return 'partial';return 'open'}
 function billDesc(b){if(b.type==='rent')return `${b.items?.[0]?.qty??(diffDays(b.from,b.to)+1)} วัน · ${fd(b.from)}${b.from!==b.to?' – '+fd(b.to):''}`;return [b.category,b.period].filter(Boolean).join(' · ')||(b.items?.[0]?.desc||'')}
@@ -232,17 +245,18 @@ const I={
  alert:'<path d="M12 4 2.5 20h19zM12 10v4M12 17h0"/>',
  lock:'<path d="M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4"/>',
  out:'<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>',
- cam:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>'
+ cam:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+ bell:'<path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4zM10 21a2 2 0 0 0 4 0"/>'
 };
 const ic=(k,cls='')=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="${cls}">${I[k]}</svg>`;
 const pill=(s,map=ST)=>`<span class="pill st-${s}">${map[s]}</span>`;
 
 /* ===== state ===== */
-const A={mode:'loading',tab:'home',sub:null,driver:null,car:null,bills:[],cfg:{},campaigns:[],payreqs:[],requests:[],offdays:[],billSeg:'open',calMonth:today().slice(0,7),paySel:null,slip:null,user:null};
+const A={mode:'loading',tab:'home',sub:null,driver:null,car:null,bills:[],cfg:{},campaigns:[],payreqs:[],requests:[],offdays:[],billSeg:'open',calMonth:today().slice(0,7),paySel:null,slip:null,user:null,notifs:[],notifInit:false,pushState:''};
 let fb=null,unsubs=[];
 
 /* ===== demo data (used only when no Firebase settings are present) ===== */
-function demoData(){const t=today(),bills=[];let n=1;
+function demoData(){const t=today(),bills=[];let n=1;A.notifs=[{id:'n1',type:'bill',title:'มีบิลใหม่ ค่าเช่ารายวัน RN-DEMO-13',body:'ยอด ฿1,200.00',at:new Date().toISOString(),read:false},{id:'n2',type:'remind',title:'แจ้งเตือนบิลค้างชำระ',body:'คุณมีบิลค้าง 2 ใบ รวม ฿3,700.00',at:new Date(Date.now()-36e5).toISOString(),read:true}];
   for(let i=12;i>=0;i--){const d=addDays(t,-i);const paid=i>=4,half=i===3;bills.push({id:'r'+i,no:'RN-DEMO-'+pad(n++),type:'rent',issueDate:d,dueDate:d,from:d,to:d,discount:i===2?1200:0,campaign:i===2?'เช่าขับ 9 วัน ฟรี 1 วัน':undefined,items:[{desc:'ค่าเช่ารถ 1กข 2101 '+fd(d),qty:1,price:1200}],payments:paid?[{id:'p'+i,amount:1200,date:d,method:i%2?'เงินสด':'โอนเงิน',receiptNo:'RC-DEMO-'+pad(20-i)}]:half?[{id:'p'+i,amount:600,date:d,method:'เงินสด',receiptNo:'RC-DEMO-17'}]:[]})}
   bills.push({id:'i1',no:'IN-DEMO-01',type:'insurance',issueDate:addDays(t,-10),dueDate:addDays(t,-3),category:'ประกันภัยรถยนต์ชั้น 1',period:'งวด 4/12',items:[{desc:'ประกันภัยรถยนต์ชั้น 1',qty:1,price:2500}],payments:[]});
   bills.push({id:'o1',no:'OT-DEMO-01',type:'other',issueDate:addDays(t,-2),dueDate:addDays(t,5),category:'ค่าล้างรถ',items:[{desc:'ล้างรถ-ดูดฝุ่น',qty:4,price:150}],payments:[]});
@@ -285,7 +299,8 @@ const bar=(title,sub,back)=>`<header class="bar"><div class="row">${back?`<butto
 const V={};
 V.home=()=>{const d=A.driver||{},c=A.car,out=outstanding(),ob=openBills(),od=ob.filter(b=>bSt(b)==='overdue'),t=today();
   const tr=live().find(b=>b.type==='rent'&&b.from<=t&&t<=b.to);const pend=pendingPay();const camp=activeCamps()[0];
-  return `<header class="bar"><div class="who"><span class="av">${esc((d.name||'?').replace(/^[เแโใไ\s]+/,'').charAt(0))}</span><div><h1>สวัสดี ${esc(d.nickname||d.name||'')}</h1><p>${fd(t)}${c?' · '+esc(c.plate):''}</p></div></div></header>
+  const un=A.notifs.filter(n=>!n.read).length;
+  return `<header class="bar" style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div class="who"><span class="av">${esc((d.name||'?').replace(/^[เแโใไ\s]+/,'').charAt(0))}</span><div><h1>สวัสดี ${esc(d.nickname||d.name||'')}</h1><p>${fd(t)}${c?' · '+esc(c.plate):''}</p></div></div><button class="bell" data-act="inbox" aria-label="การแจ้งเตือน">${ic('bell')}${un?`<span class="bb">${un>9?'9+':un}</span>`:''}</button></header>
   <div class="content">
    <section class="hero ${out?'':'ok'}"><div class="l">${out?'ยอดค้างชำระทั้งหมด':'ไม่มียอดค้างชำระ'}</div><div class="v">฿${money(out)}</div>
     <div class="s">${out?`${ob.length} บิล${od.length?` · เกินกำหนด ${od.length} บิล`:''}${ob.reduce((s,b)=>s+bFee(b),0)?` · รวมค่าปรับ ฿${money(ob.reduce((s,b)=>s+bFee(b),0))}`:''}`:'ขอบคุณที่ชำระตรงเวลา'}</div>
@@ -345,7 +360,8 @@ V.me=()=>{const d=A.driver||{},c=A.car,cs=activeCamps();
    <div class="kv"><span>พ.ร.บ.</span>${expChip(c.actExp)}</div><div class="kv"><span>ประกันภัย</span>${expChip(c.insExp)}</div><div class="kv"><span>ภาษีรถ</span>${expChip(c.taxExp)}</div>`:'<div class="muted">ยังไม่มีรถประจำ</div>'}</div></section>
   <section class="card"><div class="hd">เอกสารและเงินประกัน</div><div class="bd"><div class="kv"><span>ใบขับขี่สาธารณะ</span><span>${esc(d.license||'—')}</span></div><div class="kv"><span>ใบขับขี่หมดอายุ</span>${expChip(d.licenseExp)}</div><div class="kv"><span>เงินประกันที่วางไว้</span><b class="num">฿${money(d.deposit)}</b></div><div class="kv"><span>เริ่มงาน</span><span>${fd(d.startDate)}</span></div></div></section>
   ${cs.length?cs.map(campCard).join(''):'<section class="card"><div class="hd">แคมเปญ</div><div class="bd muted small">ตอนนี้ยังไม่มีแคมเปญ</div></section>'}
-  <section class="card"><div class="li" data-act="receipts"><span class="ic i-ok">${ic('receipt')}</span><div class="m"><b>ใบเสร็จรับเงิน</b><small>ประวัติการชำระทั้งหมด</small></div></div>
+  <section class="card"><div class="li" data-act="inbox"><span class="ic i-amber">${ic('bell')}</span><div class="m"><b>การแจ้งเตือน</b><small>${A.pushState==='on'?'เปิดแจ้งเตือนบนมือถือแล้ว':A.pushState==='denied'?'ปิดอยู่ เปิดได้ที่ตั้งค่าโทรศัพท์ &gt; แอป &gt; VIP Driver':'ดูข้อความจากบริษัท'}</small></div></div>
+   <div class="li" data-act="receipts"><span class="ic i-ok">${ic('receipt')}</span><div class="m"><b>ใบเสร็จรับเงิน</b><small>ประวัติการชำระทั้งหมด</small></div></div>
    ${A.mode==='fb'?`<div class="li" data-act="pin"><span class="ic i-blue">${ic('lock')}</span><div class="m"><b>เปลี่ยนรหัส PIN</b><small>ใช้เข้าแอปครั้งถัดไป</small></div></div>`:''}
    <div class="li" data-act="logout"><span class="ic i-bad">${ic('out')}</span><div class="m"><b>ออกจากระบบ</b></div></div></section>
   <div class="small muted" style="text-align:center">${esc(A.cfg.company||'')} · VIP Driver</div></div>`};
@@ -357,7 +373,7 @@ function billSheet(id){const b=A.bills.find(x=>x.id===id);if(!b)return;const L=l
   sheet(`<h3>${TYPE[b.type]}</h3><div class="small muted" style="margin-bottom:10px">${esc(b.no)} · ออก ${fd(b.issueDate)} · ครบ ${fd(b.dueDate)} ${pill(bSt(b))}</div>
    ${(b.items||[]).map(i=>`<div class="kv"><span>${esc(i.desc)}${+i.qty>1?' × '+i.qty:''}</span><span class="num">${money((+i.qty||0)*(+i.price||0))}</span></div>`).join('')}
    ${+b.discount?`<div class="kv"><span>ส่วนลด${b.campaign?' ('+esc(b.campaign)+')':''}</span><span class="num" style="color:var(--ok)">−${money(b.discount)}</span></div>`:''}
-   ${L.fee?`<div class="kv"><span>ค่าปรับชำระล่าช้า ${L.days} วัน</span><span class="num" style="color:var(--bad)">${money(L.fee)}</span></div>`:''}
+   ${L.tiers.map(t=>`<div class="kv"><span>${esc(t.label)} (เลย ${esc(t.time)} น.)</span><span class="num" style="color:var(--bad)">${money(t.amount)}</span></div>`).join('')}${L.dayFee?`<div class="kv"><span>ค่าปรับชำระล่าช้า ${L.days} วัน</span><span class="num" style="color:var(--bad)">${money(L.dayFee)}</span></div>`:''}
    <div class="kv"><b>ยอดรวม</b><b class="num">฿${money(bDue(b))}</b></div>
    ${(b.payments||[]).map(p=>`<div class="kv"><span>ชำระ ${fd(p.date)} · ${esc(p.method||'')}${p.receiptNo?' · '+esc(p.receiptNo):''}</span><span class="num">−${money(p.amount)}</span></div>`).join('')}
    <div class="kv"><b>คงค้าง</b><b class="num" style="color:${bal?'var(--bad)':'var(--ok)'}">฿${money(bal)}</b></div>
@@ -414,9 +430,43 @@ async function fbStart(cfg){
       unsubs.push(fb.fs.collection('campaigns').onSnapshot(s=>{A.campaigns=s.docs.map(d=>({...d.data(),id:d.id}));soft()},()=>{}));
       unsubs.push(fb.fs.collection('payreq').where('driverId','==',did).onSnapshot(s=>{A.payreqs=s.docs.map(d=>({...d.data(),id:d.id,slip:undefined}));soft()},err));
       unsubs.push(fb.fs.collection('requests').where('driverId','==',did).onSnapshot(s=>{A.requests=s.docs.map(d=>({...d.data(),id:d.id,photo:undefined}));soft()},err));
+      A.notifs=[];A.notifInit=false;
+      unsubs.push(fb.fs.collection('drivers/'+did+'/notifs').orderBy('at','desc').limit(50).onSnapshot(s=>{
+        const fresh=A.notifInit?s.docChanges().filter(c=>c.type==='added'&&!c.doc.data().read).map(c=>c.doc.data()):[];
+        A.notifs=s.docs.map(d=>({...d.data(),id:d.id}));A.notifInit=true;
+        fresh.slice(0,2).forEach(n=>{toast('🔔 '+n.title);webNotify(n)});soft()},()=>{}));
+      pushInit(did);
       render();
     }catch(e){console.error(e);toast('เข้าสู่ระบบไม่สำเร็จ','bad');await fb.auth.signOut()}});
 }
+/* ===== notifications ===== */
+const NT_IC={bill:'bill',slip:'receipt',req:'req',remind:'alert'};
+function webNotify(n){try{if(window.Capacitor?.isNativePlatform?.()||document.visibilityState==='visible'||!('Notification' in window)||Notification.permission!=='granted')return;new Notification(n.title,{body:n.body})}catch(e){}}
+let pushBound=false;
+async function pushInit(did){
+  try{
+    const P=window.Capacitor?.Plugins?.PushNotifications;
+    if(!P||!window.Capacitor?.isNativePlatform?.()){ /* web: ask once for browser notifications while the page is open */
+      if('Notification' in window&&Notification.permission==='default')setTimeout(()=>Notification.requestPermission().catch(()=>{}),4000);return}
+    if(!pushBound){pushBound=true;
+      P.addListener('registration',t=>saveToken(t.value));
+      P.addListener('registrationError',e=>{console.warn('push reg',e);A.pushState='error'});
+      P.addListener('pushNotificationReceived',n=>{toast('🔔 '+(n.title||'แจ้งเตือนใหม่'))});
+      P.addListener('pushNotificationActionPerformed',()=>{A.tab='home';render();inboxSheet()})}
+    try{await P.createChannel({id:'vip-default',name:'แจ้งเตือน VIP Taxi',importance:5,sound:'default',vibration:true})}catch(e){}
+    let st=await P.checkPermissions();if(st.receive==='prompt')st=await P.requestPermissions();
+    if(st.receive!=='granted'){A.pushState='denied';soft();return}
+    await P.register();
+  }catch(e){console.warn('push init',e)}}
+async function saveToken(token){try{
+  if(!token||!A.driverId)return;A.curToken=token;A.pushState='on';
+  await fb.fs.doc(`drivers/${A.driverId}/tokens/${await sha256(token)}`).set({token,platform:'android',at:new Date().toISOString()});soft()}catch(e){console.warn('token',e)}}
+async function dropToken(){try{if(A.curToken&&A.driverId)await fb.fs.doc(`drivers/${A.driverId}/tokens/${await sha256(A.curToken)}`).delete()}catch(e){}}
+const fdt=iso=>{if(!iso)return '';const d=new Date(iso);return fd(iso.slice(0,10))+' '+pad(d.getHours())+':'+pad(d.getMinutes())+' น.'};
+function inboxSheet(){
+  const L=A.notifs;
+  sheet(`<h3>การแจ้งเตือน</h3>${L.length?L.map(n=>`<div class="nt" data-act="notifOpen" data-id="${n.id}"><span class="dot ${n.read?'rd':''}"></span><div><b>${esc(n.title)}</b><span class="small">${esc(n.body||'')}</span><small>${fdt(n.at)}</small></div></div>`).join(''):'<div class="muted" style="padding:18px 0;text-align:center">ยังไม่มีการแจ้งเตือน</div>'}<button class="btn block" style="margin-top:12px" data-act="closeSheet">ปิด</button>`);
+  if(A.mode==='fb'){const un=L.filter(n=>!n.read);if(un.length){const b=fb.fs.batch();un.forEach(n=>b.update(fb.fs.doc(`drivers/${A.driverId}/notifs/${n.id}`),{read:true,readAt:new Date().toISOString()}));b.commit().catch(()=>{})}}}
 let softQ=false;function soft(){if(softQ)return;softQ=true;requestAnimationFrame(()=>{softQ=false;if(document.querySelector('#sheet .ov'))return;A.keepScroll=true;render()})}
 async function addDoc(col,data){if(A.mode==='fb')return fb.fs.collection(col).add(data);const d={...data,id:uid()};(col==='payreq'?A.payreqs:A.requests).push(d);return d}
 
@@ -431,10 +481,12 @@ document.addEventListener('click',async e=>{const tb=e.target.closest('[data-tab
   if(act==='newLeave')return reqForm('leave');
   if(act==='newBreak')return reqForm('breakdown');
   if(act==='pin')return pinForm();
+  if(act==='inbox')return inboxSheet();
+  if(act==='notifOpen'){const n=A.notifs.find(x=>x.id===id);closeSheet();if(n&&n.billId&&A.bills.some(b=>b.id===n.billId))billSheet(n.billId);else if(n&&n.type==='req'){A.tab='req';render()}return}
   if(act==='payOne'){A.paySel=new Set([id]);A.tab='pay';closeSheet();render();window.scrollTo(0,0);return}
   if(act==='payreq'){const p=A.payreqs.find(x=>x.id===id);sheet(`<h3>สลิป ฿${money(p.amount)}</h3><div class="kv"><span>ส่งเมื่อ</span><span>${fd((p.createdAt||'').slice(0,10))}</span></div><div class="kv"><span>สถานะ</span>${pill(p.status,RQ)}</div>${p.receiptNo?`<div class="kv"><span>ใบเสร็จ</span><b class="num">${esc(p.receiptNo)}</b></div>`:''}${p.rejectReason?`<div class="note bad" style="margin-top:8px">${esc(p.rejectReason)}</div>`:''}<div class="kv"><span>บิล</span><span class="small">${(p.billIds||[]).map(b=>esc(A.bills.find(x=>x.id===b)?.no||b)).join(', ')}</span></div>`);return}
   if(act==='reqView'){const r=A.requests.find(x=>x.id===id);sheet(`<h3>${r.kind==='leave'?'ลาหยุด':'แจ้งรถเสีย'}</h3><div class="kv"><span>วันที่</span><span>${fd(r.from)}${r.to&&r.to!==r.from?' – '+fd(r.to):''}</span></div><div class="kv"><span>สถานะ</span>${pill(r.status,RQ)}</div><div class="kv"><span>รายละเอียด</span><span>${esc(r.reason||'')}</span></div>${r.reply?`<div class="note" style="margin-top:8px">ตอบกลับ: ${esc(r.reply)}</div>`:''}`);return}
-  if(act==='logout'){if(!await confirmSheet('ออกจากระบบ?','ออกจากระบบ'))return;if(A.mode==='fb')await fb.auth.signOut();else{A.mode='login';render()}return}
+  if(act==='logout'){if(!await confirmSheet('ออกจากระบบ?','ออกจากระบบ'))return;if(A.mode==='fb'){await dropToken();await fb.auth.signOut()}else{A.mode='login';render()}return}
   if(act==='sendSlip'){const err=document.getElementById('payErr');err.textContent='';const ids=[...A.paySel];const amt=r2(openBills().filter(b=>A.paySel.has(b.id)).reduce((s,b)=>s+bBal(b),0));
     if(!ids.length){err.textContent='เลือกบิลก่อน';return}if(!A.slip){err.textContent='แนบรูปสลิปก่อนส่ง';return}
     a.disabled=true;a.textContent='กำลังส่ง…';

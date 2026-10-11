@@ -50,6 +50,22 @@ service cloud.firestore {
     match /drivers/{id} {
       allow read: if isStaff() || (isDriver() && myDriverId() == id);
       allow write: if isManager();
+
+      // inbox messages for the driver app (written by staff or Cloud Functions)
+      match /notifs/{nid} {
+        allow read: if isStaff() || (isDriver() && myDriverId() == id);
+        allow create: if isStaff();
+        // driver may only mark as read
+        allow update: if (isDriver() && myDriverId() == id
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'readAt']))
+          || isStaff();
+        allow delete: if isManager();
+      }
+      // push tokens registered by the driver app
+      match /tokens/{tid} {
+        allow read: if isStaff();
+        allow create, update, delete: if isDriver() && myDriverId() == id;
+      }
     }
     match /cars/{id} {
       allow read: if isStaff() || isDriver();
