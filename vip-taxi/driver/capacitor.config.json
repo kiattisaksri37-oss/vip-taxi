@@ -1,0 +1,11 @@
+{
+  "appId": "com.viptaxi.driver",
+  "appName": "VIP Driver",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "backgroundColor": "#1747c9"
+  }
+}

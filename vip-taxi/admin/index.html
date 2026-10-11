@@ -1,0 +1,1371 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>[hidden]{display:none!important}img{max-width:100%}body{margin:0}</style>
+</head>
+<body>
+<title>ระบบเก็บค่าเช่าแท็กซี่ VIP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: royal-blue gradient sidebar + bright white work area; each page opens with a blue-to-sky banner, colored stat cards, white table panels */
+:root{
+  --bg:#eef3fb; --surface:#ffffff; --sunk:#f4f7fd; --tint:#e7eefc; --ink:#0f1b3d; --muted:#5a6788; --line:#dde6f4;
+  --accent:#1d4ed8; --accent-2:#3b82f6; --accent-soft:#e3ecff; --on-accent:#ffffff;
+  --side-a:#0b2a6f; --side-b:#1747c9; --side-ink:#dbe6ff; --side-dim:#9db3ea; --nav-on-bg:#ffffff; --nav-on-ink:#0b2a6f;
+  --hero-a:#1d4ed8; --hero-b:#0ea5e9; --hero-ink:#ffffff;
+  --ok:#0e9f6e; --ok-soft:#dcf7ec; --info:#7c3aed; --info-soft:#efe8ff; --bad:#e11d48; --bad-soft:#ffe4ea; --warn:#d97706; --warn-soft:#fff2d6; --sky:#0284c7; --sky-soft:#dff3fd; --void:#8a94ab;
+  --avbg-l:92%; --avfg-l:34%;
+  --shadow:0 1px 2px rgba(15,27,61,.05),0 10px 28px -14px rgba(29,78,216,.28);
+  --overlay:rgba(8,20,52,.55);
+  --f-display:"Prompt","IBM Plex Sans Thai",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-num:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#08101f; --surface:#0f1a31; --sunk:#0c162b; --tint:#15244a; --ink:#e6edff; --muted:#93a3c8; --line:#203258;
+  --accent:#4f8bff; --accent-2:#60a5fa; --accent-soft:#18295a; --on-accent:#ffffff;
+  --side-a:#061232; --side-b:#0d2b7a; --side-ink:#d6e2ff; --side-dim:#8199d3; --nav-on-bg:rgba(255,255,255,.14); --nav-on-ink:#ffffff;
+  --hero-a:#1e40af; --hero-b:#0369a1; --hero-ink:#ffffff;
+  --ok:#34d399; --ok-soft:#0d3326; --info:#a78bfa; --info-soft:#271d4d; --bad:#fb7185; --bad-soft:#3e1426; --warn:#fbbf24; --warn-soft:#3a2b0a; --sky:#38bdf8; --sky-soft:#0b2c42; --void:#7d88a3;
+  --avbg-l:24%; --avfg-l:82%;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px -14px rgba(0,0,0,.6);
+  --overlay:rgba(2,6,18,.7);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#08101f; --surface:#0f1a31; --sunk:#0c162b; --tint:#15244a; --ink:#e6edff; --muted:#93a3c8; --line:#203258;
+  --accent:#4f8bff; --accent-2:#60a5fa; --accent-soft:#18295a; --on-accent:#ffffff;
+  --side-a:#061232; --side-b:#0d2b7a; --side-ink:#d6e2ff; --side-dim:#8199d3; --nav-on-bg:rgba(255,255,255,.14); --nav-on-ink:#ffffff;
+  --hero-a:#1e40af; --hero-b:#0369a1; --hero-ink:#ffffff;
+  --ok:#34d399; --ok-soft:#0d3326; --info:#a78bfa; --info-soft:#271d4d; --bad:#fb7185; --bad-soft:#3e1426; --warn:#fbbf24; --warn-soft:#3a2b0a; --sky:#38bdf8; --sky-soft:#0b2c42; --void:#7d88a3;
+  --avbg-l:24%; --avfg-l:82%;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px -14px rgba(0,0,0,.6);
+  --overlay:rgba(2,6,18,.7);
+  color-scheme:dark}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.55}
+button,input,select,textarea{font:inherit;color:inherit}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.app{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+/* sidebar */
+.side{background:linear-gradient(170deg,var(--side-a),var(--side-b));color:var(--side-ink);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:18px;padding:22px 14px;position:sticky}
+.brand{display:flex;gap:11px;align-items:center;padding:0 6px 4px}
+.brand .meter{font-family:var(--f-display);font-weight:700;color:#1747c9;background:#fff;border-radius:10px;padding:7px 8px;font-size:13px;letter-spacing:.06em;box-shadow:0 6px 16px -6px rgba(0,0,0,.5)}
+.brand b{font-family:var(--f-display);font-size:16px;color:#fff;line-height:1.25;font-weight:600}
+.brand small{display:block;color:var(--side-dim);font-size:11.5px}
+.nav{display:flex;flex-direction:column;gap:3px}
+.nav .grp{font-size:11px;letter-spacing:.08em;color:var(--side-dim);padding:14px 12px 4px}
+.nav a{display:flex;align-items:center;gap:11px;color:var(--side-ink);text-decoration:none;padding:9px 12px;border-radius:10px;font-size:14px;transition:background .15s}
+.nav a:hover{background:rgba(255,255,255,.1)}
+.nav a.on{background:var(--nav-on-bg);color:var(--nav-on-ink);font-weight:500;box-shadow:0 6px 18px -8px rgba(0,0,0,.45)}
+.nav a svg{width:18px;height:18px;flex:none}
+.side .foot{margin-top:auto;font-size:11.5px;color:var(--side-dim);padding:10px 12px;background:rgba(255,255,255,.07);border-radius:10px}
+.side .foot .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#34d399;margin-right:6px;box-shadow:0 0 0 3px rgba(52,211,153,.25)}
+.side .foot .dot.local{background:#fbbf24;box-shadow:0 0 0 3px rgba(251,191,36,.25)}
+/* main */
+.main{padding-block:22px 56px;padding-inline:clamp(16px,3vw,32px);min-width:0}
+.ph{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:18px;padding:22px 24px;border-radius:18px;color:var(--hero-ink);
+  background:radial-gradient(circle at 92% -30%,rgba(255,255,255,.28) 0 120px,transparent 121px),radial-gradient(circle at 78% 140%,rgba(255,255,255,.16) 0 90px,transparent 91px),linear-gradient(120deg,var(--hero-a),var(--hero-b));box-shadow:var(--shadow)}
+.ph>*{position:relative;min-width:0}
+.ph h1{font-family:var(--f-display);font-weight:600;font-size:clamp(22px,2.6vw,28px);margin:0;line-height:1.25;text-wrap:balance}
+.ph p{margin:4px 0 0;color:rgba(255,255,255,.86);max-width:64ch}
+.ph .acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ph .btn{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.35);color:#fff}
+.ph .btn:hover{background:rgba(255,255,255,.26);border-color:#fff}
+.ph .btn.pri{background:#fff;color:#1747c9;border-color:#fff;font-weight:600}
+.ph input{background:rgba(255,255,255,.95);color:#0f1b3d;border-color:transparent}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 15px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;transition:border-color .15s,background .15s,transform .1s}
+.btn:hover{border-color:var(--accent)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.pri{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:var(--on-accent);font-weight:500;box-shadow:0 6px 14px -8px var(--accent)}
+.btn.dng{color:var(--bad);border-color:var(--bad);background:var(--surface)}
+.btn.sm{padding:4px 11px;font-size:13px;border-radius:8px}
+.btn.ghost{border-color:transparent;background:transparent}
+.btn:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.panel>h2,.sec-h{font-family:var(--f-display);font-weight:500;font-size:16px;margin:0;padding:14px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.panel>h2::before{content:"";width:8px;height:8px;border-radius:3px;background:linear-gradient(135deg,var(--accent),var(--hero-b));margin-right:-2px;flex:none}
+.panel>h2{justify-content:flex-start}
+.panel>h2>.btn,.panel>h2>span{margin-left:auto}
+.panel .pb{padding:16px 18px}
+.stack{display:flex;flex-direction:column;gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.grid2>*{min-width:0}
+/* KPI cards */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.kpi{--kc:var(--accent);--ks:var(--accent-soft);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:center;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.kpi::after{content:"";position:absolute;right:-28px;bottom:-28px;width:90px;height:90px;border-radius:50%;background:var(--ks);opacity:.7}
+.kpi>*{position:relative;z-index:1}
+.kpi .ic{grid-row:span 2;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--ks);color:var(--kc)}
+.kpi .ic svg{width:21px;height:21px}
+.kpi .l{font-size:12.5px;color:var(--muted)}
+.kpi .v{font-family:var(--f-num);font-size:21px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.3;color:var(--ink);overflow-wrap:anywhere}
+.kpi .s{grid-column:1/-1;font-size:12px;color:var(--muted);margin-top:4px}
+.k-blue{--kc:var(--accent);--ks:var(--accent-soft)} .k-sky{--kc:var(--sky);--ks:var(--sky-soft)} .k-violet{--kc:var(--info);--ks:var(--info-soft)} .k-amber{--kc:var(--warn);--ks:var(--warn-soft)}
+.kpi.ok{--kc:var(--ok);--ks:var(--ok-soft)} .kpi.bad{--kc:var(--bad);--ks:var(--bad-soft)}
+.kpi.bad .v{color:var(--bad)} .kpi.ok .v{color:var(--ok)}
+/* filters */
+.filters{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:18px 0 14px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.fld{display:flex;flex-direction:column;gap:5px;min-width:0}
+.fld>span{font-size:12.5px;color:var(--muted);font-weight:500}
+input[type=text],input[type=number],input[type=date],input[type=time],input[type=month],input[type=tel],select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 11px;min-width:0;max-width:100%;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);outline:none}
+input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px}
+textarea{resize:vertical;min-height:60px}
+.filters input[type=text]{width:240px}
+/* tables */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{font-weight:500;color:var(--accent);text-align:left;font-size:12.5px;padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--tint)}
+td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+td.r,th.r{text-align:right}
+tbody tr.click{cursor:pointer}
+tbody tr.click:hover td{background:var(--sunk)}
+tfoot td{font-weight:600;border-top:2px solid var(--line);border-bottom:0;background:var(--sunk)}
+.muted{color:var(--muted)}
+.small{font-size:12.5px}
+.nowrap{white-space:nowrap}
+.empty{padding:40px 16px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-size:15px;margin-bottom:4px;font-weight:500}
+.empty::before{content:"";display:block;width:46px;height:46px;margin:0 auto 12px;border-radius:14px;background:linear-gradient(135deg,var(--accent-soft),var(--sky-soft))}
+/* pills */
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;border-radius:999px;padding:2px 10px;white-space:nowrap;font-weight:500}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.st-paid{background:var(--ok-soft);color:var(--ok)}
+.st-partial{background:var(--info-soft);color:var(--info)}
+.st-overdue{background:var(--bad-soft);color:var(--bad)}
+.st-open{background:var(--accent-soft);color:var(--accent)}
+.st-void{background:var(--sunk);color:var(--void);text-decoration:line-through}
+.tag{display:inline-block;font-size:11.5px;border-radius:6px;padding:1px 8px;color:var(--sky);background:var(--sky-soft);font-weight:500}
+/* avatar */
+.av{flex:none;width:34px;height:34px;border-radius:50%;display:inline-grid;place-items:center;font-weight:600;font-size:14px;background:hsl(var(--h) 75% var(--avbg-l));color:hsl(var(--h) 65% var(--avfg-l));font-family:var(--f-display)}
+.pp{display:flex;align-items:center;gap:10px;min-width:0}
+/* Thai license plate */
+.plate{display:inline-flex;flex-direction:column;align-items:center;border:1.5px solid var(--ink);border-radius:6px;padding:1px 8px;line-height:1.15;background:var(--surface);min-width:78px;box-shadow:inset 0 0 0 2px var(--surface),inset 0 0 0 3px var(--line)}
+.plate b{font-family:var(--f-display);font-size:13.5px;font-weight:600;letter-spacing:.02em}
+.plate small{font-size:9.5px;color:var(--muted);margin-top:-1px}
+/* schedule grid */
+.sched{font-size:12.5px}
+.sched th,.sched td{padding:6px 4px;text-align:center;border-left:1px solid var(--line)}
+.sched th:first-child,.sched td:first-child{position:sticky;left:0;z-index:1;text-align:left;padding:6px 14px;min-width:200px;background:var(--surface);border-left:0;box-shadow:1px 0 0 var(--line)}
+.sched thead th:first-child{background:var(--tint)}
+.sched tfoot td:first-child{background:var(--sunk)}
+.sched th.we{color:var(--bad)}
+.sched th.td{background:var(--accent);color:#fff;border-radius:8px 8px 0 0}
+.sched th.td .muted{color:rgba(255,255,255,.8)}
+.cell{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:7px;font-size:11px;cursor:pointer;border:1px solid transparent;font-weight:600;transition:transform .1s}
+.cell:hover{transform:scale(1.12)}
+.c-paid{background:var(--ok);color:var(--surface)}
+.c-partial{background:var(--info);color:var(--surface)}
+.c-overdue{background:var(--bad);color:var(--surface)}
+.c-open{border:1.5px dashed var(--accent);color:var(--accent);background:var(--accent-soft)}
+.c-none{cursor:default;color:var(--line)}
+.c-none:hover{transform:none}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--muted);align-items:center}
+.legend .cell{width:17px;height:17px;cursor:default;margin-right:5px;vertical-align:middle}
+/* tabs */
+.tabs{display:inline-flex;gap:4px;padding:4px;background:var(--tint);border-radius:12px;margin-bottom:16px;max-width:100%;overflow-x:auto}
+.tabs a{padding:7px 16px;color:var(--muted);text-decoration:none;border-radius:9px;white-space:nowrap;cursor:pointer}
+.tabs a.on{color:var(--accent);background:var(--surface);font-weight:500;box-shadow:var(--shadow)}
+/* modal */
+.ov{position:fixed;inset:0;background:var(--overlay);backdrop-filter:blur(3px);display:flex;align-items:flex-start;justify-content:center;padding:max(24px,env(safe-area-inset-top,0px)) 12px 24px;z-index:50;overflow-y:auto}
+.mod{background:var(--surface);border-radius:18px;width:min(780px,100%);box-shadow:0 30px 70px -20px rgba(0,0,0,.5);border:1px solid var(--line);overflow:hidden}
+.mod.narrow{width:min(500px,100%)}
+.mod header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:16px 20px;background:linear-gradient(120deg,var(--hero-a),var(--hero-b));color:#fff}
+.mod header h3{margin:0;font-family:var(--f-display);font-weight:500;font-size:18px}
+.mod header .btn{color:#fff}
+.mod .mb{padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.mod footer{display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid var(--line);flex-wrap:wrap;background:var(--sunk)}
+.frm{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.frm .full{grid-column:1/-1}
+.calc{background:linear-gradient(120deg,var(--accent-soft),var(--sky-soft));border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.calc .tot{font-family:var(--f-num);font-size:21px;font-weight:600;color:var(--accent)}
+.items .row{display:grid;grid-template-columns:minmax(0,1fr) 70px 110px 32px;gap:6px;margin-bottom:6px}
+.items .row input{width:100%}
+.err{color:var(--bad);font-size:13px}
+.note{background:var(--sky-soft);color:var(--ink);border-radius:10px;padding:10px 13px;font-size:13.5px}
+.note.bad{background:var(--bad-soft);color:var(--bad)}
+/* invoice */
+.inv{border:1px solid var(--line);border-radius:12px;padding:20px;background:var(--surface)}
+.inv .top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:3px solid var(--accent);padding-bottom:14px}
+.inv .co b{font-family:var(--f-display);font-size:17px;font-weight:600;color:var(--accent)}
+.inv .doc{text-align:right}
+.inv .doc .t{font-family:var(--f-display);font-size:17px;font-weight:600}
+.inv .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:4px 16px;margin:14px 0}
+.inv .meta div{display:flex;gap:8px}
+.inv .meta span{color:var(--muted);min-width:88px}
+.inv .words{background:var(--accent-soft);color:var(--accent);padding:7px 12px;border-radius:8px;font-size:13px;margin-top:10px}
+.inv .stamp{display:inline-block;border:2px solid currentColor;border-radius:6px;padding:2px 12px;font-family:var(--f-display);font-weight:700;transform:rotate(-4deg);letter-spacing:.05em}
+.inv .tw{border:1px solid var(--line);border-radius:10px}
+/* toast */
+.toasts{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:8px;z-index:60}
+.toast{background:linear-gradient(120deg,var(--hero-a),var(--hero-b));color:#fff;padding:11px 16px;border-radius:12px;box-shadow:0 12px 28px -10px rgba(0,0,0,.45);max-width:min(380px,90vw);font-size:13.5px}
+.toast.bad{background:var(--bad);color:#fff}
+.banner{background:var(--warn-soft);color:var(--ink);border-radius:10px;padding:9px 13px;margin-bottom:16px;font-size:13px}
+.chart text{fill:var(--muted);font-size:10px;font-family:var(--f-num)}
+.chart .grid{stroke:var(--line)}
+.chart .s0{stop-color:var(--accent-2)} .chart .s1{stop-color:var(--accent)}
+.loading{display:grid;place-items:center;min-height:50vh;color:var(--muted)}
+.rowline{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 18px;border-bottom:1px solid var(--line)}
+.rowline:last-child{border-bottom:0}
+.rowline.click:hover{background:var(--sunk)}
+.who{min-width:0}
+.who b{font-weight:500}
+.who small{display:block;color:var(--muted);font-size:12px}
+.chk{display:flex;gap:8px;align-items:center}
+.nbadge{margin-left:auto;background:#fb7185;color:#fff;font-size:11px;font-weight:600;border-radius:99px;min-width:20px;height:20px;display:inline-grid;place-items:center;padding:0 6px}
+.lg-wrap{max-width:460px;margin:6vh auto 0;display:flex;flex-direction:column;gap:0}
+.lnk{color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.xchip{display:inline-block;font-size:11.5px;border-radius:6px;padding:1px 7px;white-space:nowrap;font-weight:500}
+.x-ok{background:var(--sunk);color:var(--muted)} .x-warn{background:var(--warn-soft);color:var(--warn)} .x-bad{background:var(--bad-soft);color:var(--bad)}
+.c-off{background:var(--warn-soft);color:var(--warn);cursor:help}
+.ppq{display:flex;gap:18px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);border-radius:14px;padding:14px;background:linear-gradient(120deg,var(--surface),var(--sky-soft))}
+.qrbox{width:156px;height:156px;background:#ffffff;border-radius:10px;padding:4px;flex:none;box-shadow:0 0 0 1px var(--line)}
+.qrbox svg{display:block;width:100%;height:100%}
+.ppt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pp-badge{align-self:flex-start;background:#0b3d91;color:#fff;font-size:11px;font-weight:600;padding:1px 8px;border-radius:5px;letter-spacing:.03em}
+.ppamt{font-size:22px;color:var(--accent);font-weight:600}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.camp{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;min-width:0}
+.camp.on{background:linear-gradient(150deg,var(--surface) 55%,var(--accent-soft))}
+.camp-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.camp h3{margin:0;font-family:var(--f-display);font-weight:600;font-size:17px}
+.camp-rule{font-size:15px;color:var(--accent);font-weight:500}
+.camp-stat{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.camp-stat div{background:var(--sunk);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column}
+.camp-stat span{font-size:12px;color:var(--muted)}
+@media (max-width:860px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:sticky;top:env(safe-area-inset-top,0px);height:auto;z-index:20;padding:10px 12px;gap:8px}
+  .nav{flex-direction:row;overflow-x:auto;gap:4px}
+  .nav .grp,.side .foot{display:none}
+  .nav a{white-space:nowrap;padding:7px 11px}
+  .ph{padding:18px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand"><span class="meter">VIP</span><div><b>ค่าเช่าแท็กซี่ VIP</b><small>ระบบเก็บค่าเช่าและบิลคนขับ</small></div></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="foot" id="foot"></div>
+  </aside>
+  <main class="main" id="main"><div class="loading">กำลังโหลดข้อมูล…</div></main>
+</div>
+<div id="modal"></div>
+<div class="toasts" id="toasts"></div>
+
+<script>window.FIREBASE_CONFIG=window.FIREBASE_CONFIG||null;</script>
+<script src="firebase-config.js" onerror="void 0"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+/* ---------- constants & helpers ---------- */
+const TH_M=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const TH_MS=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const TH_D=['อา','จ','อ','พ','พฤ','ศ','ส'];
+const TYPE={rent:{t:'ค่าเช่ารายวัน',doc:'ใบแจ้งหนี้ค่าเช่ารถรายวัน',pre:'RN'},insurance:{t:'ค่าประกัน',doc:'ใบแจ้งหนี้ค่าประกัน',pre:'IN'},other:{t:'ค่าอื่นๆ',doc:'ใบแจ้งหนี้ค่าใช้จ่ายอื่นๆ',pre:'OT'}};
+const ST={paid:'ชำระแล้ว',partial:'ชำระบางส่วน',overdue:'เกินกำหนด',open:'รอชำระ',void:'ยกเลิก'};
+const METHODS=['เงินสด','โอนเงิน','หักจากเงินประกัน','อื่นๆ'];
+const CAR_ST={active:'พร้อมใช้งาน',repair:'ซ่อมบำรุง',retired:'เลิกใช้'};
+const DEF_CONFIG={company:'บริษัท แท็กซี่วีไอพี จำกัด',address:'',phone:'',taxId:'',
+  insuranceTypes:['ประกันภัยรถยนต์ชั้น 1','พ.ร.บ.','ประกันอุบัติเหตุผู้ขับขี่','ประกันภัยผู้โดยสาร'],
+  otherTypes:['ค่าซ่อมบำรุง','ค่าปรับ','ค่าล้างรถ','ค่าแก๊ส/น้ำมัน','ค่าอุปกรณ์','ค่าความเสียหาย'],
+  rentDueDays:0,otherDueDays:7,
+  autoRent:true,autoTime:'06:00',autoFrom:'',promptpay:'',promptpayName:'',expiryWarnDays:30,
+  late:{on:true,types:['rent','insurance','other'],mode:'perDay',amount:50,grace:0,cap:500}};
+const LATE_MODE={perDay:'บาทต่อวัน',percent:'% ของยอดบิลต่อวัน',flat:'เหมาครั้งเดียว (บาท)'};
+const COLS=['cars','drivers','bills','swaps','maint','campaigns','offdays'];
+const S={cars:[],drivers:[],bills:[],swaps:[],maint:[],campaigns:[],offdays:[],logs:[],names:{},config:null,auto:{},ready:false,mode:'loading',page:'overview',me:{id:null,manager:true,owner:true}};
+let USER=null;const mgr=()=>S.me.manager;
+function needMgr(){if(mgr())return true;toast('เฉพาะผู้จัดการเท่านั้น ขอสิทธิ์ผู้แก้ไข (Editor) จากเจ้าของระบบ','bad');return false}
+let DB=null,DL=null;const SESSION=Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const cfg=()=>{const c={...DEF_CONFIG,...(S.config||{})};c.late={...DEF_CONFIG.late,...((S.config||{}).late||{})};return c};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const r2=n=>Math.round((+n||0)*100)/100;
+const money=n=>(+n||0).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const today=()=>iso(new Date());
+const thisMonth=()=>today().slice(0,7);
+const pd=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const addDays=(s,n)=>{const d=pd(s);d.setDate(d.getDate()+n);return iso(d)};
+const diffDays=(a,b)=>Math.round((pd(b)-pd(a))/864e5);
+const fd=s=>{if(!s)return '—';const [y,m,d]=s.split('-');return `${+d} ${TH_MS[m-1]} ${+y+543}`};
+const ml=m=>{const [y,mm]=m.split('-');return `${TH_M[mm-1]} ${+y+543}`};
+const dim=m=>{const [y,mm]=m.split('-').map(Number);return new Date(y,mm,0).getDate()};
+const D=id=>S.drivers.find(x=>x.id===id);
+const C=id=>S.cars.find(x=>x.id===id);
+const dName=id=>D(id)?.name||'—';
+const carOf=did=>C(D(did)?.carId);
+const driverOn=cid=>S.drivers.find(x=>x.carId===cid&&x.status!=='inactive');
+const plate=c=>c?`<span class="plate"><b>${esc(c.plate)}</b><small>${esc(c.province||'')}</small></span>`:'<span class="muted">—</span>';
+const pill=s=>`<span class="pill st-${s}">${ST[s]}</span>`;
+function bahtText(num){
+  const N=['ศูนย์','หนึ่ง','สอง','สาม','สี่','ห้า','หก','เจ็ด','แปด','เก้า'],P=['','สิบ','ร้อย','พัน','หมื่น','แสน'];
+  const seg=str=>{str=str.replace(/^0+/,'');if(!str)return '';let o='';const L=str.length;const val=+str;
+    for(let i=0;i<L;i++){const d=+str[i],p=L-1-i;if(!d)continue;
+      if(p===1&&d===1)o+='สิบ';else if(p===1&&d===2)o+='ยี่สิบ';else if(p===0&&d===1&&val>1)o+='เอ็ด';else o+=N[d]+P[p];}
+    return o};
+  const read=str=>{str=str.replace(/^0+/,'');if(!str)return '';if(str.length>6){return read(str.slice(0,-6))+'ล้าน'+seg(str.slice(-6))}return seg(str)};
+  num=r2(Math.abs(num));const [b,s]=num.toFixed(2).split('.');
+  const bt=read(b),st=read(s);
+  if(!bt&&!st)return 'ศูนย์บาทถ้วน';
+  return (bt?bt+'บาท':'')+(st?st+'สตางค์':'ถ้วน');
+}
+/* bills */
+const bTotal=b=>Math.max(0,r2((b.items||[]).reduce((s,i)=>s+(+i.qty||0)*(+i.price||0),0)-(+b.discount||0)));
+const bPaid=b=>r2((b.payments||[]).reduce((s,p)=>s+(+p.amount||0),0));
+function ruleFor(type){const L=cfg().late;return L.on&&L.types.includes(type)&&+L.amount>0?{mode:L.mode,amount:+L.amount,grace:+L.grace||0,cap:+L.cap||0}:null}
+function lateRuleOf(b){if(b.lateRule===null)return null;if(b.lateRule)return b.lateRule;return ruleFor(b.type)}
+/* late fee: counts days after due date (minus grace) until the principal is fully paid, or until today */
+function lateInfo(b){
+  const z={fee:0,days:0};if(b.void||!b.dueDate||b.waiveLate)return z;const R=lateRuleOf(b);if(!R||!(+R.amount>0))return z;
+  const P=bTotal(b);if(P<=0)return z;let stop=today(),cum=0;
+  for(const p of (b.payments||[]).slice().sort((a,c)=>(a.date||'').localeCompare(c.date||''))){cum+=+p.amount||0;if(cum>=P-0.004){stop=p.date;break}}
+  const late=diffDays(b.dueDate,stop),days=late-(+R.grace||0);if(days<=0)return {fee:0,days:Math.max(0,late)};
+  let fee=R.mode==='flat'?+R.amount:R.mode==='percent'?P*(+R.amount)/100*days:days*(+R.amount);
+  if(+R.cap>0)fee=Math.min(fee,+R.cap);return {fee:r2(fee),days:late};
+}
+const bFee=b=>lateInfo(b).fee;
+const bDue=b=>r2(bTotal(b)+bFee(b));
+const bBal=b=>b.void?0:Math.max(0,r2(bDue(b)-bPaid(b)));
+function bSt(b){if(b.void)return 'void';const t=bDue(b),p=bPaid(b);if(t-p<=0.004)return 'paid';if(b.dueDate&&b.dueDate<today())return 'overdue';if(p>0)return 'partial';return 'open'}
+const live=()=>S.bills.filter(b=>!b.void);
+const rentCover=(did,day)=>S.bills.find(b=>b.type==='rent'&&!b.void&&b.driverId===did&&b.from<=day&&day<=b.to);
+const allPays=()=>S.bills.filter(b=>!b.void).flatMap(b=>(b.payments||[]).map(p=>({...p,bill:b})));
+function nextNo(type,dateStr,pending=[]){
+  const yy=String(+dateStr.slice(0,4)+543).slice(2),mm=dateStr.slice(5,7);const pre=`${TYPE[type].pre}${yy}${mm}-`;const extra=0;
+  let mx=0;[...S.bills,...pending].forEach(b=>{if(b.no&&b.no.startsWith(pre)){const n=parseInt(b.no.slice(pre.length));if(n>mx)mx=n}});
+  return pre+String(mx+1+extra).padStart(4,'0');
+}
+function makeRent(d,day,pending,note){const car=C(d.carId),c=cfg();const cd=campDisc(d,day,+car.dailyRate||0,pending);if(cd.amt)note=[note,'แคมเปญ: '+cd.name].filter(Boolean).join(' · ');const b={type:'rent',driverId:d.id,carId:car.id,issueDate:day,dueDate:addDays(day,+c.rentDueDays||0),from:day,to:day,discount:cd.amt,campaign:cd.amt?cd.name:undefined,items:[{desc:`ค่าเช่ารถ ${car.plate} ${fd(day)}`,qty:1,price:+car.dailyRate||0}],payments:[],lateRule:ruleFor('rent'),note,createdAt:new Date().toISOString()};b.no=nextNo('rent',day,pending);return b}
+function rentDue(day){return S.drivers.filter(d=>d.status!=='inactive'&&d.carId&&C(d.carId)&&(C(d.carId).status||'active')==='active'&&(!d.since||d.since<=day)&&(!d.startDate||d.startDate<=day)&&!offFor(d,day))}
+function billDesc(b){if(b.type==='rent')return `${b.items?.[0]?.qty??(diffDays(b.from,b.to)+1)} วัน · ${fd(b.from)}${b.from!==b.to?' – '+fd(b.to):''}`;return [b.category,b.period].filter(Boolean).join(' · ')||(b.items?.[0]?.desc||'')}
+
+/* off days (no rent charged) */
+function offFor(d,day){return S.offdays.find(o=>o.from<=day&&day<=(o.to||o.from)&&(o.kind==='all'||(o.kind==='car'&&o.carId===d.carId)||(o.kind==='driver'&&o.driverId===d.id)))}
+/* campaigns */
+const CAMP_KIND={freeday:'เช่าครบ N วัน ฟรี 1 วัน',percent:'ลดค่าเช่า %',newdriver:'ส่วนลดคนขับใหม่ (บาท/วัน)'};
+function rentDaysIn(did,from,to,pending=[]){if(to<from)return 0;return [...S.bills,...pending].filter(b=>b.type==='rent'&&!b.void&&b.driverId===did&&b.from<=to&&b.to>=from).reduce((s,b)=>s+diffDays(b.from<from?from:b.from,b.to>to?to:b.to)+1,0)}
+function campDisc(d,day,rate,pending=[]){let best={amt:0,name:''};
+  S.campaigns.filter(c=>c.active!==false&&c.from<=day&&(!c.to||day<=c.to)&&(!c.carId||c.carId===d.carId)).forEach(c=>{let a=0;
+    if(c.kind==='percent')a=rate*(+c.pct||0)/100;
+    else if(c.kind==='newdriver'){const s=d.startDate;if(s&&diffDays(s,day)>=0&&diffDays(s,day)<(+c.days||0))a=Math.min(rate,+c.perDay||0)}
+    else if(c.kind==='freeday'){const N=+c.every||0;if(N>0){const cnt=rentDaysIn(d.id,c.from,addDays(day,-1),pending);if((cnt+1)%(N+1)===0)a=rate}}
+    if(a>best.amt)best={amt:r2(a),name:c.name}});
+  return best}
+function rangeRent(d,from,to,rate){let days=0,off=0,disc=0;const names=new Set();const pend=[];
+  for(let day=from;day<=to;day=addDays(day,1)){if(d&&offFor(d,day)){off++;continue}days++;
+    if(d){const cd=campDisc(d,day,rate,pend);if(cd.amt){disc+=cd.amt;names.add(cd.name)}pend.push({type:'rent',driverId:d.id,from:day,to:day})}}
+  return {days,off,disc:r2(disc),names:[...names]}}
+/* PromptPay QR (EMVCo) */
+function crc16(s){let c=0xFFFF;for(let i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(let j=0;j<8;j++)c=(c&0x8000)?((c<<1)^0x1021)&0xFFFF:(c<<1)&0xFFFF}return c.toString(16).toUpperCase().padStart(4,'0')}
+const tlv=(id,v)=>id+String(v.length).padStart(2,'0')+v;
+function ppPayload(id,amt){const d=String(id||'').replace(/\D/g,'');if(d.length<9)return null;let acc;
+  if(d.length>=15)acc=tlv('03',d);else if(d.length===13)acc=tlv('02',d);else acc=tlv('01',('66'+d.replace(/^0/,'')).padStart(13,'0'));
+  const p=tlv('00','01')+tlv('01',amt?'12':'11')+tlv('29',tlv('00','A000000677010111')+acc)+tlv('58','TH')+tlv('53','764')+(amt?tlv('54',(+amt).toFixed(2)):'')+'6304';return p+crc16(p)}
+function qrSvg(text){try{if(!window.qrcode)return '';const q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag({cellSize:4,margin:2,scalable:true})}catch(e){return ''}}
+const maskPP=v=>{const d=String(v||'').replace(/\D/g,'');return d.length>6?d.slice(0,3)+'-xxx-'+d.slice(-4):d};
+function ppBlock(amt){const c=cfg();if(!(amt>0))return '';const p=ppPayload(c.promptpay,amt);if(!p)return '';const svg=qrSvg(p);if(!svg)return '';
+  return `<div class="ppq"><div class="qrbox">${svg}</div><div class="ppt"><span class="pp-badge">PromptPay</span><b>สแกนจ่ายพร้อมเพย์</b><div class="small muted">${esc(c.promptpayName||c.company)} · ${esc(maskPP(c.promptpay))}</div><div class="num ppamt">฿${money(amt)}</div><div class="small muted">ยอดในคิวอาร์ตรงกับยอดคงค้าง ณ วันนี้</div></div></div>`}
+/* receipts */
+function nextReceipt(pendingNos=[]){const t=today();const pre=`RC${String(+t.slice(0,4)+543).slice(2)}${t.slice(5,7)}-`;let mx=0;
+  [...allPays().map(p=>p.receiptNo),...pendingNos].forEach(n=>{if(n&&n.startsWith(pre)){const k=parseInt(n.slice(pre.length));if(k>mx)mx=k}});return pre+String(mx+1).padStart(4,'0')}
+function receipts(){const m={};S.bills.forEach(b=>(b.payments||[]).forEach(p=>{if(!p.receiptNo)return;const r=m[p.receiptNo]=m[p.receiptNo]||{no:p.receiptNo,date:p.date,driverId:b.driverId,method:p.method,note:p.note,by:p.by,items:[],total:0,voided:false};
+  r.items.push({bill:b,amount:+p.amount||0});r.total=r2(r.total+(+p.amount||0));if(b.void)r.voided=true}));return Object.values(m).sort((a,b)=>(b.date+b.no).localeCompare(a.date+a.no))}
+function receiptInner(r){const c=cfg(),d=D(r.driverId);
+  return `<div class="inv"><div class="top"><div class="co"><b>${esc(c.company)}</b>${c.address?`<div class="small">${esc(c.address)}</div>`:''}<div class="small muted">${[c.phone&&'โทร '+c.phone,c.taxId&&'เลขผู้เสียภาษี '+c.taxId].filter(Boolean).map(esc).join(' · ')}</div></div>
+   <div class="doc"><div class="t">ใบเสร็จรับเงิน</div><div class="num">เลขที่ ${esc(r.no)}</div><div class="small">วันที่ ${fd(r.date)}</div></div></div>
+   <div class="meta"><div><span>ได้รับเงินจาก</span><b>${esc(d?.name||'—')}</b></div><div><span>วิธีชำระ</span>${esc(r.method||'')}</div>${d?.phone?`<div><span>โทร</span>${esc(d.phone)}</div>`:''}${r.note?`<div><span>อ้างอิง</span>${esc(r.note)}</div>`:''}</div>
+   <div class="tw"><table><thead><tr><th>ชำระบิลเลขที่</th><th>รายการ</th><th class="r">จำนวนเงิน</th></tr></thead><tbody>
+   ${r.items.map(i=>`<tr><td class="num">${esc(i.bill.no)}</td><td>${TYPE[i.bill.type].t} · ${esc(billDesc(i.bill))}</td><td class="r num">${money(i.amount)}</td></tr>`).join('')}
+   </tbody><tfoot><tr><td colspan="2" class="r">รวมรับชำระ</td><td class="r num">${money(r.total)}</td></tr></tfoot></table></div>
+   <div class="words">(${bahtText(r.total)})</div>${r.voided?'<div class="small" style="color:var(--bad);margin-top:6px">มีบิลในใบเสร็จนี้ถูกยกเลิกแล้ว</div>':''}</div>`}
+/* audit log */
+const LOGQ=[];let logBusy=false;
+async function log(action,detail){LOGQ.push({t:new Date().toISOString(),a:action,d:String(detail||''),u:S.me.id||'local'});if(logBusy)return;logBusy=true;
+  try{while(LOGQ.length){const batch=LOGQ.splice(0);const day=today();const id=`${day}_${String(S.me.id||'local').replace(/[^A-Za-z0-9_\-.~:@+]/g,'')}`;
+    if(S.mode==='db'){const ref=DB.collection('logs').doc(id);const s=await ref.get();const cur=s.exists?(s.data().entries||[]):[];await ref.set({date:day,user:S.me.id||'',entries:[...cur,...batch].slice(-1500)})}
+    else{let doc=S.logs.find(x=>x.id===id);if(!doc){doc={id,date:day,entries:[]};S.logs.push(doc)}doc.entries.push(...batch);saveLocal()}}}
+  catch(e){console.error(e)}logBusy=false}
+async function resolveNames(ids){if(!USER)return;const need=[...new Set(ids)].filter(i=>i&&i!=='local'&&!(i in S.names));if(!need.length)return;
+  try{const ps=await USER.profiles(need);need.forEach(i=>S.names[i]=(ps&&ps[i]&&ps[i].name)||'');schedule()}catch(e){need.forEach(i=>S.names[i]='')}}
+const who=id=>!id||id==='local'?'เครื่องนี้':(S.names[id]||(id===S.me.id?'คุณ':'ผู้ใช้'));
+/* document expiry */
+const DOCS_CAR=[['actExp','พ.ร.บ.'],['insExp','ประกันภัย'],['taxExp','ภาษีรถ']];
+function expiries(){const t=today(),w=+cfg().expiryWarnDays||30,out=[];
+  S.cars.filter(c=>c.status!=='retired').forEach(c=>DOCS_CAR.forEach(([k,l])=>{if(c[k])out.push({kind:'car',id:c.id,label:l,who:c.plate,date:c[k],left:diffDays(t,c[k])})}));
+  S.drivers.filter(d=>d.status!=='inactive').forEach(d=>{if(d.licenseExp)out.push({kind:'driver',id:d.id,label:'ใบขับขี่สาธารณะ',who:d.name,date:d.licenseExp,left:diffDays(t,d.licenseExp)})});
+  return {all:out,warn:out.filter(x=>x.left<=w).sort((a,b)=>a.left-b.left)}}
+function expChip(date){if(!date)return '<span class="muted small">—</span>';const l=diffDays(today(),date),w=+cfg().expiryWarnDays||30;
+  return `<span class="xchip ${l<0?'x-bad':l<=w?'x-warn':'x-ok'}" title="${l<0?'หมดอายุแล้ว '+(-l)+' วัน':'เหลือ '+l+' วัน'}">${fd(date)}</span>`}
+/* printable documents */
+const DOC_CSS=`body{font-family:"IBM Plex Sans Thai",Tahoma,sans-serif;color:#0f1b3d;max-width:780px;margin:24px auto;padding:0 16px;font-size:14px}table{border-collapse:collapse;width:100%}th,td{padding:8px;border-bottom:1px solid #dde6f4;text-align:left}th{background:#e7eefc;color:#1d4ed8}.r{text-align:right}.top{display:flex;justify-content:space-between;border-bottom:3px solid #1d4ed8;padding-bottom:12px;gap:16px}.co b{color:#1d4ed8;font-size:17px}.doc{text-align:right}.doc .t{font-size:17px;font-weight:600}.meta{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;margin:12px 0}.meta span{color:#5a6788;margin-right:8px}.words{background:#e3ecff;color:#1d4ed8;padding:6px 10px;margin-top:8px;border-radius:6px}.small{font-size:12.5px}.muted{color:#5a6788}.stamp{border:2px solid;padding:2px 10px;display:inline-block}.pill{font-size:12px}.sign{display:flex;justify-content:space-between;margin-top:56px;gap:24px}.sign div{flex:1;text-align:center;border-top:1px solid #0f1b3d;padding-top:6px}.ppq{display:flex;gap:16px;align-items:center;margin-top:14px;border:1px solid #dde6f4;border-radius:10px;padding:12px}.qrbox{width:150px;height:150px;background:#fff}.pp-badge{background:#0b3d91;color:#fff;font-size:11px;padding:1px 8px;border-radius:4px}.ppamt{font-size:18px;color:#1d4ed8}tfoot td{font-weight:600}h2{font-size:16px;margin:18px 0 6px;color:#1d4ed8}`;
+function docWrap(title,inner,sign=['ผู้รับเงิน','ผู้ชำระเงิน (คนขับ)']){return `<!doctype html><html lang="th"><head><meta charset="utf-8"><title>${esc(title)}</title><style>${DOC_CSS}</style></head><body>${inner.replace(/class="inv"/,'')}${sign?`<div class="sign">${sign.map(x=>`<div>${x}</div>`).join('')}</div>`:''}</body></html>`}
+
+/* ---------- storage ---------- */
+const LKEY='vip-taxi-rent-v1';
+function loadLocal(){try{const j=JSON.parse(localStorage.getItem(LKEY)||'null');if(j){COLS.forEach(c=>S[c]=j[c]||[]);S.config=j.config||null;S.auto=j.auto||{};S.logs=j.logs||[]}}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify({cars:S.cars,drivers:S.drivers,bills:S.bills,swaps:S.swaps,config:S.config,auto:S.auto,logs:S.logs,maint:S.maint,campaigns:S.campaigns,offdays:S.offdays}))}catch(e){}}
+const clean=o=>JSON.parse(JSON.stringify(o));
+async function put(col,obj){
+  obj=clean({...obj});if(!obj.id)obj.id=uid();
+  if(S.mode==='db'){const {id,...body}=obj;await DB.collection(col).doc(id).set(body)}
+  else{const a=S[col],i=a.findIndex(x=>x.id===obj.id);if(i>=0)a[i]=obj;else a.push(obj);saveLocal();schedule()}
+  return obj;
+}
+async function del(col,id){
+  if(S.mode==='db')await DB.collection(col).doc(id).delete();
+  else{S[col]=S[col].filter(x=>x.id!==id);saveLocal();schedule()}
+}
+async function putConfig(c){c=clean(c);if(S.mode==='db')await DB.doc('config/main').set(c);else{S.config=c;saveLocal();schedule()}}
+/* ---------- automatic daily rent bills ---------- */
+let autoBusy=false,autoBlocked=false;
+async function autoIssue(manual=false){
+  const c=cfg();if((!c.autoRent&&!manual)||autoBusy||!S.ready||autoBlocked)return;
+  const now=new Date(),t=today(),[hh,mm]=(c.autoTime||'06:00').split(':').map(Number);
+  const end=now.getHours()*60+now.getMinutes()>=hh*60+(mm||0)?t:addDays(t,-1);
+  autoBusy=true;
+  try{
+    let last=S.auto?.lastRun||null;
+    if(S.mode==='db'){
+      const ref=DB.doc('state/auto');const r=await ref.acquire({holder:SESSION,ttlMs:60000});
+      if(!r.acquired){autoBusy=false;return}
+      const s=await ref.get();last=s.exists?(s.data().lastRun||null):null;
+    }
+    let start=last?addDays(last,1):(c.autoFrom||end);
+    if(c.autoFrom&&start<c.autoFrom)start=c.autoFrom;
+    if(diffDays(start,end)>31)start=addDays(end,-31);
+    if(start>end){if(manual)toast('ออกบิลค่าเช่าครบถึงรอบล่าสุดแล้ว');autoBusy=false;return}
+    const bills=[];
+    for(let day=start;day<=end;day=addDays(day,1)){
+      rentDue(day).forEach(d=>{if(!rentCover(d.id,day)&&!bills.some(b=>b.driverId===d.id&&b.from===day))bills.push(makeRent(d,day,bills,'ออกบิลอัตโนมัติ'))});
+    }
+    for(let i=0;i<bills.length;i+=10)await Promise.all(bills.slice(i,i+10).map(b=>put('bills',b)));
+    const st={lastRun:end,lastAt:new Date().toISOString(),lastCount:bills.length};
+    if(S.mode==='db')await DB.doc('state/auto').set(st);else{S.auto=st;saveLocal();schedule()}
+    if(bills.length){log('ออกบิลอัตโนมัติ',`${bills.length} ใบ ${fd(start)}–${fd(end)}`)}
+    if(bills.length)toast(`ออกบิลค่าเช่าอัตโนมัติ ${bills.length} ใบ (${start===end?fd(end):fd(start)+' – '+fd(end)})`);
+    else if(manual)toast('ไม่มีบิลที่ต้องออกเพิ่ม');
+  }catch(e){console.error(e);if(e?.code==='invalid_argument'||e?.code==='not_granted'||e?.code==='permission-denied')autoBlocked=true;else if(manual)toast('ออกบิลอัตโนมัติไม่สำเร็จ ลองอีกครั้ง','bad')}
+  autoBusy=false;
+}
+async function safe(fn,okMsg){try{await fn();if(okMsg)toast(okMsg);return true}catch(e){console.error(e);toast(e?.code==='invalid_argument'||e?.code==='permission-denied'?'บันทึกไม่ได้: บัญชีนี้ไม่มีสิทธิ์ทำรายการนี้':e?.code==='quota_exceeded'?'พื้นที่เก็บข้อมูลเต็ม ลบบิลเก่าที่ไม่ใช้ก่อน':'บันทึกไม่สำเร็จ ลองอีกครั้ง','bad');return false}}
+
+/* ---------- UI state ---------- */
+const U={
+  bill:{rent:{month:thisMonth(),status:'all',q:''},insurance:{month:'',status:'all',q:''},other:{month:'',status:'all',q:''}},
+  sched:{month:thisMonth()},
+  rep:{tab:'month',month:thisMonth(),from:thisMonth()+'-01',to:today()},
+  fleet:{tab:'cars'},
+  rc:{month:thisMonth(),q:''},ib:{tab:'slip',all:false},mt:{carId:'',year:today().slice(0,4)},lg:{from:addDays(today(),-30),to:today(),a:''},
+  swap:{carId:'',newId:'',date:today(),reason:'คนขับใหม่เข้าทำงาน',note:'',endOld:false}
+};
+const setPath=(o,p,v)=>{const k=p.split('.');let t=o;k.slice(0,-1).forEach(x=>t=t[x]);t[k.at(-1)]=v};
+
+/* ---------- nav ---------- */
+const IC={
+ overview:'<path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/>',
+ rent:'<path d="M5 17h14l-1.5-6.5A2 2 0 0 0 15.6 9H8.4a2 2 0 0 0-1.9 1.5zM7 17v2M17 17v2M9 6h6l1 3H8z"/>',
+ insurance:'<path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/>',
+ other:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6"/>',
+ schedule:'<path d="M4 5h16v15H4zM4 9h16M9 3v4M15 3v4M8 13h2M12 13h2M16 13h0M8 16h2M12 16h2"/>',
+ reports:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+ swap:'<path d="M7 7h12l-3-3M17 17H5l3 3"/>',
+ receipts:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 9l2 2 4-4M9 15h6"/>',
+ maint:'<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>',
+ offdays:'<path d="M4 5h16v15H4zM4 9h16M9 3v4M15 3v4M9 13l6 5M15 13l-6 5"/>',
+ campaigns:'<path d="M4 10v4h3l6 4V6L7 10zM17 9a4 4 0 0 1 0 6M19.5 6.5a8 8 0 0 1 0 11"/>',
+ inbox:'<path d="M4 13h4l2 3h4l2-3h4M5 5h14l1 8v6H4v-6z"/>',
+ log:'<path d="M12 7v5l3 2M21 12a9 9 0 1 1-3-6.7M21 4v4h-4"/>',
+ fleet:'<path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0"/>',
+ settings:'<path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 7.5 19.4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 3.6 14H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 7.5l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 10 3.6V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0 1.1 2.7H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/>'
+};
+const NAV=[['overview','ภาพรวม'],['g','บิลเรียกเก็บ'],['rent','บิลค่าเช่ารายวัน'],['insurance','บิลค่าประกัน'],['other','บิลค่าอื่นๆ'],['g','การชำระและรายงาน'],['inbox','คำขอจากคนขับ'],['schedule','ตารางจ่ายค่าเช่ารายเดือน'],['receipts','ใบเสร็จรับเงิน'],['reports','รายงาน'],['g','คนขับและรถ'],['swap','สลับเปลี่ยนคนขับ'],['fleet','ทะเบียนรถและคนขับ'],['maint','ซ่อมบำรุง'],['offdays','วันงดเก็บค่าเช่า'],['g','ตั้งค่าระบบ'],['campaigns','แคมเปญส่วนลด'],['log','บันทึกการแก้ไข'],['settings','ตั้งค่า']];
+function renderNav(){
+  document.getElementById('nav').innerHTML=NAV.map(([k,t])=>k==='g'?`<div class="grp">${t}</div>`:`<a href="#${k}" data-act="go" data-p="${k}" class="${S.page===k?'on':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${IC[k]}</svg>${t}${k==='inbox'&&S.fb?(n=>n?`<span class="nbadge">${n}</span>`:'')(S.payreq.filter(p=>p.status==='pending').length+S.requests.filter(r=>r.status==='pending').length):''}</a>`).join('');
+  document.getElementById('foot').innerHTML=(S.mode==='db'?'<span class="dot"></span>ข้อมูลออนไลน์ ใช้ร่วมกันได้':S.mode==='local'?'<span class="dot local"></span>เก็บข้อมูลในเบราว์เซอร์นี้':'')+(S.mode!=='loading'?`<div style="margin-top:6px">สิทธิ์: <b style="color:#fff">${S.me.owner?'เจ้าของระบบ':mgr()?'ผู้จัดการ':'พนักงานเก็บเงิน'}</b>${S.fb?` · ${esc(S.me.name||S.me.email||'')}<div style="margin-top:6px"><a href="#" data-act="fbLogout" style="color:#fff">ออกจากระบบ</a></div>`:''}</div>`:'');
+}
+
+/* ---------- render ---------- */
+let rq=false;
+function schedule(){if(rq)return;rq=true;requestAnimationFrame(()=>{rq=false;render()})}
+function render(){
+  renderNav();
+  const m=document.getElementById('main');
+  if(!S.ready){m.innerHTML='<div class="loading">กำลังโหลดข้อมูล…</div>';return}
+  if(S.mode==='login'){m.innerHTML=loginHTML();const F=document.getElementById('lgF');if(F)F.onsubmit=e=>{e.preventDefault();fbLoginSubmit(F)};return}
+  const ae=document.activeElement,f=ae?.dataset?.f,pos=ae?.selectionStart;
+  const fn=PAGES[S.page]||PAGES.overview;
+  m.innerHTML=(S.mode==='local'?'<div class="banner">เปิดนอกหน้าเว็บ Claude ข้อมูลจึงเก็บไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น</div>':'')+fn();
+  if(f){const el=m.querySelector(`[data-f="${f}"]`);if(el){el.focus();try{if(pos!=null)el.setSelectionRange(pos,pos)}catch(e){}}}
+}
+
+/* ---------- small components ---------- */
+const KI={receipt:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6"/>',coins:'<circle cx="9" cy="9" r="5"/><path d="M14.5 5.6A5 5 0 1 1 9.6 14.6"/>',wallet:'<path d="M4 7h15a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM4 7l11-3v3M16 13h2"/>',alert:'<path d="M12 4 2.5 20h19zM12 10v4M12 17h0"/>',car:'<path d="M5 17h14l-1.5-6.5A2 2 0 0 0 15.6 9H8.4a2 2 0 0 0-1.9 1.5zM7 17v2M17 17v2"/>',cal:'<path d="M4 5h16v15H4zM4 9h16M9 3v4M15 3v4"/>',tag:'<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.5"/>'};
+function kIcon(l){return /ค้าง|ปรับ/.test(l)?'alert':/รับชำระ|ชำระแล้ว/.test(l)?'wallet':/รถ/.test(l)?'car':/วัน/.test(l)?'cal':/จำนวน|บิล/.test(l)?'receipt':/ประกัน|ค่าอื่น/.test(l)?'tag':'coins'}
+const KC=['k-blue','k-sky','k-violet','k-amber'];
+function kpis(arr){return `<div class="kpis">${arr.map((k,i)=>`<div class="kpi ${k.c||KC[i%4]}"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${KI[k.i||kIcon(k.l)]}</svg></span><div class="l">${k.l}</div><div class="v">${k.v}</div>${k.s?`<div class="s">${k.s}</div>`:''}</div>`).join('')}</div>`}
+function av(name){const n=String(name||'?').replace(/^[เแโใไ\s]+/,'');let h=0;for(const ch of String(name||''))h=(h*31+ch.charCodeAt(0))%360;return `<span class="av" style="--h:${h}" aria-hidden="true">${esc(n.charAt(0)||'?')}</span>`}
+function barChart(vals,labels,h=150){
+  const W=Math.max(320,vals.length*22),pl=46,pb=20,pt=8,ih=h-pb-pt,iw=W-pl-6;
+  const mx=Math.max(...vals,0);const step=mx<=0?1:Math.pow(10,Math.floor(Math.log10(mx)));let top=Math.ceil(mx/step)*step||1;
+  const ticks=[0,top/2,top];const bw=iw/vals.length;
+  const fmt=v=>v>=1000?(v/1000).toLocaleString('th-TH',{maximumFractionDigits:1})+'k':v.toLocaleString('th-TH');
+  return `<div class="tw"><svg class="chart" viewBox="0 0 ${W} ${h}" width="100%" style="min-width:${W}px;max-width:100%" role="img" aria-label="กราฟรายรับรายวัน"><defs><linearGradient id="barg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="s0"/><stop offset="1" class="s1"/></linearGradient></defs>
+   ${ticks.map(t=>{const y=pt+ih-(t/top)*ih;return `<line class="grid" x1="${pl}" x2="${W-6}" y1="${y}" y2="${y}"/><text x="${pl-6}" y="${y+3}" text-anchor="end">${fmt(t)}</text>`}).join('')}
+   ${vals.map((v,i)=>{const bh=(v/top)*ih;return `<rect fill="url(#barg)" x="${pl+i*bw+bw*.18}" y="${pt+ih-bh}" width="${bw*.64}" height="${Math.max(bh,0)}" rx="2"><title>${labels[i]}: ฿${money(v)}</title></rect>${(i%2===0||vals.length<=16)?`<text x="${pl+i*bw+bw/2}" y="${h-6}" text-anchor="middle">${labels[i]}</text>`:''}`}).join('')}
+  </svg></div>`;
+}
+function billRows(list,{showType=false}={}){
+  if(!list.length)return `<div class="empty"><b>ยังไม่มีบิลในเงื่อนไขนี้</b>เปลี่ยนเดือนหรือสถานะ หรือกดปุ่มออกบิลด้านบน</div>`;
+  return `<div class="tw"><table><thead><tr><th>เลขที่บิล</th><th>วันที่ออก</th><th>คนขับ</th><th>รถ</th><th>รายการ</th><th class="r">ยอดรวม</th><th class="r">คงค้าง</th><th>กำหนดชำระ</th><th>สถานะ</th><th></th></tr></thead><tbody>
+  ${list.map(b=>{const s=bSt(b);return `<tr class="click" data-act="view" data-id="${b.id}"><td class="num nowrap">${esc(b.no)}${showType?`<div><span class="tag">${TYPE[b.type].t}</span></div>`:''}</td><td class="nowrap">${fd(b.issueDate)}</td><td>${esc(dName(b.driverId))}</td><td>${plate(C(b.carId))}</td><td class="small">${esc(billDesc(b))}</td><td class="r num">${money(bDue(b))}${bFee(b)?`<div class="small" style="color:var(--bad)">รวมปรับ ${money(bFee(b))}</div>`:''}</td><td class="r num">${bBal(b)>0?money(bBal(b)):'<span class="muted">0.00</span>'}</td><td class="nowrap">${fd(b.dueDate)}</td><td>${pill(s)}</td><td>${bBal(b)>0?`<button class="btn sm" data-act="pay" data-id="${b.id}">รับชำระ</button>`:''}</td></tr>`}).join('')}
+  </tbody></table></div>`;
+}
+function sortBills(l){return l.slice().sort((a,b)=>(b.issueDate||'').localeCompare(a.issueDate||'')||(b.no||'').localeCompare(a.no||''))}
+
+/* ---------- pages ---------- */
+const PAGES={};
+PAGES.overview=()=>{
+  const m=thisMonth(),t=today();
+  const billed=live().filter(b=>b.issueDate?.startsWith(m)).reduce((s,b)=>s+bTotal(b),0);
+  const pays=allPays().filter(p=>p.date?.startsWith(m));const coll=pays.reduce((s,p)=>s+(+p.amount||0),0);
+  const out=live().reduce((s,b)=>s+bBal(b),0);
+  const od=live().filter(b=>bSt(b)==='overdue');
+  const onRoad=S.cars.filter(c=>c.status!=='retired'&&driverOn(c.id)).length,cars=S.cars.filter(c=>c.status!=='retired').length;
+  const act=S.drivers.filter(d=>d.status!=='inactive'&&d.carId);
+  const todayRows=act.map(d=>({d,b:rentCover(d.id,t)}));
+  const missing=todayRows.filter(x=>!x.b).length;
+  const n=dim(m),vals=Array(n).fill(0);pays.forEach(p=>vals[+p.date.slice(8)-1]+=+p.amount||0);
+  const c=cfg(),fees=live().reduce((s,b)=>s+(bBal(b)>0?bFee(b):0),0);
+  const autoTxt=c.autoRent?`ออกบิลค่าเช่าอัตโนมัติทุกวัน ${esc(c.autoTime)} น.${S.auto?.lastRun?` · ออกถึง ${fd(S.auto.lastRun)}`:''}`:'ปิดการออกบิลอัตโนมัติ';
+  return `<div class="ph"><div><h1>ภาพรวม</h1><p>${ml(m)} · วันนี้ ${fd(t)} · ${autoTxt}</p></div><div class="acts"><button class="btn" data-act="multiPay">รับชำระหลายบิล</button>${missing?`<button class="btn pri" data-act="batch">ออกบิลค่าเช่าวันนี้ (${missing} คัน)</button>`:''}</div></div>
+  <div class="stack">
+  ${kpis([{l:'ยอดเรียกเก็บเดือนนี้',v:'฿'+money(billed),s:`${live().filter(b=>b.issueDate?.startsWith(m)).length} บิล`},{l:'รับชำระเดือนนี้',v:'฿'+money(coll),s:`${pays.length} รายการ`,c:'ok'},{l:'ค้างชำระทั้งหมด',v:'฿'+money(out),s:`เกินกำหนด ${od.length} บิล${fees?` · ค่าปรับ ฿${money(fees)}`:''}`,c:out>0?'bad':''},{l:'รถที่มีคนขับ',v:`${onRoad} / ${cars}`,s:'คัน'}])}
+  <div class="grid2">
+   <section class="panel"><h2>ค่าเช่าวันนี้ <span class="muted small">${fd(t)}</span></h2>
+    ${todayRows.length?todayRows.map(({d,b})=>{const s=b?bSt(b):null;return `<div class="rowline"><div class="pp">${av(d.name)}<div class="who"><b>${esc(d.name)}</b><small>${esc(C(d.carId)?.plate||'')} · ฿${money(C(d.carId)?.dailyRate)}/วัน</small></div></div>${b?`<span data-act="view" data-id="${b.id}" style="cursor:pointer">${pill(s)}</span>`:'<span class="pill st-open">ยังไม่ออกบิล</span>'}</div>`}).join(''):'<div class="empty"><b>ยังไม่มีคนขับที่ผูกกับรถ</b>เพิ่มรถและคนขับที่เมนูทะเบียนรถและคนขับ</div>'}
+   </section>
+   <section class="panel"><h2>บิลเกินกำหนดชำระ <span class="muted small">${od.length} บิล</span></h2>
+    ${od.length?od.sort((a,b)=>a.dueDate.localeCompare(b.dueDate)).slice(0,8).map(b=>`<div class="rowline click" data-act="view" data-id="${b.id}" style="cursor:pointer"><div class="pp">${av(dName(b.driverId))}<div class="who"><b>${esc(dName(b.driverId))}</b><small>${esc(b.no)} · ${TYPE[b.type].t} · ครบ ${fd(b.dueDate)} (${diffDays(b.dueDate,t)} วัน)</small></div></div><span class="num" style="color:var(--bad)">฿${money(bBal(b))}</span></div>`).join(''):'<div class="empty"><b>ไม่มีบิลเกินกำหนด</b>ทุกบิลยังอยู่ในกำหนดชำระ</div>'}
+   </section>
+  </div>
+  ${(()=>{const ex=expiries().warn;const off=S.offdays.filter(o=>o.from<=t&&t<=(o.to||o.from));if(!ex.length&&!off.length)return '';
+   return `<div class="grid2">${ex.length?`<section class="panel"><h2>เอกสารใกล้หมดอายุ <span class="muted small">${ex.length} รายการ</span></h2>${ex.slice(0,8).map(x=>`<div class="rowline click" data-act="${x.kind==='car'?'carForm':'drvForm'}" data-id="${x.id}" style="cursor:pointer"><div class="who"><b>${esc(x.label)} · ${esc(x.who)}</b><small>หมดอายุ ${fd(x.date)}</small></div><span class="xchip ${x.left<0?'x-bad':'x-warn'}">${x.left<0?'หมดแล้ว '+(-x.left)+' วัน':'เหลือ '+x.left+' วัน'}</span></div>`).join('')}</section>`:''}
+   ${off.length?`<section class="panel"><h2>งดเก็บค่าเช่าวันนี้</h2>${off.map(o=>`<div class="rowline"><div class="who"><b>${o.kind==='all'?'รถทุกคัน':o.kind==='car'?esc(C(o.carId)?.plate||''):esc(dName(o.driverId))}</b><small>${esc(o.reason||'')} · ${fd(o.from)}${o.to&&o.to!==o.from?' – '+fd(o.to):''}</small></div><span class="tag">งดเก็บ</span></div>`).join('')}</section>`:''}</div>`})()}
+  <section class="panel"><h2>รับชำระรายวัน · ${ml(m)}</h2><div class="pb">${barChart(vals,vals.map((_,i)=>String(i+1)))}</div></section>
+  </div>`;
+};
+function billPage(type){
+  const f=U.bill[type];
+  let l=S.bills.filter(b=>b.type===type);
+  if(f.month)l=l.filter(b=>b.issueDate?.startsWith(f.month));
+  if(f.status!=='all')l=l.filter(b=>bSt(b)===f.status);
+  if(f.q){const q=f.q.toLowerCase();l=l.filter(b=>[b.no,dName(b.driverId),C(b.carId)?.plate,b.category,b.note].join(' ').toLowerCase().includes(q))}
+  l=sortBills(l);const lv=l.filter(b=>!b.void);
+  const tot=lv.reduce((s,b)=>s+bDue(b),0),pd_=lv.reduce((s,b)=>s+Math.min(bPaid(b),bDue(b)),0),fees=lv.reduce((s,b)=>s+bFee(b),0);
+  const desc={rent:'ออกบิลค่าเช่ารถรายวันให้คนขับ คิดตามจำนวนวันคูณค่าเช่าต่อวันของรถแต่ละคัน',insurance:'เรียกเก็บค่าประกันภัย พ.ร.บ. และประกันอื่นๆ จากคนขับ แบ่งเป็นงวดได้',other:'เรียกเก็บค่าซ่อม ค่าปรับ ค่าล้างรถ และค่าใช้จ่ายอื่นที่คนขับต้องจ่าย'}[type];
+  return `<div class="ph"><div><h1>บิล${TYPE[type].t}</h1><p>${desc}</p></div><div class="acts"><button class="btn" data-act="multiPay">รับชำระหลายบิล</button>${type==='rent'?'<button class="btn" data-act="batch">ออกบิลรายวันทุกคัน</button>':''}<button class="btn pri" data-act="newBill" data-t="${type}">+ ออกบิล${TYPE[type].t}</button></div></div>
+  ${kpis([{l:'จำนวนบิล',v:lv.length},{l:'ยอดเรียกเก็บ',v:'฿'+money(tot),s:fees?`รวมค่าปรับล่าช้า ฿${money(fees)}`:''},{l:'ชำระแล้ว',v:'฿'+money(pd_),c:'ok'},{l:'คงค้าง',v:'฿'+money(tot-pd_),c:tot-pd_>0?'bad':''}])}
+  <div class="filters">
+   <label class="fld"><span>เดือนที่ออกบิล</span><input type="month" id="f-${type}-m" data-f="bill.${type}.month" value="${f.month}"></label>
+   <label class="fld"><span>สถานะ</span><select id="f-${type}-s" data-f="bill.${type}.status"><option value="all">ทั้งหมด</option>${Object.entries(ST).map(([k,v])=>`<option value="${k}" ${f.status===k?'selected':''}>${v}</option>`).join('')}</select></label>
+   <label class="fld"><span>ค้นหา</span><input type="text" id="f-${type}-q" data-f="bill.${type}.q" value="${esc(f.q)}" placeholder="ชื่อคนขับ ทะเบียน เลขบิล"></label>
+   ${f.month?`<button class="btn ghost" data-act="clrMonth" data-t="${type}">แสดงทุกเดือน</button>`:''}
+  </div>
+  <section class="panel">${billRows(l)}</section>`;
+}
+PAGES.rent=()=>billPage('rent');PAGES.insurance=()=>billPage('insurance');PAGES.other=()=>billPage('other');
+
+PAGES.schedule=()=>{
+  const m=U.sched.month,n=dim(m),t=today();
+  const days=[...Array(n)].map((_,i)=>`${m}-${pad(i+1)}`);
+  const rb=S.bills.filter(b=>b.type==='rent'&&!b.void&&b.from<=`${m}-${pad(n)}`&&b.to>=`${m}-01`);
+  const ids=new Set(rb.map(b=>b.driverId));S.drivers.filter(d=>d.status!=='inactive'&&d.carId).forEach(d=>ids.add(d.id));
+  const rows=[...ids].map(id=>D(id)||{id,name:'(ลบแล้ว)'}).sort((a,b)=>(a.code||a.name).localeCompare(b.code||b.name,'th'));
+  const dayColl=Array(n).fill(0);let gB=0,gP=0,gD=0;
+  const body=rows.map(d=>{let bill=0,paid=0,cnt=0;const seen=new Set();
+    const cells=days.map((day,i)=>{const b=rb.find(x=>x.driverId===d.id&&x.from<=day&&day<=x.to);
+      if(!b){const o=D(d.id)&&offFor(D(d.id),day);return o?`<td><span class="cell c-off" title="งดเก็บค่าเช่า: ${esc(o.reason||'')}">–</span></td>`:`<td><span class="cell c-none">·</span></td>`}
+      cnt++;const per=bTotal(b)/(diffDays(b.from,b.to)+1);bill+=per;
+      if(!seen.has(b.id)){seen.add(b.id);paid+=0}
+      const s=bSt(b);const cls=s==='paid'?'c-paid':s==='partial'?'c-partial':s==='overdue'?'c-overdue':'c-open';
+      return `<td><span class="cell ${cls}" data-act="view" data-id="${b.id}" title="${esc(b.no)} · ${ST[s]} · ฿${money(per)}">${s==='paid'?'✓':s==='partial'?'½':s==='overdue'?'!':''}</span></td>`});
+    rb.filter(b=>b.driverId===d.id).forEach(b=>{const share=b.payments||[];share.forEach(p=>{const i=p.date?.startsWith(m)?+p.date.slice(8)-1:-1;if(i>=0)dayColl[i]+=+p.amount||0})});
+    // paid within this month's covered days, prorated per bill
+    paid=rb.filter(b=>b.driverId===d.id).reduce((s,b)=>{const tot=bTotal(b);if(!tot)return s;const nd=diffDays(b.from,b.to)+1;const inM=days.filter(x=>b.from<=x&&x<=b.to).length;return s+Math.min(bPaid(b),tot)*inM/nd},0);
+    gB+=bill;gP+=paid;gD+=cnt;
+    const c=carOf(d.id);
+    return `<tr><td><div class="pp">${av(d.name)}<div class="who"><b>${esc(d.name)}</b><small>${esc(c?.plate||'ไม่มีรถ')}</small></div></div></td>${cells.join('')}<td class="r num">${cnt}</td><td class="r num">${money(bill)}</td><td class="r num">${money(paid)}</td><td class="r num" style="color:${bill-paid>0.5?'var(--bad)':'inherit'}">${money(bill-paid)}</td></tr>`}).join('');
+  return `<div class="ph"><div><h1>ตารางจ่ายค่าเช่ารายเดือน</h1><p>ดูการชำระค่าเช่ารายวันของคนขับทุกคนในเดือนเดียว กดช่องสีเพื่อเปิดบิล</p></div>
+   <div class="acts"><button class="btn" data-act="mShift" data-d="-1">‹ เดือนก่อน</button><input type="month" id="sch-m" data-f="sched.month" value="${m}"><button class="btn" data-act="mShift" data-d="1">เดือนถัดไป ›</button></div></div>
+  ${kpis([{l:'วันที่เรียกเก็บ',v:gD,s:'วัน-คัน'},{l:'ค่าเช่าเดือนนี้',v:'฿'+money(gB)},{l:'ชำระแล้ว',v:'฿'+money(gP),c:'ok'},{l:'คงค้าง',v:'฿'+money(gB-gP),c:gB-gP>0.5?'bad':''}])}
+  <div class="legend" style="margin:14px 0 10px"><span><span class="cell c-paid">✓</span>ชำระแล้ว</span><span><span class="cell c-partial">½</span>ชำระบางส่วน</span><span><span class="cell c-open"></span>รอชำระ</span><span><span class="cell c-overdue">!</span>เกินกำหนด</span><span><span class="cell c-off">–</span>งดเก็บค่าเช่า</span><span><span class="cell c-none">·</span>ไม่มีบิล</span></div>
+  <section class="panel">${rows.length?`<div class="tw"><table class="sched"><thead><tr><th>คนขับ / รถ</th>${days.map(x=>{const dw=pd(x).getDay();return `<th class="${dw===0||dw===6?'we':''} ${x===t?'td':''}">${+x.slice(8)}<div class="small muted">${TH_D[dw]}</div></th>`}).join('')}<th class="r">วัน</th><th class="r">ค่าเช่า</th><th class="r">ชำระ</th><th class="r">คงค้าง</th></tr></thead>
+  <tbody>${body}</tbody><tfoot><tr><td>รับชำระรายวัน (บาท)</td>${dayColl.map(v=>`<td class="num small">${v?Math.round(v).toLocaleString('th-TH'):''}</td>`).join('')}<td class="r num">${gD}</td><td class="r num">${money(gB)}</td><td class="r num">${money(gP)}</td><td class="r num">${money(gB-gP)}</td></tr></tfoot></table></div>`:'<div class="empty"><b>ยังไม่มีข้อมูลค่าเช่าในเดือนนี้</b>ออกบิลค่าเช่ารายวันก่อน ตารางจะแสดงขึ้นอัตโนมัติ</div>'}</section>`;
+};
+
+PAGES.reports=()=>{
+  const r=U.rep;const tabs=[['month','สรุปรายเดือน'],['aging','ค้างชำระตามคนขับ'],['income','รายรับตามช่วงวันที่'],['car','สรุปตามรถ']];
+  let body='';
+  if(r.tab==='month'){
+    const m=r.month;const bills=live().filter(b=>b.issueDate?.startsWith(m));
+    const rows=Object.keys(TYPE).map(t=>{const bl=bills.filter(b=>b.type===t);const pays=allPays().filter(p=>p.bill.type===t&&p.date?.startsWith(m));
+      return {t:TYPE[t].t,n:bl.length,billed:bl.reduce((s,b)=>s+bTotal(b),0),fee:bl.reduce((s,b)=>s+bFee(b),0),coll:pays.reduce((s,p)=>s+(+p.amount||0),0),out:bl.reduce((s,b)=>s+bBal(b),0)}});
+    const T=rows.reduce((a,x)=>({n:a.n+x.n,billed:a.billed+x.billed,fee:a.fee+x.fee,coll:a.coll+x.coll,out:a.out+x.out}),{n:0,billed:0,fee:0,coll:0,out:0});
+    const byD=S.drivers.map(d=>{const bl=bills.filter(b=>b.driverId===d.id);return {d,rent:bl.filter(b=>b.type==='rent').reduce((s,b)=>s+bTotal(b),0),ins:bl.filter(b=>b.type==='insurance').reduce((s,b)=>s+bTotal(b),0),oth:bl.filter(b=>b.type==='other').reduce((s,b)=>s+bTotal(b),0),paid:bl.reduce((s,b)=>s+Math.min(bPaid(b),bTotal(b)),0),out:bl.reduce((s,b)=>s+bBal(b),0)}}).filter(x=>x.rent+x.ins+x.oth>0);
+    R.cur={name:`สรุปรายเดือน-${m}`,head:['คนขับ','รถ','ค่าเช่า','ค่าประกัน','ค่าอื่นๆ','ชำระแล้ว','คงค้าง'],rows:byD.map(x=>[x.d.name,carOf(x.d.id)?.plate||'',x.rent,x.ins,x.oth,r2(x.paid),x.out])};
+    body=`<div class="filters"><label class="fld"><span>เดือน</span><input type="month" id="rp-m" data-f="rep.month" value="${m}"></label></div>
+    <div class="stack"><section class="panel"><h2>แยกตามประเภทบิล · ${ml(m)}</h2><div class="tw"><table><thead><tr><th>ประเภท</th><th class="r">จำนวนบิล</th><th class="r">ยอดเรียกเก็บ</th><th class="r">ค่าปรับล่าช้า</th><th class="r">รับชำระในเดือน</th><th class="r">คงค้างของบิลเดือนนี้</th></tr></thead><tbody>
+    ${rows.map(x=>`<tr><td>${x.t}</td><td class="r num">${x.n}</td><td class="r num">${money(x.billed)}</td><td class="r num">${money(x.fee)}</td><td class="r num">${money(x.coll)}</td><td class="r num">${money(x.out)}</td></tr>`).join('')}</tbody>
+    <tfoot><tr><td>รวม</td><td class="r num">${T.n}</td><td class="r num">${money(T.billed)}</td><td class="r num">${money(T.fee)}</td><td class="r num">${money(T.coll)}</td><td class="r num">${money(T.out)}</td></tr></tfoot></table></div></section>
+    <section class="panel"><h2>แยกตามคนขับ <button class="btn sm" data-act="csv">ดาวน์โหลด CSV</button></h2>${byD.length?`<div class="tw"><table><thead><tr><th>คนขับ</th><th>รถ</th><th class="r">ค่าเช่า</th><th class="r">ค่าประกัน</th><th class="r">ค่าอื่นๆ</th><th class="r">ชำระแล้ว</th><th class="r">คงค้าง</th></tr></thead><tbody>
+    ${byD.map(x=>`<tr><td>${esc(x.d.name)}</td><td>${plate(carOf(x.d.id))}</td><td class="r num">${money(x.rent)}</td><td class="r num">${money(x.ins)}</td><td class="r num">${money(x.oth)}</td><td class="r num">${money(x.paid)}</td><td class="r num">${money(x.out)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty"><b>ไม่มีบิลในเดือนนี้</b></div>'}</section></div>`;
+  }
+  if(r.tab==='aging'){
+    const t=today();const map={};
+    live().filter(b=>bBal(b)>0).forEach(b=>{const k=b.driverId;map[k]=map[k]||{a:0,b1:0,b2:0,b3:0,n:0};const age=b.dueDate?diffDays(b.dueDate,t):0;const v=bBal(b);map[k].n++;
+      if(age<=0)map[k].a+=v;else if(age<=7)map[k].b1+=v;else if(age<=30)map[k].b2+=v;else map[k].b3+=v});
+    const rows=Object.entries(map).map(([id,x])=>({id,...x,tot:x.a+x.b1+x.b2+x.b3})).sort((a,b)=>b.tot-a.tot);
+    const T=rows.reduce((s,x)=>({a:s.a+x.a,b1:s.b1+x.b1,b2:s.b2+x.b2,b3:s.b3+x.b3,tot:s.tot+x.tot}),{a:0,b1:0,b2:0,b3:0,tot:0});
+    R.cur={name:`ค้างชำระ-${t}`,head:['คนขับ','จำนวนบิล','ยังไม่ครบกำหนด','เกิน 1-7 วัน','เกิน 8-30 วัน','เกิน 30 วัน','รวมค้าง'],rows:rows.map(x=>[dName(x.id),x.n,r2(x.a),r2(x.b1),r2(x.b2),r2(x.b3),r2(x.tot)])};
+    body=`<section class="panel"><h2>ยอดค้างชำระ ณ ${fd(t)} <button class="btn sm" data-act="csv">ดาวน์โหลด CSV</button></h2>${rows.length?`<div class="tw"><table><thead><tr><th>คนขับ</th><th class="r">บิล</th><th class="r">ยังไม่ครบกำหนด</th><th class="r">เกิน 1–7 วัน</th><th class="r">เกิน 8–30 วัน</th><th class="r">เกิน 30 วัน</th><th class="r">รวมค้าง</th><th></th></tr></thead><tbody>
+    ${rows.map(x=>`<tr><td><div class="pp">${av(dName(x.id))}<div class="who"><b>${esc(dName(x.id))}</b><small>${esc(carOf(x.id)?.plate||'')}</small></div></div></td><td class="r num">${x.n}</td><td class="r num">${money(x.a)}</td><td class="r num">${money(x.b1)}</td><td class="r num">${money(x.b2)}</td><td class="r num" style="color:${x.b3?'var(--bad)':'inherit'}">${money(x.b3)}</td><td class="r num"><b>${money(x.tot)}</b></td><td><button class="btn sm" data-act="multiPay" data-id="${x.id}">รับชำระ</button></td></tr>`).join('')}</tbody>
+    <tfoot><tr><td>รวม</td><td></td><td class="r num">${money(T.a)}</td><td class="r num">${money(T.b1)}</td><td class="r num">${money(T.b2)}</td><td class="r num">${money(T.b3)}</td><td class="r num">${money(T.tot)}</td><td></td></tr></tfoot></table></div>`:'<div class="empty"><b>ไม่มียอดค้างชำระ</b>ทุกบิลชำระครบแล้ว</div>'}</section>`;
+  }
+  if(r.tab==='income'){
+    const ps=allPays().filter(p=>p.date>=r.from&&p.date<=r.to).sort((a,b)=>a.date.localeCompare(b.date));
+    const byM={};METHODS.forEach(x=>byM[x]=0);ps.forEach(p=>byM[p.method||'อื่นๆ']=(byM[p.method||'อื่นๆ']||0)+(+p.amount||0));
+    const byT={};Object.keys(TYPE).forEach(x=>byT[x]=0);ps.forEach(p=>byT[p.bill.type]+=+p.amount||0);
+    const tot=ps.reduce((s,p)=>s+(+p.amount||0),0);
+    R.cur={name:`รายรับ-${r.from}-${r.to}`,head:['วันที่รับ','เลขที่บิล','ประเภท','คนขับ','วิธีชำระ','อ้างอิง','จำนวนเงิน'],rows:ps.map(p=>[p.date,p.bill.no,TYPE[p.bill.type].t,dName(p.bill.driverId),p.method,p.note||'',+p.amount])};
+    body=`<div class="filters"><label class="fld"><span>ตั้งแต่</span><input type="date" id="rp-f" data-f="rep.from" value="${r.from}"></label><label class="fld"><span>ถึง</span><input type="date" id="rp-t" data-f="rep.to" value="${r.to}"></label></div>
+    <div class="stack">${kpis([{l:'รับชำระรวม',v:'฿'+money(tot),s:`${ps.length} รายการ`,c:'ok'},...Object.entries(byT).map(([k,v])=>({l:TYPE[k].t,v:'฿'+money(v)}))])}
+    <div class="muted small">แยกตามวิธีชำระ: ${Object.entries(byM).filter(([,v])=>v).map(([k,v])=>`${k} ฿${money(v)}`).join(' · ')||'—'}</div>
+    <section class="panel"><h2>รายการรับชำระ <button class="btn sm" data-act="csv">ดาวน์โหลด CSV</button></h2>${ps.length?`<div class="tw"><table><thead><tr><th>วันที่รับ</th><th>เลขที่บิล</th><th>ประเภท</th><th>คนขับ</th><th>วิธีชำระ</th><th>อ้างอิง</th><th class="r">จำนวนเงิน</th></tr></thead><tbody>
+    ${ps.map(p=>`<tr class="click" data-act="view" data-id="${p.bill.id}"><td class="nowrap">${fd(p.date)}</td><td class="num">${esc(p.bill.no)}</td><td>${TYPE[p.bill.type].t}</td><td>${esc(dName(p.bill.driverId))}</td><td>${esc(p.method)}</td><td class="small muted">${esc(p.note||'')}</td><td class="r num">${money(p.amount)}</td></tr>`).join('')}</tbody><tfoot><tr><td colspan="6">รวม</td><td class="r num">${money(tot)}</td></tr></tfoot></table></div>`:'<div class="empty"><b>ไม่มีการรับชำระในช่วงนี้</b></div>'}</section></div>`;
+  }
+  if(r.tab==='car'){
+    const m=r.month,n=dim(m),s0=`${m}-01`,s1=`${m}-${pad(n)}`;
+    const rows=S.cars.map(c=>{const bl=live().filter(b=>b.carId===c.id);const rent=bl.filter(b=>b.type==='rent'&&b.from<=s1&&b.to>=s0);
+      const days=rent.reduce((s,b)=>s+Math.max(0,diffDays(b.from<s0?s0:b.from,b.to>s1?s1:b.to)+1),0);
+      const rentAmt=rent.reduce((s,b)=>{const nd=diffDays(b.from,b.to)+1;const inM=Math.max(0,diffDays(b.from<s0?s0:b.from,b.to>s1?s1:b.to)+1);return s+bTotal(b)*inM/nd},0);
+      const ins=bl.filter(b=>b.type==='insurance'&&b.issueDate?.startsWith(m)).reduce((s,b)=>s+bTotal(b),0);
+      const oth=bl.filter(b=>b.type==='other'&&b.issueDate?.startsWith(m)).reduce((s,b)=>s+bTotal(b),0);
+      const coll=allPays().filter(p=>p.bill.carId===c.id&&p.date?.startsWith(m)).reduce((s,p)=>s+(+p.amount||0),0);
+      return {c,days,util:days/n,rentAmt,ins,oth,coll}});
+    R.cur={name:`สรุปตามรถ-${m}`,head:['ทะเบียน','คนขับปัจจุบัน','วันที่เช่า','อัตราใช้งาน%','ค่าเช่า','ค่าประกัน','ค่าอื่นๆ','รับชำระ'],rows:rows.map(x=>[x.c.plate,driverOn(x.c.id)?.name||'',x.days,Math.round(x.util*100),r2(x.rentAmt),x.ins,x.oth,x.coll])};
+    body=`<div class="filters"><label class="fld"><span>เดือน</span><input type="month" id="rp-m2" data-f="rep.month" value="${m}"></label></div>
+    <section class="panel"><h2>สรุปรายได้ตามรถ · ${ml(m)} <button class="btn sm" data-act="csv">ดาวน์โหลด CSV</button></h2>${rows.length?`<div class="tw"><table><thead><tr><th>รถ</th><th>คนขับปัจจุบัน</th><th class="r">วันที่มีค่าเช่า</th><th class="r">อัตราใช้งาน</th><th class="r">ค่าเช่า</th><th class="r">ค่าประกัน</th><th class="r">ค่าอื่นๆ</th><th class="r">รับชำระ</th></tr></thead><tbody>
+    ${rows.map(x=>`<tr><td>${plate(x.c)}</td><td>${esc(driverOn(x.c.id)?.name||'—')}</td><td class="r num">${x.days}/${n}</td><td class="r num">${Math.round(x.util*100)}%</td><td class="r num">${money(x.rentAmt)}</td><td class="r num">${money(x.ins)}</td><td class="r num">${money(x.oth)}</td><td class="r num">${money(x.coll)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty"><b>ยังไม่มีรถในระบบ</b></div>'}</section>`;
+  }
+  return `<div class="ph"><div><h1>รายงาน</h1><p>สรุปยอดเรียกเก็บ รับชำระ และค้างชำระ ดาวน์โหลดเป็นไฟล์ CSV เปิดใน Excel ได้</p></div></div>
+  <div class="tabs">${tabs.map(([k,t])=>`<a data-act="repTab" data-k="${k}" class="${r.tab===k?'on':''}">${t}</a>`).join('')}</div>${body}`;
+};
+const R={cur:null};
+
+PAGES.swap=()=>{
+  const f=U.swap;const cars=S.cars.filter(c=>c.status!=='retired');
+  const car=C(f.carId),old=car?driverOn(car.id):null,nd=D(f.newId);
+  const other=nd&&nd.carId&&nd.carId!==f.carId?C(nd.carId):null;
+  const oldBal=old?live().filter(b=>b.driverId===old.id).reduce((s,b)=>s+bBal(b),0):0;
+  let info='';
+  if(car&&nd){info=other?`<div class="note">สลับรถกัน: <b>${esc(nd.name)}</b> ย้ายจาก ${esc(other.plate)} มาขับ ${esc(car.plate)} ${old?`และ <b>${esc(old.name)}</b> ย้ายไปขับ ${esc(other.plate)}`:`ส่วน ${esc(other.plate)} จะว่าง`}</div>`
+    :`<div class="note"><b>${esc(nd.name)}</b> รับรถ ${esc(car.plate)} ตั้งแต่ ${fd(f.date)}${old?` แทน <b>${esc(old.name)}</b> ซึ่งจะไม่มีรถประจำ`:''}</div>`}
+  if(old&&oldBal>0)info+=`<div class="note bad">${esc(old.name)} ยังค้างชำระ ฿${money(oldBal)} ควรเคลียร์ยอดก่อนหรือบันทึกไว้ในหมายเหตุ</div>`;
+  const hist=S.swaps.slice().sort((a,b)=>(b.date+b.createdAt).localeCompare(a.date+a.createdAt));
+  return `<div class="ph"><div><h1>สลับเปลี่ยนคนขับ</h1><p>เปลี่ยนคนขับประจำรถ หรือสลับรถระหว่างคนขับสองคน บิลค่าเช่าวันถัดไปจะออกให้คนขับใหม่ตามรถที่ผูกไว้</p></div></div>
+  <div class="grid2">
+  <section class="panel"><h2>เปลี่ยนคนขับ</h2><div class="pb stack">
+   <div class="frm">
+    <label class="fld full"><span>รถ</span><select id="sw-car" data-f="swap.carId"><option value="">— เลือกรถ —</option>${cars.map(c=>`<option value="${c.id}" ${f.carId===c.id?'selected':''}>${esc(c.plate)} · ${esc(driverOn(c.id)?.name||'ว่าง')}</option>`).join('')}</select></label>
+    <div class="fld full"><span>คนขับปัจจุบัน</span><div>${car?(old?`<b>${esc(old.name)}</b> <span class="muted small">${esc(old.phone||'')}</span>`:'<span class="muted">รถว่าง ไม่มีคนขับ</span>'):'<span class="muted">เลือกรถก่อน</span>'}</div></div>
+    <label class="fld full"><span>คนขับใหม่</span><select id="sw-new" data-f="swap.newId"><option value="">— เลือกคนขับ —</option>${S.drivers.filter(d=>d.status!=='inactive'&&d.id!==old?.id).map(d=>`<option value="${d.id}" ${f.newId===d.id?'selected':''}>${esc(d.name)} · ${d.carId?'ขับ '+esc(C(d.carId)?.plate||''):'ยังไม่มีรถ'}</option>`).join('')}</select></label>
+    <label class="fld"><span>วันที่มีผล</span><input type="date" id="sw-date" data-f="swap.date" value="${f.date}"></label>
+    <label class="fld"><span>เหตุผล</span><select id="sw-reason" data-f="swap.reason">${['คนขับใหม่เข้าทำงาน','สลับรถ/สลับกะ','คนขับเดิมลาออก','คนขับเดิมพักงาน','รถเดิมเข้าซ่อม','อื่นๆ'].map(x=>`<option ${f.reason===x?'selected':''}>${x}</option>`).join('')}</select></label>
+    <label class="fld full"><span>หมายเหตุ</span><input type="text" id="sw-note" data-f="swap.note" data-rr="0" value="${esc(f.note)}"></label>
+    ${old&&!other?`<label class="chk full"><input type="checkbox" id="sw-end" data-f="swap.endOld" ${f.endOld?'checked':''}> ปิดสถานะ ${esc(old.name)} เป็น "ไม่ใช้งาน"</label>`:''}
+   </div>${info}
+   <div><button class="btn pri" data-act="doSwap" ${car&&nd?'':'disabled'}>ยืนยันเปลี่ยนคนขับ</button></div>
+  </div></section>
+  <section class="panel"><h2>คนขับประจำรถตอนนี้</h2>${cars.length?cars.map(c=>{const d=driverOn(c.id);return `<div class="rowline">${plate(c)}<div class="who" style="text-align:right"><b>${d?esc(d.name):'<span class="muted">ว่าง</span>'}</b><small>${d?'ตั้งแต่ '+fd(d.since||d.startDate):CAR_ST[c.status||'active']}</small></div></div>`}).join(''):'<div class="empty"><b>ยังไม่มีรถ</b></div>'}</section>
+  </div>
+  <section class="panel" style="margin-top:16px"><h2>ประวัติการเปลี่ยนคนขับ</h2>${hist.length?`<div class="tw"><table><thead><tr><th>วันที่มีผล</th><th>รถ</th><th>คนขับเดิม</th><th>คนขับใหม่</th><th>รูปแบบ</th><th>เหตุผล</th><th>หมายเหตุ</th><th></th></tr></thead><tbody>
+   ${hist.map(h=>`<tr><td class="nowrap">${fd(h.date)}</td><td>${plate(C(h.carId))}</td><td>${esc(h.fromDriverId?dName(h.fromDriverId):'—')}</td><td><b>${esc(dName(h.toDriverId))}</b></td><td>${h.mode==='swap'?`<span class="tag">สลับกับ ${esc(C(h.otherCarId)?.plate||'')}</span>`:'<span class="tag">เปลี่ยนคนขับ</span>'}</td><td>${esc(h.reason)}</td><td class="small muted">${esc(h.note||'')}</td><td>${(()=>{const o=D(h.fromDriverId);return o&&!o.settlement&&+o.deposit>0&&!o.carId&&mgr()?`<button class="btn sm" data-act="settle" data-id="${o.id}">คืนเงินประกัน</button>`:''})()}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty"><b>ยังไม่มีการเปลี่ยนคนขับ</b>ประวัติจะแสดงที่นี่หลังกดยืนยัน</div>'}</section>`;
+};
+
+PAGES.fleet=()=>{
+  const t=U.fleet.tab;
+  const cars=`<section class="panel"><h2>รถทั้งหมด ${S.cars.length} คัน ${mgr()?'<button class="btn sm pri" data-act="carForm">+ เพิ่มรถ</button>':''}</h2>${S.cars.length?`<div class="tw"><table><thead><tr><th>ทะเบียน</th><th>ยี่ห้อ/รุ่น</th><th class="r">ค่าเช่า/วัน</th><th>คนขับประจำ</th><th>สถานะ</th><th>พ.ร.บ.</th><th>ประกันภัย</th><th>ภาษีรถ</th><th class="r">เลขไมล์</th><th></th></tr></thead><tbody>
+   ${S.cars.slice().sort((a,b)=>a.plate.localeCompare(b.plate,'th')).map(c=>`<tr><td>${plate(c)}</td><td>${esc(c.model||'')} ${c.year?`<span class="muted small">${esc(c.year)}</span>`:''}</td><td class="r num">${money(c.dailyRate)}</td><td>${esc(driverOn(c.id)?.name||'—')}</td><td><span class="tag">${CAR_ST[c.status||'active']}</span></td><td>${expChip(c.actExp)}</td><td>${expChip(c.insExp)}</td><td>${expChip(c.taxExp)}</td><td class="r num">${c.mileage?(+c.mileage).toLocaleString('th-TH'):'—'}</td><td>${mgr()?`<button class="btn sm" data-act="carForm" data-id="${c.id}">แก้ไข</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty"><b>ยังไม่มีรถ</b>กดเพิ่มรถเพื่อเริ่มต้น</div>'}</section>`;
+  const drv=`<section class="panel"><h2>คนขับทั้งหมด ${S.drivers.length} คน ${mgr()?'<button class="btn sm pri" data-act="drvForm">+ เพิ่มคนขับ</button>':''}</h2>${S.drivers.length?`<div class="tw"><table><thead><tr><th>รหัส</th><th>ชื่อ</th><th>โทร</th><th>ใบขับขี่สาธารณะ</th><th>รถ</th><th>เริ่มงาน</th><th class="r">เงินประกัน</th><th class="r">ค้างชำระ</th><th>สถานะ</th><th></th></tr></thead><tbody>
+   ${S.drivers.slice().sort((a,b)=>(a.code||a.name).localeCompare(b.code||b.name,'th')).map(d=>{const bal=live().filter(b=>b.driverId===d.id).reduce((s,b)=>s+bBal(b),0);return `<tr><td class="num">${esc(d.code||'')}</td><td><div class="pp">${av(d.name)}<span><b>${esc(d.name)}</b>${d.nickname?` <span class="muted">(${esc(d.nickname)})</span>`:''}</span></div></td><td class="num nowrap">${esc(d.phone||'')}</td><td class="num small">${esc(d.license||'')}<div>${d.licenseExp?expChip(d.licenseExp):''}</div></td><td>${plate(C(d.carId))}</td><td class="nowrap">${fd(d.startDate)}</td><td class="r num">${money(d.deposit)}</td><td class="r num" style="color:${bal>0?'var(--bad)':'inherit'}">${money(bal)}</td><td><span class="tag">${d.status==='inactive'?(d.settlement?'ปิดบัญชีแล้ว':'ไม่ใช้งาน'):'ใช้งาน'}</span></td><td class="nowrap"><button class="btn sm" data-act="stmt" data-id="${d.id}">สรุปยอด</button> ${mgr()?`<button class="btn sm" data-act="drvForm" data-id="${d.id}">แก้ไข</button> ${S.fb?`<button class="btn sm" data-act="appPin" data-id="${d.id}">${d.authUid?'รีเซ็ต PIN แอป':'เปิดบัญชีแอป'}</button> `:''}${!d.settlement?`<button class="btn sm" data-act="settle" data-id="${d.id}">ปิดบัญชี/คืนเงินประกัน</button>`:`<button class="btn sm" data-act="settleView" data-id="${d.id}">ใบสรุปคืนเงิน</button>`}`:''}</td></tr>`}).join('')}</tbody></table></div>`:'<div class="empty"><b>ยังไม่มีคนขับ</b>กดเพิ่มคนขับเพื่อเริ่มต้น</div>'}</section>`;
+  return `<div class="ph"><div><h1>ทะเบียนรถและคนขับ</h1><p>ข้อมูลรถ ค่าเช่าต่อวัน และประวัติคนขับ ใช้ประกอบการออกบิลทุกประเภท</p></div></div>
+  <div class="tabs"><a data-act="fleetTab" data-k="cars" class="${t==='cars'?'on':''}">รถ</a><a data-act="fleetTab" data-k="drivers" class="${t==='drivers'?'on':''}">คนขับ</a></div>${t==='cars'?cars:drv}`;
+};
+
+PAGES.settings=()=>{const c=cfg();const nSample=COLS.reduce((s,k)=>s+S[k].filter(x=>x.sample).length,0);
+  return `<div class="ph"><div><h1>ตั้งค่า</h1><p>ข้อมูลบริษัทที่แสดงบนหัวบิล ประเภทค่าประกันและค่าอื่นๆ และกำหนดชำระเริ่มต้น</p></div></div>
+  <form id="setForm" class="stack"><section class="panel"><h2>ข้อมูลบริษัทและบิล</h2><div class="pb frm">
+   <label class="fld full"><span>ชื่อบริษัท</span><input type="text" name="company" value="${esc(c.company)}"></label>
+   <label class="fld full"><span>ที่อยู่</span><input type="text" name="address" value="${esc(c.address)}"></label>
+   <label class="fld"><span>โทรศัพท์</span><input type="text" name="phone" value="${esc(c.phone)}"></label>
+   <label class="fld"><span>เลขประจำตัวผู้เสียภาษี</span><input type="text" name="taxId" value="${esc(c.taxId)}"></label>
+   <label class="fld"><span>กำหนดชำระค่าเช่า (วันหลังออกบิล)</span><input type="number" min="0" name="rentDueDays" value="${c.rentDueDays}"></label>
+   <label class="fld"><span>กำหนดชำระค่าประกัน/ค่าอื่นๆ (วัน)</span><input type="number" min="0" name="otherDueDays" value="${c.otherDueDays}"></label>
+   <label class="fld full"><span>ประเภทค่าประกัน (บรรทัดละ 1 รายการ)</span><textarea name="insuranceTypes" rows="4">${esc(c.insuranceTypes.join('\n'))}</textarea></label>
+   <label class="fld full"><span>ประเภทค่าอื่นๆ (บรรทัดละ 1 รายการ)</span><textarea name="otherTypes" rows="5">${esc(c.otherTypes.join('\n'))}</textarea></label>
+  </div></section>
+  <section class="panel"><h2>รับเงินผ่านพร้อมเพย์</h2><div class="pb frm">
+   <label class="fld"><span>หมายเลขพร้อมเพย์ (เบอร์มือถือ หรือ เลขผู้เสียภาษี 13 หลัก)</span><input type="text" name="promptpay" inputmode="numeric" value="${esc(c.promptpay)}" placeholder="เช่น 0812345678"></label>
+   <label class="fld"><span>ชื่อบัญชีที่แสดงบนบิล</span><input type="text" name="promptpayName" value="${esc(c.promptpayName)}" placeholder="${esc(c.company)}"></label>
+   <div class="full small muted">เมื่อใส่หมายเลขแล้ว บิลที่ยังค้างชำระจะมีคิวอาร์พร้อมเพย์พร้อมยอดเงินให้คนขับสแกนจ่าย ทั้งในหน้าบิล ไฟล์บิลที่ดาวน์โหลด และหน้ารับชำระหลายบิล ตรวจสอบหมายเลขให้ถูกต้องก่อนใช้งานจริง โดยลองสแกนจ่ายยอดเล็กๆ ดูชื่อบัญชีปลายทาง</div>
+  </div></section>
+  <section class="panel"><h2>แจ้งเตือนเอกสาร</h2><div class="pb frm">
+   <label class="fld"><span>เตือนล่วงหน้าก่อนหมดอายุ (วัน)</span><input type="number" name="expiryWarnDays" min="1" value="${c.expiryWarnDays}"></label>
+   <div class="full small muted">ใช้กับ พ.ร.บ. ประกันภัย ภาษีรถ และใบขับขี่สาธารณะ ใส่วันหมดอายุได้ที่หน้าแก้ไขรถและคนขับ</div>
+  </div></section>
+  <section class="panel"><h2>ออกบิลค่าเช่าอัตโนมัติ <button type="button" class="btn sm" data-act="autoNow">ตรวจและออกบิลตอนนี้</button></h2><div class="pb frm">
+   <label class="chk full"><input type="checkbox" name="autoRent" ${c.autoRent?'checked':''}> ออกบิลค่าเช่ารายวันให้คนขับทุกคนที่มีรถประจำ ทุกวันอัตโนมัติ</label>
+   <label class="fld"><span>เวลาออกบิลของแต่ละวัน</span><input type="time" name="autoTime" value="${esc(c.autoTime)}"></label>
+   <label class="fld"><span>เริ่มออกอัตโนมัติตั้งแต่วันที่ (เว้นว่าง = วันนี้)</span><input type="date" name="autoFrom" value="${esc(c.autoFrom)}"></label>
+   <div class="full small muted">${S.auto?.lastRun?`ออกบิลอัตโนมัติถึงวันที่ ${fd(S.auto.lastRun)} · ครั้งล่าสุด ${S.auto.lastCount??0} ใบ เมื่อ ${fd(iso(new Date(S.auto.lastAt)))} ${new Date(S.auto.lastAt).toTimeString().slice(0,5)} น.`:'ยังไม่เคยออกบิลอัตโนมัติ'}<br>ระบบออกบิลเมื่อถึงเวลาที่ตั้งไว้ขณะเปิดหน้านี้อยู่ ถ้าไม่มีใครเปิด ระบบจะออกบิลย้อนหลังให้ครบทุกวันเมื่อมีคนเปิดครั้งถัดไป โดยลงวันที่บิลตามวันเช่าจริง (ย้อนได้สูงสุด 31 วัน) และไม่ออกซ้ำกับบิลที่มีอยู่แล้ว</div>
+  </div></section>
+  <section class="panel"><h2>ค่าปรับชำระล่าช้า</h2><div class="pb frm">
+   <label class="chk full"><input type="checkbox" name="lateOn" ${c.late.on?'checked':''}> คิดค่าปรับอัตโนมัติเมื่อเลยกำหนดชำระ</label>
+   <div class="fld full"><span>ใช้กับบิล</span><div style="display:flex;gap:16px;flex-wrap:wrap">${Object.keys(TYPE).map(k=>`<label class="chk"><input type="checkbox" name="lateType" value="${k}" ${c.late.types.includes(k)?'checked':''}> ${TYPE[k].t}</label>`).join('')}</div></div>
+   <label class="fld"><span>วิธีคิด</span><select name="lateMode">${Object.entries(LATE_MODE).map(([k,v])=>`<option value="${k}" ${c.late.mode===k?'selected':''}>${v}</option>`).join('')}</select></label>
+   <label class="fld"><span>อัตราค่าปรับ</span><input type="number" name="lateAmount" min="0" step="0.01" value="${c.late.amount}"></label>
+   <label class="fld"><span>ผ่อนผัน (วันหลังครบกำหนด)</span><input type="number" name="lateGrace" min="0" value="${c.late.grace}"></label>
+   <label class="fld"><span>ค่าปรับสูงสุดต่อบิล (0 = ไม่จำกัด)</span><input type="number" name="lateCap" min="0" step="0.01" value="${c.late.cap}"></label>
+   <div class="full small muted">ตัวอย่างตามค่าปัจจุบัน: บิล ฿1,200 ค้างเกินกำหนด 5 วัน คิดค่าปรับ ฿${money(lateInfo({type:'rent',dueDate:addDays(today(),-5),items:[{qty:1,price:1200}],lateRule:{mode:c.late.mode,amount:+c.late.amount,grace:+c.late.grace,cap:+c.late.cap}}).fee)}<br>ค่าปรับเดินทุกวันจนกว่าจะชำระค่าบิลครบ แล้วหยุดนับ ณ วันที่ชำระ บิลใหม่จะจำอัตราค่าปรับ ณ วันที่ออกบิลไว้ การแก้อัตรานี้จึงไม่กระทบบิลที่ออกไปแล้ว ยกเว้นค่าปรับรายบิลได้จากหน้าบิล</div>
+  </div></section>
+  <div><button class="btn pri" type="submit">บันทึกการตั้งค่า</button></div>
+  </form>
+  <div class="stack" style="margin-top:16px">${staffPanel()}
+  <section class="panel"><h2>สำรองและย้ายข้อมูล</h2><div class="pb stack"><div class="small muted">ดาวน์โหลดข้อมูลทั้งหมดเป็นไฟล์ JSON เก็บสำรอง หรือใช้ย้ายข้อมูลจากระบบบน Claude ไปยังระบบ Firebase</div>
+   <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" data-act="exportJSON">ดาวน์โหลดข้อมูลทั้งหมด (JSON)</button>${mgr()?'<label class="btn">นำเข้าข้อมูลจากไฟล์ JSON<input type="file" id="importFile" accept="application/json,.json" hidden></label>':''}</div></div></section></div>
+  ${nSample?`<section class="panel" style="margin-top:16px"><h2>ข้อมูลตัวอย่าง</h2><div class="pb stack"><div>ระบบมีข้อมูลตัวอย่าง ${nSample} รายการ (รถ คนขับ บิล ที่มีคำว่า "ตัวอย่าง") ลบออกได้เมื่อพร้อมใช้งานจริง</div><div><button class="btn dng" data-act="clearSample">ลบข้อมูลตัวอย่างทั้งหมด</button></div></div></section>`:''}`;
+};
+
+/* ---------- modal ---------- */
+const M={calc:null};
+function openModal(html,cls=''){document.getElementById('modal').innerHTML=`<div class="ov" data-act="ovClose"><div class="mod ${cls}" role="dialog" aria-modal="true">${html}</div></div>`;const f=document.querySelector('.mod input:not([type=hidden]),.mod select');if(f)f.focus()}
+function closeModal(){document.getElementById('modal').innerHTML='';M.calc=null}
+function confirmBox(msg,ok='ยืนยัน',danger=false){return new Promise(res=>{openModal(`<header><h3>ยืนยัน</h3></header><div class="mb"><div>${msg}</div></div><footer><button class="btn" id="cfNo">ยกเลิก</button><button class="btn ${danger?'dng':'pri'}" id="cfOk">${ok}</button></footer>`,'narrow');
+  document.getElementById('cfNo').onclick=()=>{closeModal();res(false)};document.getElementById('cfOk').onclick=()=>{closeModal();res(true)}})}
+function toast(msg,kind=''){const t=document.createElement('div');t.className='toast '+kind;t.textContent=msg;document.getElementById('toasts').appendChild(t);setTimeout(()=>t.remove(),3200)}
+const hdr=t=>`<header><h3>${t}</h3><button class="btn ghost" data-act="close" aria-label="ปิด">✕</button></header>`;
+
+/* bill form */
+function itemRow(i={desc:'',qty:1,price:''}){return `<div class="row"><input type="text" class="it-d" value="${esc(i.desc)}" placeholder="รายละเอียด" data-calc><input type="number" class="it-q" min="0" step="any" value="${i.qty}" data-calc><input type="number" class="it-p" min="0" step="0.01" value="${i.price}" placeholder="ราคา" data-calc><button type="button" class="btn sm ghost" data-act="rmItem" aria-label="ลบรายการ">✕</button></div>`}
+function billForm(type,b){
+  const c=cfg(),t=today(),isNew=!b;
+  b=b||{type,issueDate:t,dueDate:addDays(t,type==='rent'?+c.rentDueDays:+c.otherDueDays),from:t,to:t,discount:0,items:[]};
+  const drivers=S.drivers.filter(d=>d.status!=='inactive'||d.id===b.driverId);
+  const cats=type==='insurance'?c.insuranceTypes:c.otherTypes;
+  const rate=b.items?.[0]?.price??'';
+  openModal(`${hdr((isNew?'ออกบิล':'แก้ไขบิล ')+(isNew?TYPE[type].t:b.no))}<form id="billForm"><div class="mb">
+   <div class="frm">
+    <label class="fld"><span>คนขับ</span><select name="driverId" id="bf-drv" required data-calc="drv"><option value="">— เลือกคนขับ —</option>${drivers.map(d=>`<option value="${d.id}" ${b.driverId===d.id?'selected':''}>${esc(d.name)}${d.carId?' · '+esc(C(d.carId)?.plate||''):''}</option>`).join('')}</select></label>
+    <label class="fld"><span>รถ</span><select name="carId" id="bf-car" data-calc="car"><option value="">— ไม่ระบุ —</option>${S.cars.map(x=>`<option value="${x.id}" ${b.carId===x.id?'selected':''}>${esc(x.plate)}</option>`).join('')}</select></label>
+    <label class="fld"><span>วันที่ออกบิล</span><input type="date" name="issueDate" value="${b.issueDate}" required></label>
+    <label class="fld"><span>กำหนดชำระ</span><input type="date" name="dueDate" value="${b.dueDate||''}"></label>
+    ${type==='rent'?`
+    <label class="fld"><span>เช่าตั้งแต่วันที่</span><input type="date" name="from" value="${b.from}" required data-calc="date"></label>
+    <label class="fld"><span>ถึงวันที่</span><input type="date" name="to" value="${b.to}" required data-calc="date"></label>
+    <label class="fld"><span>ค่าเช่าต่อวัน (บาท)</span><input type="number" name="rate" id="bf-rate" min="0" step="0.01" value="${rate}" required data-calc="rate"></label>`:`
+    <label class="fld"><span>ประเภท</span><select name="category" id="bf-cat" data-calc="cat">${cats.map(x=>`<option ${b.category===x?'selected':''}>${esc(x)}</option>`).join('')}${b.category&&!cats.includes(b.category)?`<option selected>${esc(b.category)}</option>`:''}</select></label>
+    <label class="fld"><span>${type==='insurance'?'งวด / ระยะคุ้มครอง':'อ้างอิง'}</span><input type="text" name="period" value="${esc(b.period||'')}" placeholder="${type==='insurance'?'เช่น งวด 3/12 หรือ ต.ค. 2569':'เช่น ใบสั่งซ่อมเลขที่'}"></label>
+    <div class="fld full items"><span>รายการ</span><div id="items">${(b.items?.length?b.items:[{desc:cats[0]||'',qty:1,price:''}]).map(itemRow).join('')}</div><div><button type="button" class="btn sm" data-act="addItem">+ เพิ่มรายการ</button></div></div>`}
+    <label class="fld"><span>ส่วนลด (บาท)</span><input type="number" name="discount" min="0" step="0.01" value="${b.discount||0}" data-calc></label>
+    <label class="fld full"><span>หมายเหตุ</span><input type="text" name="note" value="${esc(b.note||'')}"></label>
+   </div>
+   <div class="calc"><span id="calcDesc" class="muted"></span><span class="tot" id="calcTot">฿0.00</span></div>
+   ${b.payments?.length?`<div class="note">บิลนี้รับชำระแล้ว ฿${money(bPaid(b))} ยอดรวมใหม่ต้องไม่น้อยกว่ายอดที่ชำระ</div>`:''}
+   <div class="err" id="bfErr"></div>
+  </div><footer><button type="button" class="btn" data-act="close">ยกเลิก</button><button class="btn pri" type="submit">${isNew?'ออกบิล':'บันทึก'}</button></footer></form>`);
+  const F=document.getElementById('billForm');
+  M.calc=(src)=>{
+    if(src==='drv'){const d=D(F.driverId.value);if(d?.carId){F.carId.value=d.carId;src='car'}}
+    if(src==='car'&&type==='rent'){const car=C(F.carId.value);if(car)F.rate.value=car.dailyRate}
+    if(src==='cat'){const first=F.querySelector('.it-d');if(first&&(!first.value||[...cats].includes(first.value)))first.value=F.category.value}
+    let tot=0,desc='';
+    if(type==='rent'){const ok=F.from.value&&F.to.value&&F.to.value>=F.from.value;const rr=ok?rangeRent(D(F.driverId.value),F.from.value,F.to.value,+F.rate.value||0):{days:0,off:0,disc:0,names:[]};
+      if(isNew&&['drv','car','date','rate'].includes(src)){F.discount.value=rr.disc;M.camp=rr.disc?rr.names.join(', '):''}
+      const n=rr.days;tot=Math.max(0,n)*(+F.rate.value||0)-(+F.discount.value||0);
+      desc=ok?`${n} วัน × ฿${money(F.rate.value)}${rr.off?` (งดเก็บ ${rr.off} วัน)`:''}${+F.discount.value?` − ส่วนลด ฿${money(F.discount.value)}${M.camp?' แคมเปญ '+M.camp:''}`:''}`:'ช่วงวันที่ไม่ถูกต้อง'}
+    else{const rows=[...F.querySelectorAll('#items .row')];tot=rows.reduce((s,r)=>s+(+r.querySelector('.it-q').value||0)*(+r.querySelector('.it-p').value||0),0)-(+F.discount.value||0);desc=`${rows.length} รายการ${+F.discount.value?` − ส่วนลด ฿${money(F.discount.value)}`:''}`}
+    document.getElementById('calcTot').textContent='฿'+money(Math.max(0,tot));document.getElementById('calcDesc').textContent=desc+' · '+bahtText(Math.max(0,tot));
+  };
+  M.camp='';M.calc(isNew?'date':undefined);
+  F.onsubmit=async e=>{e.preventDefault();const err=document.getElementById('bfErr');err.textContent='';
+    const nb={...b,type,driverId:F.driverId.value,carId:F.carId.value||null,issueDate:F.issueDate.value,dueDate:F.dueDate.value||null,discount:+F.discount.value||0,note:F.note.value.trim()};
+    if(!nb.driverId){err.textContent='เลือกคนขับก่อนออกบิล';return}
+    if(type==='rent'){if(diffDays(F.from.value,F.to.value)<0){err.textContent='วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่มเช่า';return}const rr=rangeRent(D(nb.driverId),F.from.value,F.to.value,+F.rate.value||0);const n=rr.days;if(n<1){err.textContent='ทุกวันในช่วงนี้เป็นวันงดเก็บค่าเช่า';return}if(isNew&&M.camp&&+F.discount.value)nb.campaign=M.camp;
+      const clash=S.bills.find(x=>x.id!==b.id&&x.type==='rent'&&!x.void&&x.driverId===nb.driverId&&x.from<=F.to.value&&x.to>=F.from.value);
+      if(clash){err.textContent=`ช่วงวันที่ซ้ำกับบิล ${clash.no} (${fd(clash.from)} – ${fd(clash.to)})`;return}
+      nb.from=F.from.value;nb.to=F.to.value;const car=C(nb.carId);
+      nb.items=[{desc:`ค่าเช่ารถ ${car?car.plate:''} ${fd(nb.from)}${nb.from!==nb.to?' – '+fd(nb.to):''}`.replace(/\s+/g,' '),qty:n,price:+F.rate.value||0}];
+    }else{nb.category=F.category.value;nb.period=F.period.value.trim();
+      nb.items=[...F.querySelectorAll('#items .row')].map(r=>({desc:r.querySelector('.it-d').value.trim(),qty:+r.querySelector('.it-q').value||0,price:+r.querySelector('.it-p').value||0})).filter(i=>i.desc||i.price);
+      if(!nb.items.length){err.textContent='ใส่อย่างน้อย 1 รายการ';return}}
+    if(bTotal(nb)<=0){err.textContent='ยอดรวมต้องมากกว่า 0';return}
+    if(bPaid(nb)>bTotal(nb)+0.004){err.textContent='ยอดรวมใหม่น้อยกว่ายอดที่ชำระแล้ว';return}
+    if(isNew){nb.no=nextNo(type,nb.issueDate);nb.payments=[];nb.lateRule=ruleFor(type);nb.createdAt=new Date().toISOString()}
+    nb.updatedAt=new Date().toISOString();
+    let saved;const ok=await safe(async()=>{saved=await put('bills',nb)},isNew?`ออกบิล ${nb.no} แล้ว`:'บันทึกแล้ว');
+    if(ok){log(isNew?'ออกบิล':'แก้ไขบิล',`${nb.no} ${dName(nb.driverId)} ฿${money(bTotal(nb))}`);closeModal();setTimeout(()=>viewBill(saved.id,saved),60)}
+  };
+}
+
+/* invoice */
+function invoiceInner(b){
+  const c=cfg(),d=D(b.driverId),car=C(b.carId),s=bSt(b),tot=bDue(b),paid=bPaid(b),L=lateInfo(b),R=lateRuleOf(b);
+  const sub=(b.items||[]).reduce((x,i)=>x+(+i.qty||0)*(+i.price||0),0);
+  return `<div class="inv"><div class="top"><div class="co"><b>${esc(c.company)}</b>${c.address?`<div class="small">${esc(c.address)}</div>`:''}<div class="small muted">${[c.phone&&'โทร '+c.phone,c.taxId&&'เลขผู้เสียภาษี '+c.taxId].filter(Boolean).map(esc).join(' · ')}</div></div>
+   <div class="doc"><div class="t">${TYPE[b.type].doc}</div><div class="num">เลขที่ ${esc(b.no)}</div><div style="margin-top:6px">${s==='paid'?'<span class="stamp" style="color:var(--ok)">ชำระแล้ว</span>':s==='void'?'<span class="stamp" style="color:var(--void)">ยกเลิก</span>':pill(s)}</div></div></div>
+   <div class="meta"><div><span>คนขับ</span><b>${esc(d?.name||'—')}</b></div><div><span>วันที่ออกบิล</span>${fd(b.issueDate)}</div><div><span>รถ</span>${esc(car?.plate||'—')} ${esc(car?.province||'')}</div><div><span>กำหนดชำระ</span>${fd(b.dueDate)}</div>${d?.phone?`<div><span>โทร</span>${esc(d.phone)}</div>`:''}${b.category?`<div><span>ประเภท</span>${esc(b.category)}${b.period?' · '+esc(b.period):''}</div>`:''}</div>
+   <div class="tw"><table><thead><tr><th>รายการ</th><th class="r">จำนวน</th><th class="r">ราคา/หน่วย</th><th class="r">จำนวนเงิน</th></tr></thead><tbody>
+   ${(b.items||[]).map(i=>`<tr><td>${esc(i.desc)}</td><td class="r num">${i.qty}${b.type==='rent'?' วัน':''}</td><td class="r num">${money(i.price)}</td><td class="r num">${money((+i.qty||0)*(+i.price||0))}</td></tr>`).join('')}
+   ${+b.discount?`<tr><td colspan="3" class="r">รวม</td><td class="r num">${money(sub)}</td></tr><tr><td colspan="3" class="r">ส่วนลด</td><td class="r num">−${money(b.discount)}</td></tr>`:''}
+   ${L.fee?`<tr><td colspan="3" class="r">ค่าปรับชำระล่าช้า ${L.days} วัน <span class="muted small">(${R.mode==='flat'?'เหมา':R.mode==='percent'?R.amount+'%/วัน':R.amount+' บาท/วัน'}${R.grace?` ผ่อนผัน ${R.grace} วัน`:''}${R.cap?` สูงสุด ${money(R.cap)}`:''})</span></td><td class="r num">${money(L.fee)}</td></tr>`:''}
+   ${b.waiveLate?`<tr><td colspan="3" class="r muted">ยกเว้นค่าปรับชำระล่าช้า</td><td class="r num muted">0.00</td></tr>`:''}
+   </tbody><tfoot><tr><td colspan="3" class="r">ยอดเรียกเก็บสุทธิ</td><td class="r num">${money(tot)}</td></tr></tfoot></table></div>
+   <div class="words">(${bahtText(tot)})</div>
+   ${b.note?`<div class="small" style="margin-top:8px"><span class="muted">หมายเหตุ:</span> ${esc(b.note)}</div>`:''}
+   ${b.void?`<div class="small" style="margin-top:8px;color:var(--bad)">ยกเลิกเมื่อ ${fd(b.voidDate)} ${esc(b.voidReason||'')}</div>`:''}
+  </div>`;
+}
+function viewBill(id,fallback){
+  const b=S.bills.find(x=>x.id===id)||fallback;if(!b)return;
+  const paid=bPaid(b),bal=bBal(b);
+  openModal(`${hdr(`บิล ${esc(b.no)}`)}<div class="mb">${invoiceInner(b)}${bal>0?ppBlock(bal):''}
+   <section><div class="sec-h" style="padding:0 0 8px;border:0">การรับชำระ <span class="num small">ชำระแล้ว ฿${money(paid)} · คงค้าง <b style="color:${bal>0?'var(--bad)':'inherit'}">฿${money(bal)}</b></span></div>
+   ${(b.payments||[]).length?`<div class="tw"><table><thead><tr><th>วันที่</th><th>ใบเสร็จ</th><th>วิธี</th><th>อ้างอิง</th><th class="r">จำนวนเงิน</th><th></th></tr></thead><tbody>${b.payments.map(p=>`<tr><td>${fd(p.date)}</td><td>${p.receiptNo?`<a class="lnk num" data-act="receipt" data-no="${esc(p.receiptNo)}">${esc(p.receiptNo)}</a>`:'<span class="muted">—</span>'}</td><td>${esc(p.method)}</td><td class="small muted">${esc(p.note||'')}</td><td class="r num">${money(p.amount)}</td><td>${mgr()?`<button class="btn sm ghost" data-act="rmPay" data-id="${b.id}" data-p="${p.id}" aria-label="ลบรายการชำระ">✕</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<div class="muted small">ยังไม่มีการชำระ</div>'}</section>
+  </div><footer>
+   ${!b.void&&mgr()?`<button class="btn dng" data-act="voidBill" data-id="${b.id}">ยกเลิกบิล</button>`:''}
+   <button class="btn" data-act="dlBill" data-id="${b.id}">ดาวน์โหลดบิล</button>
+   ${!b.void&&mgr()&&bFee(b)>0?`<button class="btn" data-act="waive" data-id="${b.id}">ยกเว้นค่าปรับ</button>`:''}
+   ${!b.void&&mgr()&&b.waiveLate?`<button class="btn" data-act="unwaive" data-id="${b.id}">คิดค่าปรับตามปกติ</button>`:''}
+   ${!b.void?`<button class="btn" data-act="editBill" data-id="${b.id}">แก้ไข</button>`:''}
+   ${bal>0?`<button class="btn pri" data-act="pay" data-id="${b.id}">รับชำระ</button>`:''}
+  </footer>`);
+}
+function payForm(id){
+  const b=S.bills.find(x=>x.id===id);if(!b)return;const bal=bBal(b);
+  openModal(`${hdr('รับชำระ '+esc(b.no))}<form id="payForm"><div class="mb">
+   <div class="calc"><span>${esc(dName(b.driverId))} · ${TYPE[b.type].t}</span><span class="tot">คงค้าง ฿${money(bal)}</span></div>${bFee(b)?`<div class="note bad">ยอดนี้รวมค่าปรับชำระล่าช้า ฿${money(bFee(b))} (${lateInfo(b).days} วัน) ค่าปรับหยุดนับเมื่อชำระค่าบิลครบ</div>`:''}
+   <div class="frm"><label class="fld"><span>จำนวนเงิน</span><input type="number" name="amount" min="0.01" step="0.01" value="${bal}" required></label>
+   <label class="fld"><span>วันที่รับ</span><input type="date" name="date" value="${today()}" required></label>
+   <label class="fld"><span>วิธีชำระ</span><select name="method">${METHODS.map(m=>`<option>${m}</option>`).join('')}</select></label>
+   <label class="fld"><span>อ้างอิง / หมายเหตุ</span><input type="text" name="note" placeholder="เช่น เลขที่สลิปโอน"></label></div>
+   <div class="err" id="pfErr"></div></div>
+   <footer><button type="button" class="btn" data-act="view" data-id="${b.id}">ย้อนกลับ</button><button class="btn pri" type="submit">บันทึกรับชำระ</button></footer></form>`,'narrow');
+  const F=document.getElementById('payForm');
+  F.onsubmit=async e=>{e.preventDefault();const amt=r2(F.amount.value);
+    if(!(amt>0)){document.getElementById('pfErr').textContent='ใส่จำนวนเงินมากกว่า 0';return}
+    if(amt>bal+0.004){document.getElementById('pfErr').textContent=`จำนวนเงินเกินยอดคงค้าง ฿${money(bal)}`;return}
+    const cur=S.bills.find(x=>x.id===id);const rc=nextReceipt();const nb={...cur,payments:[...(cur.payments||[]),{id:uid(),amount:amt,date:F.date.value,method:F.method.value,note:F.note.value.trim(),receiptNo:rc,by:S.me.id||'local'}],updatedAt:new Date().toISOString()};
+    let saved;if(await safe(async()=>{saved=await put('bills',nb)},`รับชำระ ฿${money(amt)} แล้ว · ใบเสร็จ ${rc}`)){log('รับชำระ',`${rc} บิล ${cur.no} ฿${money(amt)} ${F.method.value}`);closeModal();setTimeout(()=>viewReceipt(rc),80)}};
+}
+function batchForm(){
+  openModal(`${hdr('ออกบิลค่าเช่ารายวันทุกคัน')}<div class="mb"><label class="fld"><span>วันที่เช่า</span><input type="date" id="bt-date" value="${today()}"></label><div id="btList"></div></div>
+  <footer><button class="btn" data-act="close">ยกเลิก</button><button class="btn pri" id="btGo">ออกบิล</button></footer>`);
+  const inp=document.getElementById('bt-date');
+  const calc=()=>{const day=inp.value;const act=rentDue(day);
+    const todo=act.filter(d=>!rentCover(d.id,day)),skip=act.filter(d=>rentCover(d.id,day));
+    document.getElementById('btList').innerHTML=`<div class="panel">${todo.length?todo.map(d=>`<div class="rowline"><div class="pp">${av(d.name)}<div class="who"><b>${esc(d.name)}</b><small>${esc(C(d.carId).plate)}</small></div></div><span class="num">฿${money(C(d.carId).dailyRate)}</span></div>`).join(''):'<div class="empty"><b>ออกบิลวันนี้ครบทุกคันแล้ว</b></div>'}</div>${skip.length?`<div class="muted small">ข้าม ${skip.length} คนที่มีบิลครอบคลุมวันนี้แล้ว: ${skip.map(d=>esc(d.name)).join(', ')}</div>`:''}`;
+    const go=document.getElementById('btGo');go.textContent=`ออกบิล ${todo.length} ใบ`;go.disabled=!todo.length;return todo};
+  inp.oninput=calc;calc();
+  document.getElementById('btGo').onclick=async()=>{const day=inp.value,todo=calc();if(!todo.length)return;
+    const bills=[];todo.forEach(d=>bills.push(makeRent(d,day,bills,'ออกบิลรายวันทุกคัน')));
+    document.getElementById('btGo').disabled=true;
+    if(await safe(async()=>{for(let i=0;i<bills.length;i+=10)await Promise.all(bills.slice(i,i+10).map(b=>put('bills',b)))},`ออกบิลค่าเช่า ${bills.length} ใบแล้ว`)){log('ออกบิลรายวันทุกคัน',`${bills.length} ใบ วันที่ ${fd(day)}`);closeModal()}};
+}
+function carForm(id){
+  const c=C(id)||{status:'active',province:'กรุงเทพมหานคร'};
+  openModal(`${hdr(id?'แก้ไขรถ '+esc(c.plate):'เพิ่มรถ')}<form id="carF"><div class="mb"><div class="frm">
+   <label class="fld"><span>ทะเบียน</span><input type="text" name="plate" value="${esc(c.plate||'')}" placeholder="เช่น 1กข 2345" required></label>
+   <label class="fld"><span>จังหวัด</span><input type="text" name="province" value="${esc(c.province||'')}"></label>
+   <label class="fld"><span>ยี่ห้อ/รุ่น</span><input type="text" name="model" value="${esc(c.model||'')}" placeholder="เช่น Toyota Camry Hybrid"></label>
+   <label class="fld"><span>ปี</span><input type="text" name="year" value="${esc(c.year||'')}"></label>
+   <label class="fld"><span>สี</span><input type="text" name="color" value="${esc(c.color||'')}"></label>
+   <label class="fld"><span>ค่าเช่าต่อวัน (บาท)</span><input type="number" name="dailyRate" min="0" step="0.01" value="${c.dailyRate??''}" required></label>
+   <label class="fld"><span>สถานะ</span><select name="status">${Object.entries(CAR_ST).map(([k,v])=>`<option value="${k}" ${c.status===k?'selected':''}>${v}</option>`).join('')}</select></label>
+   <label class="fld"><span>เลขไมล์ล่าสุด (กม.)</span><input type="number" name="mileage" min="0" value="${c.mileage??''}"></label>
+   <label class="fld"><span>พ.ร.บ. หมดอายุ</span><input type="date" name="actExp" value="${c.actExp||''}"></label>
+   <label class="fld"><span>ประกันภัยหมดอายุ</span><input type="date" name="insExp" value="${c.insExp||''}"></label>
+   <label class="fld"><span>ภาษีรถหมดอายุ</span><input type="date" name="taxExp" value="${c.taxExp||''}"></label>
+  </div><div class="err" id="cfErr"></div></div><footer>${id?`<button type="button" class="btn dng" data-act="delCar" data-id="${id}">ลบรถ</button>`:''}<button type="button" class="btn" data-act="close">ยกเลิก</button><button class="btn pri">บันทึก</button></footer></form>`,'narrow');
+  const F=document.getElementById('carF');F.onsubmit=async e=>{e.preventDefault();const o={...c,plate:F.plate.value.trim(),province:F.province.value.trim(),model:F.model.value.trim(),year:F.year.value.trim(),color:F.color.value.trim(),dailyRate:+F.dailyRate.value||0,status:F.status.value,mileage:+F.mileage.value||c.mileage||null,actExp:F.actExp.value,insExp:F.insExp.value,taxExp:F.taxExp.value};
+    if(S.cars.some(x=>x.id!==c.id&&x.plate===o.plate)){document.getElementById('cfErr').textContent='มีทะเบียนนี้ในระบบแล้ว';return}
+    if(await safe(()=>put('cars',o),'บันทึกรถแล้ว')){log(id?'แก้ไขรถ':'เพิ่มรถ',o.plate);closeModal()}};
+}
+function drvForm(id){
+  const d=D(id)||{status:'active',startDate:today()};
+  const free=S.cars.filter(c=>c.status!=='retired'&&(!driverOn(c.id)||c.id===d.carId));
+  const code=d.code||('D'+String(S.drivers.length+1).padStart(3,'0'));
+  openModal(`${hdr(id?'แก้ไขคนขับ':'เพิ่มคนขับ')}<form id="drvF"><div class="mb"><div class="frm">
+   <label class="fld"><span>รหัสคนขับ</span><input type="text" name="code" value="${esc(code)}"></label>
+   <label class="fld"><span>ชื่อ-นามสกุล</span><input type="text" name="name" value="${esc(d.name||'')}" required></label>
+   <label class="fld"><span>ชื่อเล่น</span><input type="text" name="nickname" value="${esc(d.nickname||'')}"></label>
+   <label class="fld"><span>เบอร์โทร</span><input type="tel" name="phone" value="${esc(d.phone||'')}"></label>
+   <label class="fld"><span>เลขใบขับขี่สาธารณะ</span><input type="text" name="license" value="${esc(d.license||'')}"></label>
+   <label class="fld"><span>ใบขับขี่หมดอายุ</span><input type="date" name="licenseExp" value="${d.licenseExp||''}"></label>
+   <label class="fld"><span>วันเริ่มงาน</span><input type="date" name="startDate" value="${d.startDate||''}"></label>
+   <label class="fld"><span>เงินประกันที่วางไว้ (บาท)</span><input type="number" name="deposit" min="0" step="0.01" value="${d.deposit??0}"></label>
+   <label class="fld"><span>รถประจำ</span><select name="carId"><option value="">— ไม่มีรถ —</option>${free.map(c=>`<option value="${c.id}" ${d.carId===c.id?'selected':''}>${esc(c.plate)}</option>`).join('')}</select></label>
+   <label class="fld"><span>สถานะ</span><select name="status"><option value="active" ${d.status!=='inactive'?'selected':''}>ใช้งาน</option><option value="inactive" ${d.status==='inactive'?'selected':''}>ไม่ใช้งาน</option></select></label>
+   <label class="fld full"><span>หมายเหตุ</span><input type="text" name="note" value="${esc(d.note||'')}"></label>
+  </div><div class="small muted">ถ้าคนขับเดิมมีรถอยู่แล้ว ให้ใช้เมนูสลับเปลี่ยนคนขับเพื่อเก็บประวัติ</div></div><footer><button type="button" class="btn" data-act="close">ยกเลิก</button><button class="btn pri">บันทึก</button></footer></form>`);
+  const F=document.getElementById('drvF');F.onsubmit=async e=>{e.preventDefault();const o={...d,code:F.code.value.trim(),name:F.name.value.trim(),nickname:F.nickname.value.trim(),phone:F.phone.value.trim(),license:F.license.value.trim(),licenseExp:F.licenseExp.value,startDate:F.startDate.value,deposit:+F.deposit.value||0,carId:F.carId.value||null,status:F.status.value,note:F.note.value.trim()};
+    if(o.status==='inactive')o.carId=null;if(o.carId!==d.carId)o.since=today();
+    if(await safe(()=>put('drivers',o),'บันทึกคนขับแล้ว')){log(id?'แก้ไขคนขับ':'เพิ่มคนขับ',o.name);closeModal()}};
+}
+
+/* ---------- receipts ---------- */
+function viewReceipt(no){const r=receipts().find(x=>x.no===no);if(!r){toast('ไม่พบใบเสร็จ '+no,'bad');return}
+  openModal(`${hdr('ใบเสร็จ '+esc(no))}<div class="mb">${receiptInner(r)}<div class="small muted">บันทึกโดย ${esc(who(r.by))}</div></div><footer>${r.items.length===1?`<button class="btn" data-act="view" data-id="${r.items[0].bill.id}">ดูบิล</button>`:''}<button class="btn pri" data-act="dlReceipt" data-no="${esc(no)}">ดาวน์โหลดใบเสร็จ</button></footer>`);
+  resolveNames([r.by])}
+PAGES.receipts=()=>{const f=U.rc;let l=receipts();if(f.month)l=l.filter(r=>r.date?.startsWith(f.month));
+  if(f.q){const q=f.q.toLowerCase();l=l.filter(r=>[r.no,dName(r.driverId),...r.items.map(i=>i.bill.no)].join(' ').toLowerCase().includes(q))}
+  const tot=l.reduce((s,r)=>s+r.total,0);resolveNames(l.map(r=>r.by));
+  return `<div class="ph"><div><h1>ใบเสร็จรับเงิน</h1><p>ออกเลขที่ใบเสร็จอัตโนมัติทุกครั้งที่รับชำระ ใบเสร็จหนึ่งใบรวมได้หลายบิล</p></div><div class="acts"><button class="btn pri" data-act="multiPay">รับชำระหลายบิล</button></div></div>
+  ${kpis([{l:'จำนวนใบเสร็จ',v:l.length,i:'receipt'},{l:'รับชำระรวม',v:'฿'+money(tot),c:'ok'},{l:'เงินสด',v:'฿'+money(l.filter(r=>r.method==='เงินสด').reduce((s,r)=>s+r.total,0)),i:'coins'},{l:'โอนเงิน/พร้อมเพย์',v:'฿'+money(l.filter(r=>r.method==='โอนเงิน').reduce((s,r)=>s+r.total,0)),i:'wallet'}])}
+  <div class="filters"><label class="fld"><span>เดือน</span><input type="month" id="rc-m" data-f="rc.month" value="${f.month}"></label><label class="fld"><span>ค้นหา</span><input type="text" id="rc-q" data-f="rc.q" value="${esc(f.q)}" placeholder="เลขใบเสร็จ ชื่อคนขับ เลขบิล"></label></div>
+  <section class="panel">${l.length?`<div class="tw"><table><thead><tr><th>เลขที่ใบเสร็จ</th><th>วันที่</th><th>คนขับ</th><th>ชำระบิล</th><th>วิธีชำระ</th><th>ผู้รับเงิน</th><th class="r">จำนวนเงิน</th></tr></thead><tbody>
+  ${l.map(r=>`<tr class="click" data-act="receipt" data-no="${esc(r.no)}"><td class="num">${esc(r.no)}</td><td class="nowrap">${fd(r.date)}</td><td><div class="pp">${av(dName(r.driverId))}<span>${esc(dName(r.driverId))}</span></div></td><td class="small">${r.items.map(i=>esc(i.bill.no)).join(', ')}</td><td>${esc(r.method||'')}</td><td class="small">${esc(who(r.by))}</td><td class="r num">${money(r.total)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty"><b>ยังไม่มีใบเสร็จในเดือนนี้</b>ใบเสร็จจะออกอัตโนมัติเมื่อกดรับชำระ</div>'}</section>`};
+
+/* ---------- multi-bill payment ---------- */
+function openBills(did){return live().filter(b=>b.driverId===did&&bBal(b)>0).sort((a,b)=>((a.dueDate||a.issueDate)+a.no).localeCompare((b.dueDate||b.issueDate)+b.no))}
+function multiPay(did){
+  const ds=S.drivers.filter(d=>openBills(d.id).length);
+  openModal(`${hdr('รับชำระหลายบิล')}<form id="mpF"><div class="mb">
+   <div class="frm"><label class="fld full"><span>คนขับ</span><select name="driverId" id="mp-d"><option value="">— เลือกคนขับที่มียอดค้าง —</option>${ds.map(d=>`<option value="${d.id}" ${d.id===did?'selected':''}>${esc(d.name)} · ค้าง ฿${money(openBills(d.id).reduce((s,b)=>s+bBal(b),0))}</option>`).join('')}</select></label></div>
+   <div id="mpList"></div>
+   <div class="frm"><label class="fld"><span>จำนวนเงินที่รับ</span><input type="number" name="amount" id="mp-amt" min="0.01" step="0.01"></label>
+    <label class="fld"><span>วันที่รับ</span><input type="date" name="date" value="${today()}"></label>
+    <label class="fld"><span>วิธีชำระ</span><select name="method">${METHODS.filter(m=>m!=='หักจากเงินประกัน').map(m=>`<option>${m}</option>`).join('')}</select></label>
+    <label class="fld"><span>อ้างอิง / หมายเหตุ</span><input type="text" name="note" placeholder="เช่น เลขที่สลิปโอน"></label></div>
+   <div id="mpAlloc"></div><div id="mpQR"></div><div class="err" id="mpErr"></div>
+  </div><footer><button type="button" class="btn" data-act="close">ยกเลิก</button><button class="btn pri" id="mpGo">บันทึกรับชำระ</button></footer></form>`);
+  const F=document.getElementById('mpF');let touched=false;
+  const sel=()=>[...F.querySelectorAll('.mp-b:checked')].map(x=>S.bills.find(b=>b.id===x.value)).filter(Boolean);
+  const alloc=()=>{let left=r2(+F.amount.value||0);return sel().map(b=>{const a=Math.min(left,bBal(b));left=r2(left-a);return {b,a:r2(a)}})};
+  const drawAlloc=()=>{const al=alloc(),amt=+F.amount.value||0,max=sel().reduce((s,b)=>s+bBal(b),0);
+    document.getElementById('mpAlloc').innerHTML=al.length?`<div class="calc"><span>ตัดยอดบิลเก่าสุดก่อน: ${al.filter(x=>x.a>0).map(x=>`${esc(x.b.no)} ฿${money(x.a)}${x.a<bBal(x.b)?' (บางส่วน)':''}`).join(' · ')||'—'}</span><span class="tot">฿${money(amt)}</span></div>${amt>max+0.004?`<div class="note bad">ยอดที่รับเกินยอดค้างของบิลที่เลือก ฿${money(max)}</div>`:''}`:'';
+    document.getElementById('mpQR').innerHTML=amt>0?ppBlock(amt):''};
+  const drawList=()=>{const d=F.driverId.value,l=d?openBills(d):[];
+    document.getElementById('mpList').innerHTML=d?(l.length?`<div class="panel"><div class="tw"><table><thead><tr><th></th><th>เลขที่บิล</th><th>รายการ</th><th>ครบกำหนด</th><th class="r">คงค้าง</th></tr></thead><tbody>${l.map(b=>`<tr><td><input type="checkbox" class="mp-b" value="${b.id}" checked aria-label="เลือกบิล ${esc(b.no)}"></td><td class="num">${esc(b.no)}</td><td class="small">${TYPE[b.type].t} · ${esc(billDesc(b))}</td><td class="nowrap">${fd(b.dueDate)} ${pill(bSt(b))}</td><td class="r num">${money(bBal(b))}${bFee(b)?`<div class="small" style="color:var(--bad)">รวมปรับ ${money(bFee(b))}</div>`:''}</td></tr>`).join('')}</tbody></table></div></div>`:'<div class="note">คนขับคนนี้ไม่มียอดค้าง</div>'):'';
+    touched=false;F.amount.value=r2(sel().reduce((s,b)=>s+bBal(b),0))||'';drawAlloc()};
+  F.driverId.onchange=drawList;
+  F.addEventListener('change',e=>{if(e.target.classList.contains('mp-b')){if(!touched)F.amount.value=r2(sel().reduce((s,b)=>s+bBal(b),0))||'';drawAlloc()}});
+  F.amount.oninput=()=>{touched=true;drawAlloc()};drawList();
+  F.onsubmit=async e=>{e.preventDefault();const err=document.getElementById('mpErr');err.textContent='';
+    const amt=r2(+F.amount.value||0),al=alloc().filter(x=>x.a>0),max=sel().reduce((s,b)=>s+bBal(b),0);
+    if(!F.driverId.value){err.textContent='เลือกคนขับก่อน';return}if(!al.length||amt<=0){err.textContent='เลือกบิลและใส่จำนวนเงิน';return}
+    if(amt>max+0.004){err.textContent='จำนวนเงินเกินยอดค้างของบิลที่เลือก';return}
+    const rc=nextReceipt();document.getElementById('mpGo').disabled=true;
+    const ok=await safe(async()=>{for(const x of al){const cur=S.bills.find(b=>b.id===x.b.id);await put('bills',{...cur,payments:[...(cur.payments||[]),{id:uid(),amount:x.a,date:F.date.value,method:F.method.value,note:F.note.value.trim(),receiptNo:rc,by:S.me.id||'local'}],updatedAt:new Date().toISOString()})}},`รับชำระ ฿${money(amt)} ${al.length} บิล · ใบเสร็จ ${rc}`);
+    if(ok){log('รับชำระหลายบิล',`${rc} ${dName(F.driverId.value)} ฿${money(amt)} ${al.length} บิล`);closeModal();setTimeout(()=>viewReceipt(rc),100)}else document.getElementById('mpGo').disabled=false};
+}
+
+/* ---------- deposit settlement ---------- */
+function settleForm(did){if(!needMgr())return;const d=D(did);if(!d)return;const ob=openBills(did);const dep=+d.deposit||0;
+  openModal(`${hdr('ปิดบัญชีและคืนเงินประกัน · '+esc(d.name))}<form id="stF"><div class="mb">
+   <div class="calc"><span>เงินประกันที่วางไว้</span><span class="tot">฿${money(dep)}</span></div>
+   <section><div class="sec-h" style="padding:0 0 8px;border:0">ยอดค้างที่จะหักจากเงินประกัน</div>${ob.length?`<div class="panel"><div class="tw"><table><thead><tr><th>เลขที่บิล</th><th>รายการ</th><th class="r">คงค้าง</th></tr></thead><tbody>${ob.map(b=>`<tr><td class="num">${esc(b.no)}</td><td class="small">${TYPE[b.type].t} · ${esc(billDesc(b))}</td><td class="r num">${money(bBal(b))}</td></tr>`).join('')}</tbody></table></div></div>`:'<div class="muted small">ไม่มียอดค้าง</div>'}</section>
+   <div class="fld items"><span>รายการหักเพิ่ม เช่น ค่าความเสียหาย ค่าทำความสะอาด อุปกรณ์ไม่ครบ</span><div id="items"></div><div><button type="button" class="btn sm" data-act="addItem">+ เพิ่มรายการหัก</button></div></div>
+   <div class="frm"><label class="fld"><span>วันที่ปิดบัญชี</span><input type="date" name="date" value="${today()}"></label>
+   <label class="fld"><span>วิธีคืนเงิน</span><select name="method"><option>โอนเงิน</option><option>เงินสด</option></select></label>
+   <label class="fld full"><span>หมายเหตุ</span><input type="text" name="note"></label>
+   <label class="chk full"><input type="checkbox" name="close" checked> ปิดสถานะคนขับเป็นไม่ใช้งาน และถอดออกจากรถ</label></div>
+   <div id="stCalc"></div><div class="err" id="stErr"></div>
+  </div><footer><button type="button" class="btn" data-act="close">ยกเลิก</button><button class="btn pri" id="stGo">ยืนยันปิดบัญชี</button></footer></form>`);
+  const F=document.getElementById('stF');const outTot=r2(ob.reduce((s,b)=>s+bBal(b),0));
+  const extras=()=>[...F.querySelectorAll('#items .row')].map(r=>({desc:r.querySelector('.it-d').value.trim(),qty:+r.querySelector('.it-q').value||0,price:+r.querySelector('.it-p').value||0})).filter(i=>i.desc&&i.qty*i.price>0);
+  const calc=()=>{const ex=r2(extras().reduce((s,i)=>s+i.qty*i.price,0)),need=r2(outTot+ex),ded=Math.min(dep,need),refund=r2(Math.max(0,dep-need)),debt=r2(Math.max(0,need-dep));
+    document.getElementById('stCalc').innerHTML=`<div class="panel"><div class="rowline"><span>ยอดค้างชำระ</span><span class="num">฿${money(outTot)}</span></div><div class="rowline"><span>รายการหักเพิ่ม</span><span class="num">฿${money(ex)}</span></div><div class="rowline"><span>หักจากเงินประกัน</span><span class="num">฿${money(ded)}</span></div><div class="rowline"><b>คืนเงินให้คนขับ</b><b class="num" style="color:var(--ok);font-size:18px">฿${money(refund)}</b></div>${debt?`<div class="rowline"><b style="color:var(--bad)">ยอดที่คนขับยังต้องชำระเพิ่ม</b><b class="num" style="color:var(--bad)">฿${money(debt)}</b></div>`:''}</div>`;return {ex,ded,refund,debt}};
+  M.calc=calc;F.addEventListener('input',calc);calc();
+  F.onsubmit=async e=>{e.preventDefault();const k=calc(),ex=extras(),date=F.date.value;
+    if(!await confirmBox(`ปิดบัญชี ${esc(d.name)} หักเงินประกัน ฿${money(k.ded)} และคืนเงิน ฿${money(k.refund)}?`,'ยืนยันปิดบัญชี')){settleForm(did);return}
+    const rc=k.ded>0?nextReceipt():null;let left=k.ded;
+    const ok=await safe(async()=>{
+      const targets=[...openBills(did)];
+      if(ex.length){const nb={type:'other',driverId:did,carId:d.carId||null,issueDate:date,dueDate:date,category:'หักเงินประกันตอนปิดบัญชี',period:'',discount:0,items:ex,payments:[],lateRule:null,note:'ออกตอนปิดบัญชีคนขับ',createdAt:new Date().toISOString()};nb.no=nextNo('other',date);const saved=await put('bills',nb);targets.push(saved)}
+      for(const b of targets){if(left<=0)break;const a=r2(Math.min(left,bBal(b)));if(a<=0)continue;left=r2(left-a);
+        await put('bills',{...b,payments:[...(b.payments||[]),{id:uid(),amount:a,date,method:'หักจากเงินประกัน',note:'ปิดบัญชีคนขับ',receiptNo:rc,by:S.me.id||'local'}]})}
+      const st={date,deposit:+d.deposit||0,outstanding:outTot,extra:r2(ex.reduce((s,i)=>s+i.qty*i.price,0)),extraItems:ex,deducted:k.ded,refund:k.refund,debt:k.debt,method:F.method.value,note:F.note.value.trim(),receiptNo:rc,by:S.me.id||'local'};
+      await put('drivers',{...d,deposit:0,settlement:st,...(F.close.checked?{status:'inactive',carId:null}:{})});
+    },'ปิดบัญชีเรียบร้อย');
+    if(ok){log('ปิดบัญชีคนขับ',`${d.name} หัก ฿${money(k.ded)} คืน ฿${money(k.refund)}`);closeModal();setTimeout(()=>settleView(did),100)}};
+}
+function settleInner(d){const st=d.settlement,c=cfg();return `<div class="inv"><div class="top"><div class="co"><b>${esc(c.company)}</b>${c.address?`<div class="small">${esc(c.address)}</div>`:''}</div><div class="doc"><div class="t">ใบสรุปปิดบัญชีและคืนเงินประกัน</div><div class="small">วันที่ ${fd(st.date)}</div></div></div>
+  <div class="meta"><div><span>คนขับ</span><b>${esc(d.name)}</b></div><div><span>รหัส</span>${esc(d.code||'')}</div><div><span>เริ่มงาน</span>${fd(d.startDate)}</div><div><span>โทร</span>${esc(d.phone||'')}</div></div>
+  <div class="tw"><table><tbody><tr><td>เงินประกันที่วางไว้</td><td class="r num">${money(st.deposit)}</td></tr><tr><td>หัก ยอดค้างชำระ</td><td class="r num">−${money(st.outstanding)}</td></tr>
+  ${(st.extraItems||[]).map(i=>`<tr><td>หัก ${esc(i.desc)}${i.qty>1?' × '+i.qty:''}</td><td class="r num">−${money(i.qty*i.price)}</td></tr>`).join('')}</tbody>
+  <tfoot><tr><td>คืนเงินให้คนขับ (${esc(st.method||'')})</td><td class="r num">${money(st.refund)}</td></tr>${st.debt?`<tr><td>ยอดที่คนขับยังต้องชำระเพิ่ม</td><td class="r num">${money(st.debt)}</td></tr>`:''}</tfoot></table></div>
+  <div class="words">(คืนเงิน ${bahtText(st.refund)})</div>${st.receiptNo?`<div class="small muted" style="margin-top:6px">ใบเสร็จการหักเงินประกัน ${esc(st.receiptNo)}</div>`:''}${st.note?`<div class="small" style="margin-top:6px">หมายเหตุ: ${esc(st.note)}</div>`:''}</div>`}
+function settleView(did){const d=D(did);if(!d?.settlement)return;openModal(`${hdr('ใบสรุปคืนเงินประกัน')}<div class="mb">${settleInner(d)}</div><footer>${d.settlement.receiptNo?`<button class="btn" data-act="receipt" data-no="${esc(d.settlement.receiptNo)}">ดูใบเสร็จ</button>`:''}<button class="btn pri" data-act="dlSettle" data-id="${d.id}">ดาวน์โหลด</button></footer>`)}
+
+/* ---------- driver statement ---------- */
+function stmtInner(did,from,to){const d=D(did),c=cfg();const bl=live().filter(b=>b.driverId===did&&b.issueDate>=from&&b.issueDate<=to).sort((a,b)=>(a.issueDate+a.no).localeCompare(b.issueDate+b.no));
+  const ps=allPays().filter(p=>p.bill.driverId===did&&p.date>=from&&p.date<=to).sort((a,b)=>a.date.localeCompare(b.date));
+  const billed=bl.reduce((s,b)=>s+bDue(b),0),paid=ps.reduce((s,p)=>s+(+p.amount||0),0),out=live().filter(b=>b.driverId===did).reduce((s,b)=>s+bBal(b),0);
+  return `<div class="inv"><div class="top"><div class="co"><b>${esc(c.company)}</b></div><div class="doc"><div class="t">ใบสรุปยอดคนขับ</div><div class="small">${fd(from)} – ${fd(to)}</div></div></div>
+  <div class="meta"><div><span>คนขับ</span><b>${esc(d?.name||'')}</b></div><div><span>รถ</span>${esc(carOf(did)?.plate||'—')}</div><div><span>เงินประกัน</span>฿${money(d?.deposit)}</div><div><span>ยอดค้างทั้งหมด</span><b style="color:${out?'var(--bad)':'inherit'}">฿${money(out)}</b></div></div>
+  <h2 class="sec-h" style="padding:6px 0;border:0">บิลที่ออกในช่วงนี้ (${bl.length})</h2><div class="tw"><table><thead><tr><th>วันที่</th><th>เลขที่</th><th>รายการ</th><th class="r">ยอดรวม</th><th class="r">คงค้าง</th></tr></thead><tbody>${bl.map(b=>`<tr><td class="nowrap">${fd(b.issueDate)}</td><td class="num">${esc(b.no)}</td><td class="small">${TYPE[b.type].t} · ${esc(billDesc(b))}</td><td class="r num">${money(bDue(b))}</td><td class="r num">${money(bBal(b))}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">ไม่มีบิล</td></tr>'}</tbody><tfoot><tr><td colspan="3">รวม</td><td class="r num">${money(billed)}</td><td class="r num">${money(bl.reduce((s,b)=>s+bBal(b),0))}</td></tr></tfoot></table></div>
+  <h2 class="sec-h" style="padding:6px 0;border:0">การชำระในช่วงนี้ (${ps.length})</h2><div class="tw"><table><thead><tr><th>วันที่</th><th>ใบเสร็จ</th><th>บิล</th><th>วิธี</th><th class="r">จำนวนเงิน</th></tr></thead><tbody>${ps.map(p=>`<tr><td class="nowrap">${fd(p.date)}</td><td class="num">${esc(p.receiptNo||'—')}</td><td class="num">${esc(p.bill.no)}</td><td>${esc(p.method||'')}</td><td class="r num">${money(p.amount)}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">ไม่มีการชำระ</td></tr>'}</tbody><tfoot><tr><td colspan="4">รวม</td><td class="r num">${money(paid)}</td></tr></tfoot></table></div></div>`}
+function stmtView(did,from,to){from=from||thisMonth()+'-01';to=to||today();
+  openModal(`${hdr('ใบสรุปยอด · '+esc(dName(did)))}<div class="mb"><div class="frm"><label class="fld"><span>ตั้งแต่</span><input type="date" id="st-f" value="${from}"></label><label class="fld"><span>ถึง</span><input type="date" id="st-t" value="${to}"></label></div><div id="stBody">${stmtInner(did,from,to)}</div></div><footer><button class="btn" data-act="multiPay" data-id="${did}">รับชำระ</button><button class="btn pri" data-act="dlStmt" data-id="${did}">ดาวน์โหลด</button></footer>`);
+  const upd=()=>{document.getElementById('stBody').innerHTML=stmtInner(did,document.getElementById('st-f').value,document.getElementById('st-t').value)};
+  document.getElementById('st-f').onchange=upd;document.getElementById('st-t').onchange=upd}
+
+/* ---------- maintenance ---------- */
+PAGES.maint=()=>{const f=U.mt;const y=f.year;let l=S.maint.filter(m=>(!f.carId||m.carId===f.carId)&&m.date?.startsWith(y)).sort((a,b)=>b.date.localeCompare(a.date));
+  const cars=S.cars.filter(c=>!f.carId||c.id===f.carId);
+  const sum=cars.map(c=>{const cost=S.maint.filter(m=>m.carId===c.id&&m.date?.startsWith(y)).reduce((s,m)=>s+(+m.cost||0),0);const charged=S.maint.filter(m=>m.carId===c.id&&m.date?.startsWith(y)).reduce((s,m)=>s+(+m.charge||0),0);
+    const rent=live().filter(b=>b.carId===c.id&&b.type==='rent'&&b.issueDate?.startsWith(y)).reduce((s,b)=>s+bTotal(b),0);return {c,cost,charged,rent,net:rent+charged-cost}});
+  const years=[...new Set([today().slice(0,4),...S.maint.map(m=>m.date?.slice(0,4)).filter(Boolean)])].sort().reverse();
+  return `<div class="ph"><div><h1>ซ่อมบำรุง</h1><p>บันทึกการซ่อม เลขไมล์ และค่าใช้จ่ายของรถแต่ละคัน เทียบกับรายได้ค่าเช่า ส่งเรียกเก็บจากคนขับได้</p></div><div class="acts">${mgr()?'<button class="btn pri" data-act="maintForm">+ บันทึกการซ่อม</button>':''}</div></div>
+  <div class="filters"><label class="fld"><span>รถ</span><select id="mt-c" data-f="mt.carId"><option value="">ทุกคัน</option>${S.cars.map(c=>`<option value="${c.id}" ${f.carId===c.id?'selected':''}>${esc(c.plate)}</option>`).join('')}</select></label><label class="fld"><span>ปี</span><select id="mt-y" data-f="mt.year">${years.map(x=>`<option value="${x}" ${x===y?'selected':''}>${+x+543}</option>`).join('')}</select></label></div>
+  <div class="stack"><section class="panel"><h2>สรุปความคุ้มค่าต่อคัน · ปี ${+y+543}</h2>${sum.length?`<div class="tw"><table><thead><tr><th>รถ</th><th class="r">เลขไมล์</th><th class="r">รายได้ค่าเช่า</th><th class="r">ค่าซ่อม</th><th class="r">เรียกเก็บคนขับ</th><th class="r">คงเหลือ</th></tr></thead><tbody>${sum.map(x=>`<tr><td>${plate(x.c)}</td><td class="r num">${x.c.mileage?(+x.c.mileage).toLocaleString('th-TH'):'—'}</td><td class="r num">${money(x.rent)}</td><td class="r num">${money(x.cost)}</td><td class="r num">${money(x.charged)}</td><td class="r num" style="color:${x.net<0?'var(--bad)':'var(--ok)'}">${money(x.net)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty"><b>ยังไม่มีรถ</b></div>'}</section>
+  <section class="panel"><h2>ประวัติการซ่อม</h2>${l.length?`<div class="tw"><table><thead><tr><th>วันที่</th><th>รถ</th><th class="r">เลขไมล์</th><th>รายการ</th><th>อู่/ร้าน</th><th class="r">ค่าใช้จ่าย</th><th>เรียกเก็บคนขับ</th><th></th></tr></thead><tbody>${l.map(m=>{const b=S.bills.find(x=>x.id===m.billId);return `<tr><td class="nowrap">${fd(m.date)}</td><td>${plate(C(m.carId))}</td><td class="r num">${m.mileage?(+m.mileage).toLocaleString('th-TH'):'—'}</td><td>${esc(m.desc)}</td><td class="small">${esc(m.vendor||'')}</td><td class="r num">${money(m.cost)}</td><td>${b?`<a class="lnk num" data-act="view" data-id="${b.id}">${esc(b.no)} ฿${money(m.charge)}</a>`:'<span class="muted">—</span>'}</td><td>${mgr()?`<button class="btn sm" data-act="maintForm" data-id="${m.id}">แก้ไข</button>`:''}</td></tr>`}).join('')}</tbody></table></div>`:'<div class="empty"><b>ยังไม่มีประวัติการซ่อมในปีนี้</b>กดบันทึกการซ่อมเพื่อเริ่มเก็บประวัติ</div>'}</section></div>`};
+function maintForm(id){if(!needMgr())return;const m=S.maint.find(x=>x.id===id)||{date:today(),carId:U.mt.carId||''};
+  openModal(`${hdr(id?'แก้ไขบันทึกการซ่อม':'บันทึกการซ่อม')}<form id="mtF"><div class="mb"><div class="frm">
+   <label class="fld"><span>รถ</span><select name="carId" required><option value="">— เลือกรถ —</option>${S.cars.map(c=>`<option value="${c.id}" ${m.carId===c.id?'selected':''}>${esc(c.plate)}</option>`).join('')}</select></label>
+   <label class="fld"><span>วันที่</span><input type="date" name="date" value="${m.date}" required></label>
+   <label class="fld"><span>เลขไมล์ (กม.)</span><input type="number" name="mileage" min="0" value="${m.mileage??''}"></label>
+   <label class="fld"><span>ค่าใช้จ่าย (บาท)</span><input type="number" name="cost" min="0" step="0.01" value="${m.cost??''}" required></label>
+   <label class="fld full"><span>รายการซ่อม</span><input type="text" name="desc" value="${esc(m.desc||'')}" placeholder="เช่น เปลี่ยนน้ำมันเครื่อง + กรอง" required></label>
+   <label class="fld full"><span>อู่ / ร้าน</span><input type="text" name="vendor" value="${esc(m.vendor||'')}"></label>
+   ${m.billId?`<div class="full note">เรียกเก็บจากคนขับแล้วในบิล ${esc(S.bills.find(b=>b.id===m.billId)?.no||'')}</div>`:`<label class="chk full"><input type="checkbox" name="doCharge"> เรียกเก็บจากคนขับประจำรถ (ออกบิลค่าซ่อมบำรุง)</label>
+   <label class="fld"><span>ยอดที่เรียกเก็บ (บาท)</span><input type="number" name="charge" min="0" step="0.01" placeholder="เว้นว่าง = เท่าค่าใช้จ่าย"></label>`}
+  </div><div class="err" id="mtErr"></div></div><footer>${id?`<button type="button" class="btn dng" data-act="delMaint" data-id="${id}">ลบ</button>`:''}<button type="button" class="btn" data-act="close">ยกเลิก</button><button class="btn pri">บันทึก</button></footer></form>`);
+  const F=document.getElementById('mtF');F.onsubmit=async e=>{e.preventDefault();const o={...m,carId:F.carId.value,date:F.date.value,mileage:+F.mileage.value||null,cost:+F.cost.value||0,desc:F.desc.value.trim(),vendor:F.vendor.value.trim()};
+    const car=C(o.carId);if(!car){document.getElementById('mtErr').textContent='เลือกรถ';return}
+    if(!m.billId&&F.doCharge?.checked&&!driverOn(o.carId)){document.getElementById('mtErr').textContent='รถคันนี้ไม่มีคนขับประจำ จึงเรียกเก็บไม่ได้';return}
+    const ok=await safe(async()=>{
+      if(!m.billId&&F.doCharge?.checked){const d=driverOn(o.carId);if(!d)throw {code:'nodriver'};const amt=+F.charge.value||o.cost;const c=cfg();
+        const nb={type:'other',driverId:d.id,carId:o.carId,issueDate:o.date,dueDate:addDays(o.date,+c.otherDueDays||0),category:'ค่าซ่อมบำรุง',period:'',discount:0,items:[{desc:o.desc,qty:1,price:amt}],payments:[],lateRule:ruleFor('other'),note:o.vendor?'อู่ '+o.vendor:'',createdAt:new Date().toISOString()};nb.no=nextNo('other',o.date);
+        const sb=await put('bills',nb);o.billId=sb.id;o.charge=amt}
+      await put('maint',o);if(o.mileage&&(+o.mileage>(+car.mileage||0)))await put('cars',{...car,mileage:o.mileage});
+    },'บันทึกการซ่อมแล้ว');
+    if(ok){log(id?'แก้ไขบันทึกซ่อม':'บันทึกซ่อม',`${car.plate} ${o.desc} ฿${money(o.cost)}`);closeModal()}};
+}
+
+/* ---------- off days ---------- */
+PAGES.offdays=()=>{const t=today();const l=S.offdays.slice().sort((a,b)=>b.from.localeCompare(a.from));
+  return `<div class="ph"><div><h1>วันงดเก็บค่าเช่า</h1><p>กำหนดวันที่ไม่ต้องเก็บค่าเช่า เช่น รถเข้าซ่อม คนขับลาที่บริษัทอนุมัติ หรือวันหยุดพิเศษ ระบบออกบิลจะข้ามวันเหล่านี้ให้อัตโนมัติ</p></div><div class="acts">${mgr()?'<button class="btn pri" data-act="offForm">+ เพิ่มวันงดเก็บ</button>':''}</div></div>
+  <section class="panel">${l.length?`<div class="tw"><table><thead><tr><th>ช่วงวันที่</th><th>ใช้กับ</th><th>เหตุผล</th><th class="r">จำนวนวัน</th><th>สถานะ</th><th></th></tr></thead><tbody>${l.map(o=>{const to=o.to||o.from;const st=to<t?'ผ่านไปแล้ว':o.from<=t?'กำลังงดเก็บ':'กำลังจะถึง';return `<tr><td class="nowrap">${fd(o.from)}${to!==o.from?' – '+fd(to):''}</td><td>${o.kind==='all'?'<span class="tag">รถทุกคัน</span>':o.kind==='car'?plate(C(o.carId)):`<div class="pp">${av(dName(o.driverId))}<span>${esc(dName(o.driverId))}</span></div>`}</td><td>${esc(o.reason||'')}</td><td class="r num">${diffDays(o.from,to)+1}</td><td><span class="pill ${st==='กำลังงดเก็บ'?'st-partial':st==='กำลังจะถึง'?'st-open':'st-void'}" style="text-decoration:none">${st}</span></td><td>${mgr()?`<button class="btn sm" data-act="offForm" data-id="${o.id}">แก้ไข</button>`:''}</td></tr>`}).join('')}</tbody></table></div>`:'<div class="empty"><b>ยังไม่มีวันงดเก็บค่าเช่า</b>เพิ่มวันหยุดหรือช่วงที่รถเข้าซ่อม ระบบจะไม่ออกบิลค่าเช่าในวันนั้น</div>'}</section>`};
+function offForm(id){if(!needMgr())return;const o=S.offdays.find(x=>x.id===id)||{kind:'car',from:today(),to:today()};
+  openModal(`${hdr(id?'แก้ไขวันงดเก็บ':'เพิ่มวันงดเก็บค่าเช่า')}<form id="ofF"><div class="mb"><div class="frm">
+   <label class="fld full"><span>ใช้กับ</span><select name="kind" id="of-k"><option value="car" ${o.kind==='car'?'selected':''}>รถคันเดียว (เช่น เข้าซ่อม)</option><option value="driver" ${o.kind==='driver'?'selected':''}>คนขับคนเดียว (เช่น ลาที่อนุมัติ)</option><option value="all" ${o.kind==='all'?'selected':''}>รถทุกคัน (วันหยุดพิเศษ)</option></select></label>
+   <label class="fld" id="of-car"><span>รถ</span><select name="carId">${S.cars.map(c=>`<option value="${c.id}" ${o.carId===c.id?'selected':''}>${esc(c.plate)}</option>`).join('')}</select></label>
+   <label class="fld" id="of-drv"><span>คนขับ</span><select name="driverId">${S.drivers.filter(d=>d.status!=='inactive').map(d=>`<option value="${d.id}" ${o.driverId===d.id?'selected':''}>${esc(d.name)}</option>`).join('')}</select></label>
+   <label class="fld"><span>ตั้งแต่วันที่</span><input type="date" name="from" value="${o.from}" required></label>
+   <label class="fld"><span>ถึงวันที่</span><input type="date" name="to" value="${o.to||o.from}" required></label>
+   <label class="fld full"><span>เหตุผล</span><input type="text" name="reason" value="${esc(o.reason||'')}" placeholder="เช่น เข้าศูนย์ซ่อมช่วงล่าง"></label>
+  </div><div class="small muted">บิลที่ออกไปแล้วจะไม่เปลี่ยน ถ้าต้องการคืนค่าเช่าวันที่ออกบิลไปแล้ว ให้ยกเลิกหรือแก้ไขบิลนั้น</div><div class="err" id="ofErr"></div></div><footer>${id?`<button type="button" class="btn dng" data-act="delOff" data-id="${id}">ลบ</button>`:''}<button type="button" class="btn" data-act="close">ยกเลิก</button><button class="btn pri">บันทึก</button></footer></form>`,'narrow');
+  const F=document.getElementById('ofF');const sync=()=>{document.getElementById('of-car').hidden=F.kind.value!=='car';document.getElementById('of-drv').hidden=F.kind.value!=='driver'};F.kind.onchange=sync;sync();
+  F.onsubmit=async e=>{e.preventDefault();if(F.to.value<F.from.value){document.getElementById('ofErr').textContent='วันที่สิ้นสุดต้องไม่ก่อนวันเริ่ม';return}
+    const n={...o,kind:F.kind.value,carId:F.kind.value==='car'?F.carId.value:null,driverId:F.kind.value==='driver'?F.driverId.value:null,from:F.from.value,to:F.to.value,reason:F.reason.value.trim()};
+    if(await safe(()=>put('offdays',n),'บันทึกวันงดเก็บแล้ว')){log(id?'แก้ไขวันงดเก็บ':'เพิ่มวันงดเก็บ',`${fd(n.from)}–${fd(n.to)} ${n.reason}`);closeModal()}}}
+
+/* ---------- campaigns ---------- */
+function campDesc(c){return c.kind==='freeday'?`เช่าครบ ${c.every} วัน ฟรีวันที่ ${+c.every+1}`:c.kind==='percent'?`ลดค่าเช่า ${c.pct}%`:`คนขับใหม่ ${c.days} วันแรก ลด ${money(c.perDay)} บาท/วัน`}
+PAGES.campaigns=()=>{const t=today();const l=S.campaigns.slice().sort((a,b)=>b.from.localeCompare(a.from));
+  const used=c=>live().filter(b=>b.campaign&&String(b.campaign).split(', ').includes(c.name));
+  return `<div class="ph"><div><h1>แคมเปญส่วนลด</h1><p>ตั้งแคมเปญส่วนลดค่าเช่า ระบบคิดส่วนลดในบิลค่าเช่าให้อัตโนมัติทั้งบิลที่ออกเองและบิลอัตโนมัติ ถ้าเข้าหลายแคมเปญในวันเดียว จะใช้ส่วนลดที่มากที่สุด</p></div><div class="acts">${mgr()?'<button class="btn pri" data-act="campForm">+ สร้างแคมเปญ</button>':''}</div></div>
+  ${l.length?`<div class="cgrid">${l.map(c=>{const on=c.active!==false&&c.from<=t&&(!c.to||t<=c.to);const u=used(c);return `<section class="camp ${on?'on':''}"><div class="camp-top"><span class="pill ${on?'st-paid':c.from>t?'st-open':'st-void'}" style="text-decoration:none">${on?'กำลังใช้งาน':c.active===false?'ปิดอยู่':c.from>t?'ยังไม่เริ่ม':'สิ้นสุดแล้ว'}</span>${mgr()?`<button class="btn sm" data-act="campForm" data-id="${c.id}">แก้ไข</button>`:''}</div>
+   <h3>${esc(c.name)}</h3><div class="camp-rule">${esc(campDesc(c))}</div><div class="small muted">${fd(c.from)} – ${c.to?fd(c.to):'ไม่มีกำหนดสิ้นสุด'}${c.carId?' · เฉพาะ '+esc(C(c.carId)?.plate||''):' · รถทุกคัน'}</div>
+   <div class="camp-stat"><div><b class="num">${u.length}</b><span>บิลที่ได้ส่วนลด</span></div><div><b class="num">฿${money(u.reduce((s,b)=>s+(+b.discount||0),0))}</b><span>ส่วนลดรวม</span></div></div></section>`}).join('')}</div>`:`<section class="panel"><div class="empty"><b>ยังไม่มีแคมเปญ</b>สร้างแคมเปญ เช่น เช่าครบ 9 วัน ฟรี 1 วัน หรือส่วนลดคนขับใหม่</div></section>`}`};
+function campForm(id){if(!needMgr())return;const c=S.campaigns.find(x=>x.id===id)||{kind:'freeday',every:9,pct:10,days:7,perDay:200,from:today(),to:'',active:true};
+  openModal(`${hdr(id?'แก้ไขแคมเปญ':'สร้างแคมเปญ')}<form id="cpF"><div class="mb"><div class="frm">
+   <label class="fld full"><span>ชื่อแคมเปญ</span><input type="text" name="name" value="${esc(c.name||'')}" placeholder="เช่น เช่าขับ 9 วัน ฟรี 1 วัน" required></label>
+   <label class="fld full"><span>รูปแบบ</span><select name="kind" id="cp-k">${Object.entries(CAMP_KIND).map(([k,v])=>`<option value="${k}" ${c.kind===k?'selected':''}>${v}</option>`).join('')}</select></label>
+   <label class="fld" data-k="freeday"><span>เช่าครบกี่วัน (N)</span><input type="number" name="every" min="1" value="${c.every??9}"></label>
+   <label class="fld" data-k="percent"><span>ลดกี่ %</span><input type="number" name="pct" min="0" max="100" step="0.1" value="${c.pct??10}"></label>
+   <label class="fld" data-k="newdriver"><span>กี่วันแรกนับจากวันเริ่มงาน</span><input type="number" name="days" min="1" value="${c.days??7}"></label>
+   <label class="fld" data-k="newdriver"><span>ลดวันละ (บาท)</span><input type="number" name="perDay" min="0" step="0.01" value="${c.perDay??200}"></label>
+   <label class="fld"><span>เริ่ม</span><input type="date" name="from" value="${c.from}" required></label>
+   <label class="fld"><span>สิ้นสุด (เว้นว่าง = ไม่กำหนด)</span><input type="date" name="to" value="${c.to||''}"></label>
+   <label class="fld"><span>ใช้กับรถ</span><select name="carId"><option value="">ทุกคัน</option>${S.cars.map(x=>`<option value="${x.id}" ${c.carId===x.id?'selected':''}>${esc(x.plate)}</option>`).join('')}</select></label>
+   <label class="chk"><input type="checkbox" name="active" ${c.active!==false?'checked':''}> เปิดใช้งาน</label>
+  </div><div class="note small" id="cp-help"></div><div class="err" id="cpErr"></div></div><footer>${id?`<button type="button" class="btn dng" data-act="delCamp" data-id="${id}">ลบ</button>`:''}<button type="button" class="btn" data-act="close">ยกเลิก</button><button class="btn pri">บันทึก</button></footer></form>`);
+  const F=document.getElementById('cpF');const help={freeday:'นับวันเช่าที่ออกบิลตั้งแต่วันเริ่มแคมเปญ ทุกครั้งที่ครบ N วัน วันถัดไปค่าเช่าเป็น 0 บาท',percent:'ลดค่าเช่ารายวันตาม % ทุกวันในช่วงแคมเปญ',newdriver:'ลดค่าเช่าให้คนขับใหม่ช่วงแรกนับจากวันเริ่มงาน'};
+  const sync=()=>{F.querySelectorAll('[data-k]').forEach(el=>el.hidden=el.dataset.k!==F.kind.value);document.getElementById('cp-help').textContent=help[F.kind.value]};F.kind.onchange=sync;sync();
+  F.onsubmit=async e=>{e.preventDefault();if(F.to.value&&F.to.value<F.from.value){document.getElementById('cpErr').textContent='วันสิ้นสุดต้องไม่ก่อนวันเริ่ม';return}
+    const n={...c,name:F.name.value.trim(),kind:F.kind.value,every:+F.every.value||0,pct:+F.pct.value||0,days:+F.days.value||0,perDay:+F.perDay.value||0,from:F.from.value,to:F.to.value||'',carId:F.carId.value||null,active:F.active.checked};
+    if(await safe(()=>put('campaigns',n),'บันทึกแคมเปญแล้ว')){log(id?'แก้ไขแคมเปญ':'สร้างแคมเปญ',n.name);closeModal()}}}
+
+/* ---------- audit log ---------- */
+PAGES.log=()=>{const f=U.lg;const all=S.logs.flatMap(d=>(d.entries||[]).map(e=>({...e}))).filter(e=>(!f.from||e.t.slice(0,10)>=f.from)&&(!f.to||e.t.slice(0,10)<=f.to)).sort((a,b)=>b.t.localeCompare(a.t));
+  const acts=[...new Set(all.map(e=>e.a))].sort();const l=all.filter(e=>!f.a||e.a===f.a).slice(0,500);resolveNames(l.map(e=>e.u));
+  const risky=/ยกเลิกบิล|ลบรายการชำระ|ยกเว้นค่าปรับ|ปิดบัญชี/;
+  return `<div class="ph"><div><h1>บันทึกการแก้ไข</h1><p>ทุกการออกบิล รับชำระ ยกเลิกบิล ยกเว้นค่าปรับ และแก้ข้อมูล ถูกบันทึกพร้อมเวลาและผู้ทำรายการ แก้ไขหรือลบไม่ได้จากหน้านี้</p></div></div>
+  <div class="note" style="margin-bottom:14px">สิทธิ์ตั้งจากเมนูแชร์ของหน้านี้: <b>ผู้แก้ไข (Editor)</b> เป็นผู้จัดการ ทำได้ทุกอย่าง · <b>ผู้ร่วมใช้ (Contributor)</b> เป็นพนักงานเก็บเงิน ออกบิลและรับชำระได้ แต่ยกเลิกบิล ยกเว้นค่าปรับ ลบการชำระ แก้ตั้งค่า แคมเปญ และข้อมูลรถหรือคนขับไม่ได้</div>
+  <div class="filters"><label class="fld"><span>ตั้งแต่</span><input type="date" id="lg-f" data-f="lg.from" value="${f.from}"></label><label class="fld"><span>ถึง</span><input type="date" id="lg-t" data-f="lg.to" value="${f.to}"></label><label class="fld"><span>ประเภทรายการ</span><select id="lg-a" data-f="lg.a"><option value="">ทั้งหมด</option>${acts.map(a=>`<option ${f.a===a?'selected':''}>${esc(a)}</option>`).join('')}</select></label></div>
+  <section class="panel">${l.length?`<div class="tw"><table><thead><tr><th>เวลา</th><th>ผู้ทำรายการ</th><th>รายการ</th><th>รายละเอียด</th></tr></thead><tbody>${l.map(e=>{const dt=new Date(e.t);return `<tr><td class="nowrap">${fd(iso(dt))} <span class="num muted">${pad(dt.getHours())}:${pad(dt.getMinutes())}</span></td><td><div class="pp">${av(who(e.u))}<span>${esc(who(e.u))}</span></div></td><td><span class="pill ${risky.test(e.a)?'st-overdue':'st-open'}">${esc(e.a)}</span></td><td class="small">${esc(e.d)}</td></tr>`}).join('')}</tbody></table></div>`:'<div class="empty"><b>ยังไม่มีบันทึกในช่วงนี้</b>รายการจะถูกบันทึกอัตโนมัติเมื่อมีการใช้งาน</div>'}</section>`};
+
+/* ---------- Firebase mode (office system hosted outside Claude) ---------- */
+const FBV='10.12.2';let FB=null;S.payreq=[];S.requests=[];S.staff=[];
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('load '+src));document.head.appendChild(s)})}
+async function sha256(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+const normPhone=p=>{p=String(p||'').replace(/\D/g,'');if(p.startsWith('66'))p='0'+p.slice(2);return p};
+function fsAdapter(fs){const wrap=r=>{r.acquire=async({holder,ttlMs=30000})=>{try{return await fs.runTransaction(async tx=>{const s=await tx.get(r);const l=s.exists?s.data().lease:null;if(l&&l.exp>Date.now()&&l.holder!==holder)return {acquired:false};tx.set(r,{lease:{holder,exp:Date.now()+ttlMs}},{merge:true});return {acquired:true}})}catch(e){console.error(e);return {acquired:false}}};return r};
+  return {collection:p=>fs.collection(p),doc:p=>wrap(fs.doc(p))}}
+async function fbBoot(cfgFb){
+  await loadScript(`https://www.gstatic.com/firebasejs/${FBV}/firebase-app-compat.js`);
+  await Promise.all([loadScript(`https://www.gstatic.com/firebasejs/${FBV}/firebase-auth-compat.js`),loadScript(`https://www.gstatic.com/firebasejs/${FBV}/firebase-firestore-compat.js`)]);
+  firebase.initializeApp(cfgFb);FB={auth:firebase.auth(),fs:firebase.firestore(),cfg:cfgFb};
+  try{await FB.fs.enablePersistence({synchronizeTabs:true})}catch(e){}
+  FB.auth.onAuthStateChanged(async u=>{FB.unsubs?.forEach(f=>f());FB.unsubs=[];
+    if(!u){S.mode='login';S.ready=true;const b=await FB.fs.doc('meta/bootstrap').get().catch(()=>null);S.bootstrapped=!!(b&&b.exists);render();return}
+    const sd=await FB.fs.doc('staff/'+u.uid).get().catch(()=>null);
+    if(!sd||!sd.exists){S.mode='login';S.ready=true;S.notStaff=u.email;render();return}
+    const st=sd.data();S.me={id:u.uid,owner:st.role==='owner',manager:st.role==='owner'||st.role==='manager',email:u.email,name:st.name};S.notStaff=null;
+    DB=fsAdapter(FB.fs);S.mode='db';S.fb=true;S.ready=false;render();startDb();
+    const sub=(q,cb)=>FB.unsubs.push(q.onSnapshot(cb,e=>console.error(e)));
+    sub(FB.fs.collection('staff'),s=>{S.staff=s.docs.map(d=>({...d.data(),id:d.id}));S.staff.forEach(x=>S.names[x.id]=x.name||x.email);schedule()});
+    sub(FB.fs.collection('payreq').orderBy('createdAt','desc').limit(150),s=>{S.payreq=s.docs.map(d=>({...d.data(),id:d.id}));schedule()});
+    sub(FB.fs.collection('requests').orderBy('createdAt','desc').limit(150),s=>{S.requests=s.docs.map(d=>({...d.data(),id:d.id}));schedule()});
+  });
+}
+function loginHTML(){
+  if(S.notStaff)return `<div class="lg-wrap"><section class="panel"><h2>ไม่มีสิทธิ์เข้าระบบ</h2><div class="pb stack"><div>บัญชี <b>${esc(S.notStaff)}</b> ยังไม่ได้เป็นพนักงานในระบบ ให้เจ้าของระบบเพิ่มบัญชีนี้ที่เมนูตั้งค่า</div><div><button class="btn" data-act="fbLogout">ออกจากระบบ</button></div></div></section></div>`;
+  const first=!S.bootstrapped;
+  return `<div class="lg-wrap"><div class="ph"><div><h1>${first?'ตั้งค่าครั้งแรก':'เข้าสู่ระบบ'}</h1><p>${first?'สร้างบัญชีเจ้าของระบบ บัญชีนี้จะเพิ่มพนักงานคนอื่นได้':'ระบบเก็บค่าเช่าแท็กซี่ VIP สำหรับพนักงาน'}</p></div></div>
+  <form id="lgF" class="panel"><div class="pb frm">${first?'<label class="fld full"><span>ชื่อของคุณ</span><input type="text" name="name" required></label>':''}
+   <label class="fld full"><span>อีเมล</span><input type="text" name="email" inputmode="email" autocomplete="username" required></label>
+   <label class="fld full"><span>รหัสผ่าน${first?' (อย่างน้อย 8 ตัว)':''}</span><input type="password" name="pw" autocomplete="${first?'new-password':'current-password'}" required></label>
+   <div class="err full" id="lgErr"></div><div class="full"><button class="btn pri">${first?'สร้างบัญชีเจ้าของระบบ':'เข้าสู่ระบบ'}</button></div></div></form></div>`}
+async function fbLoginSubmit(F){const err=document.getElementById('lgErr');err.textContent='';const email=F.email.value.trim(),pw=F.pw.value;
+  try{if(S.bootstrapped){await FB.auth.signInWithEmailAndPassword(email,pw);return}
+    if(pw.length<8){err.textContent='รหัสผ่านอย่างน้อย 8 ตัว';return}
+    const c=await FB.auth.createUserWithEmailAndPassword(email,pw);const u=c.user;const b=FB.fs.batch();
+    b.set(FB.fs.doc('staff/'+u.uid),{name:F.name.value.trim(),email,role:'owner',createdAt:new Date().toISOString()});b.set(FB.fs.doc('meta/bootstrap'),{owner:u.uid,at:new Date().toISOString()});await b.commit();
+    location.reload();
+  }catch(e){console.error(e);err.textContent={'auth/invalid-credential':'อีเมลหรือรหัสผ่านไม่ถูกต้อง','auth/wrong-password':'อีเมลหรือรหัสผ่านไม่ถูกต้อง','auth/user-not-found':'ไม่พบบัญชีนี้','auth/email-already-in-use':'อีเมลนี้มีบัญชีแล้ว','auth/invalid-email':'รูปแบบอีเมลไม่ถูกต้อง','auth/too-many-requests':'ลองหลายครั้งเกินไป รอสักครู่'}[e.code]||'ทำรายการไม่สำเร็จ: '+(e.code||e.message)}}
+/* create an auth account without signing the current user out */
+async function createAccount(email,pw){const app=firebase.apps.find(a=>a.name==='sec')||firebase.initializeApp(FB.cfg,'sec');const c=await app.auth().createUserWithEmailAndPassword(email,pw);const id=c.user.uid;await app.auth().signOut();return id}
+
+/* driver app account (phone + PIN) */
+function appPinForm(did){if(!needMgr())return;const d=D(did);if(!S.fb){toast('ใช้ได้เมื่อเปิดระบบผ่าน Firebase','bad');return}
+  openModal(`${hdr('บัญชีแอป VIP Driver · '+esc(d.name))}<form id="apF"><div class="mb"><div class="frm">
+   <label class="fld"><span>เบอร์มือถือที่ใช้เข้าแอป</span><input type="tel" name="phone" value="${esc(d.phone||'')}" required></label>
+   <label class="fld"><span>PIN 6 หลัก</span><input type="text" name="pin" inputmode="numeric" maxlength="6" value="${String(Math.floor(100000+Math.random()*900000))}" required></label></div>
+   <div class="note small">${d.authUid?'คนขับคนนี้มีบัญชีแอปแล้ว การตั้ง PIN ใหม่จะสร้างบัญชีใหม่แทน และบัญชีเดิมจะเข้าแอปไม่ได้อีก':'แจ้งเบอร์และ PIN ให้คนขับเพื่อเข้าแอป คนขับเปลี่ยน PIN เองได้ในแอป'}</div><div class="err" id="apErr"></div></div>
+   <footer><button type="button" class="btn" data-act="close">ยกเลิก</button><button class="btn pri" id="apGo">${d.authUid?'ตั้ง PIN ใหม่':'เปิดบัญชีแอป'}</button></footer></form>`,'narrow');
+  const F=document.getElementById('apF');F.onsubmit=async e=>{e.preventDefault();const err=document.getElementById('apErr');const phone=normPhone(F.phone.value),pin=F.pin.value.trim();
+    if(phone.length<9){err.textContent='เบอร์มือถือไม่ถูกต้อง';return}if(!/^\d{6}$/.test(pin)){err.textContent='PIN ต้องเป็นตัวเลข 6 หลัก';return}
+    const clash=S.drivers.find(x=>x.id!==did&&normPhone(x.appPhone)===phone);if(clash){err.textContent='เบอร์นี้ใช้กับ '+clash.name+' แล้ว';return}
+    document.getElementById('apGo').disabled=true;
+    try{const email=`d-${did}-${Date.now().toString(36)}@driver.vip-taxi.app`.toLowerCase();const nu=await createAccount(email,pin);const key=await sha256('vip:'+phone);
+      const b=FB.fs.batch();b.set(FB.fs.doc('driverAuth/'+nu),{driverId:did});if(d.authUid)b.delete(FB.fs.doc('driverAuth/'+d.authUid));
+      if(d.appPhone&&normPhone(d.appPhone)!==phone)b.delete(FB.fs.doc('loginKey/'+await sha256('vip:'+normPhone(d.appPhone))));
+      b.set(FB.fs.doc('loginKey/'+key),{email});b.set(FB.fs.doc('drivers/'+did),{authUid:nu,appPhone:phone,appSince:today()},{merge:true});await b.commit();
+      log('ตั้งบัญชีแอปคนขับ',d.name);closeModal();
+      openModal(`${hdr('ส่งข้อมูลนี้ให้คนขับ')}<div class="mb"><div class="calc" style="flex-direction:column;align-items:flex-start"><div>แอป <b>VIP Driver</b></div><div>เบอร์: <b class="num">${esc(phone)}</b></div><div>PIN: <b class="num" style="font-size:22px">${esc(pin)}</b></div></div><div class="small muted">ระบบจะไม่แสดง PIN นี้อีก ถ้าลืมให้ตั้งใหม่</div></div><footer><button class="btn pri" data-act="close">เสร็จแล้ว</button></footer>`,'narrow');
+    }catch(x){console.error(x);err.textContent='สร้างบัญชีไม่สำเร็จ: '+(x.code||x.message);document.getElementById('apGo').disabled=false}};
+}
+
+/* inbox: slips and requests from the driver app */
+PAGES.inbox=()=>{const t=U.ib.tab;const pend=S.payreq.filter(p=>p.status==='pending'),preq=S.requests.filter(r=>r.status==='pending');
+  if(!S.fb)return `<div class="ph"><div><h1>คำขอจากคนขับ</h1><p>สลิปและคำขอที่คนขับส่งจากแอป VIP Driver</p></div></div><section class="panel"><div class="empty"><b>ใช้ได้เมื่อเปิดระบบผ่าน Firebase</b>หน้านี้เป็นเวอร์ชันบน Claude ซึ่งแอปคนขับเชื่อมต่อไม่ได้ ดูคู่มือในชุดโปรเจกต์เพื่อย้ายไปใช้ Firebase</div></section>`;
+  const list=t==='slip'?S.payreq:S.requests;const shown=list.filter(x=>U.ib.all||x.status==='pending');
+  return `<div class="ph"><div><h1>คำขอจากคนขับ</h1><p>ตรวจสลิปที่คนขับโอนผ่านแอป แล้วกดยืนยันเพื่อบันทึกรับชำระและออกใบเสร็จ อนุมัติคำขอลาและแจ้งรถเสียเพื่องดเก็บค่าเช่า</p></div></div>
+  ${kpis([{l:'สลิปรอตรวจ',v:pend.length,s:'฿'+money(pend.reduce((s,p)=>s+(+p.amount||0),0)),i:'wallet',c:pend.length?'k-amber':'ok'},{l:'คำขอรออนุมัติ',v:preq.length,i:'cal',c:preq.length?'k-violet':'ok'},{l:'คนขับที่มีบัญชีแอป',v:S.drivers.filter(d=>d.authUid&&d.status!=='inactive').length+' / '+S.drivers.filter(d=>d.status!=='inactive').length,i:'car'}])}
+  <div class="filters"><div class="tabs" style="margin:0"><a data-act="ibTab" data-k="slip" class="${t==='slip'?'on':''}">สลิปการโอน (${pend.length})</a><a data-act="ibTab" data-k="req" class="${t==='req'?'on':''}">ลา / รถเสีย (${preq.length})</a></div><label class="chk"><input type="checkbox" id="ib-all" data-f="ib.all" ${U.ib.all?'checked':''}> แสดงที่ตรวจแล้ว</label></div>
+  <section class="panel">${shown.length?`<div class="tw"><table><thead><tr><th>ส่งเมื่อ</th><th>คนขับ</th>${t==='slip'?'<th>บิล</th><th class="r">ยอดโอน</th>':'<th>ประเภท</th><th>วันที่ขอ</th><th>รายละเอียด</th>'}<th>สถานะ</th><th></th></tr></thead><tbody>
+   ${shown.map(x=>{const dt=new Date(x.createdAt||0);return `<tr class="click" data-act="${t==='slip'?'slipView':'reqView'}" data-id="${x.id}"><td class="nowrap">${fd(iso(dt))} <span class="muted num">${pad(dt.getHours())}:${pad(dt.getMinutes())}</span></td><td><div class="pp">${av(dName(x.driverId))}<span>${esc(dName(x.driverId))}</span></div></td>
+   ${t==='slip'?`<td class="small">${(x.billIds||[]).map(id=>esc(S.bills.find(b=>b.id===id)?.no||'')).join(', ')}</td><td class="r num">${money(x.amount)}</td>`:`<td><span class="tag">${x.kind==='leave'?'ลาหยุด':'รถเสีย'}</span></td><td class="nowrap">${fd(x.from)}${x.to&&x.to!==x.from?' – '+fd(x.to):''}</td><td class="small">${esc(x.reason||'')}</td>`}
+   <td><span class="pill ${x.status==='pending'?'st-partial':x.status==='approved'?'st-paid':'st-overdue'}">${{pending:'รอตรวจ',approved:'อนุมัติแล้ว',rejected:'ไม่อนุมัติ'}[x.status]}</span></td><td>${x.status==='pending'?'<button class="btn sm pri">ตรวจ</button>':''}</td></tr>`}).join('')}</tbody></table></div>`:`<div class="empty"><b>${t==='slip'?'ไม่มีสลิปรอตรวจ':'ไม่มีคำขอรออนุมัติ'}</b>รายการใหม่จากแอปคนขับจะขึ้นที่นี่ทันที</div>`}</section>`};
+function slipView(id){const p=S.payreq.find(x=>x.id===id);if(!p)return;const bills=(p.billIds||[]).map(i=>S.bills.find(b=>b.id===i)).filter(Boolean);const bal=r2(bills.reduce((s,b)=>s+bBal(b),0));
+  openModal(`${hdr('ตรวจสลิป · '+esc(dName(p.driverId)))}<div class="mb"><div class="grid2" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+   <div>${p.slip?`<img src="${p.slip}" alt="สลิปการโอน" style="width:100%;border-radius:12px;border:1px solid var(--line)">`:'<div class="empty"><b>ไม่มีรูปสลิป</b></div>'}</div>
+   <div class="stack"><div class="calc"><span>ยอดที่คนขับแจ้ง</span><span class="tot">฿${money(p.amount)}</span></div>
+    <div class="panel">${bills.map(b=>`<div class="rowline"><div class="who"><b class="num">${esc(b.no)}</b><small>${TYPE[b.type].t} · ${esc(billDesc(b))}</small></div><span class="num">฿${money(bBal(b))}</span></div>`).join('')||'<div class="pb muted">ไม่พบบิล</div>'}</div>
+    <div class="small muted">ยอดค้างของบิลเหล่านี้ตอนนี้ ฿${money(bal)}${p.note?` · หมายเหตุจากคนขับ: ${esc(p.note)}`:''}</div>
+    ${p.status==='pending'?`<form id="svF" class="frm"><label class="fld"><span>ยอดที่ได้รับจริง</span><input type="number" name="amt" step="0.01" min="0.01" value="${Math.min(+p.amount||0,bal)}"></label><label class="fld"><span>วันที่โอน</span><input type="date" name="date" value="${(p.createdAt||'').slice(0,10)||today()}"></label><label class="fld full"><span>เหตุผล (ถ้าไม่อนุมัติ)</span><input type="text" name="why" placeholder="เช่น ยอดในสลิปไม่ตรง"></label></form><div class="err" id="svErr"></div>`
+     :`<div class="note">${p.status==='approved'?'อนุมัติแล้ว ใบเสร็จ '+esc(p.receiptNo||''):'ไม่อนุมัติ: '+esc(p.rejectReason||'')} โดย ${esc(who(p.reviewedBy))}</div>`}
+   </div></div></div>${p.status==='pending'?`<footer><button class="btn dng" data-act="slipNo" data-id="${p.id}">ไม่อนุมัติ</button><button class="btn pri" data-act="slipYes" data-id="${p.id}">ยืนยันรับเงินและออกใบเสร็จ</button></footer>`:''}`)}
+async function slipDecide(id,ok){const p=S.payreq.find(x=>x.id===id);const F=document.getElementById('svF'),err=document.getElementById('svErr');
+  if(!ok){const why=F.why.value.trim();if(!why){err.textContent='ใส่เหตุผลให้คนขับทราบ';return}
+    if(await safe(()=>FB.fs.doc('payreq/'+id).update({status:'rejected',rejectReason:why,reviewedBy:S.me.id,reviewedAt:new Date().toISOString()}),'แจ้งไม่อนุมัติแล้ว')){log('ไม่อนุมัติสลิป',`${dName(p.driverId)} ฿${money(p.amount)} ${why}`);closeModal()}return}
+  let left=r2(+F.amt.value||0);if(left<=0){err.textContent='ใส่ยอดที่ได้รับ';return}
+  const bills=(p.billIds||[]).map(i=>S.bills.find(b=>b.id===i)).filter(b=>b&&bBal(b)>0).sort((a,b)=>((a.dueDate||a.issueDate)+a.no).localeCompare((b.dueDate||b.issueDate)+b.no));
+  const max=r2(bills.reduce((s,b)=>s+bBal(b),0));if(left>max+0.004){err.textContent=`ยอดเกินยอดค้างของบิล ฿${money(max)} บันทึกส่วนเกินแยกที่หน้ารับชำระหลายบิล`;return}
+  const rc=nextReceipt();const date=F.date.value||today();
+  const okk=await safe(async()=>{for(const b of bills){if(left<=0)break;const a=r2(Math.min(left,bBal(b)));left=r2(left-a);
+      await put('bills',{...b,payments:[...(b.payments||[]),{id:uid(),amount:a,date,method:'โอนเงิน',note:'สลิปจากแอปคนขับ',receiptNo:rc,by:S.me.id,payreq:id}],updatedAt:new Date().toISOString()})}
+    await FB.fs.doc('payreq/'+id).update({status:'approved',receiptNo:rc,approvedAmount:r2(+F.amt.value),reviewedBy:S.me.id,reviewedAt:new Date().toISOString()})},`รับชำระแล้ว · ใบเสร็จ ${rc}`);
+  if(okk){log('อนุมัติสลิป',`${rc} ${dName(p.driverId)} ฿${money(F.amt.value)}`);closeModal();setTimeout(()=>viewReceipt(rc),120)}}
+function reqView(id){const r=S.requests.find(x=>x.id===id);if(!r)return;const car=C(r.carId)||carOf(r.driverId);
+  openModal(`${hdr((r.kind==='leave'?'คำขอลาหยุด':'แจ้งรถเสีย')+' · '+esc(dName(r.driverId)))}<div class="mb">
+   <div class="panel"><div class="rowline"><span>วันที่ขอ</span><b>${fd(r.from)}${r.to&&r.to!==r.from?' – '+fd(r.to):''} (${diffDays(r.from,r.to||r.from)+1} วัน)</b></div><div class="rowline"><span>รถ</span>${plate(car)}</div><div class="rowline"><span>รายละเอียด</span><span>${esc(r.reason||'')}</span></div></div>
+   ${r.photo?`<img src="${r.photo}" alt="รูปที่คนขับแนบ" style="max-width:100%;border-radius:12px">`:''}
+   ${r.status==='pending'?`<label class="fld"><span>ข้อความตอบกลับคนขับ</span><input type="text" id="rqReply" placeholder="ไม่บังคับ"></label><label class="chk"><input type="checkbox" id="rqOff" checked> งดเก็บค่าเช่าในวันที่ขอ (${r.kind==='leave'?'เฉพาะคนขับคนนี้':'เฉพาะรถคันนี้'})</label><div class="small muted">บิลค่าเช่าที่ออกไปแล้วในช่วงนี้ไม่เปลี่ยนเอง ให้ยกเลิกหรือแก้บิลเหล่านั้นถ้าต้องการคืนค่าเช่า</div>`
+    :`<div class="note">${r.status==='approved'?'อนุมัติแล้ว':'ไม่อนุมัติ'} โดย ${esc(who(r.reviewedBy))}${r.reply?' · '+esc(r.reply):''}</div>`}</div>
+   ${r.status==='pending'?`<footer><button class="btn dng" data-act="reqNo" data-id="${id}">ไม่อนุมัติ</button><button class="btn pri" data-act="reqYes" data-id="${id}">อนุมัติ</button></footer>`:''}`)}
+async function reqDecide(id,ok){if(!needMgr())return;const r=S.requests.find(x=>x.id===id);const reply=document.getElementById('rqReply').value.trim(),off=document.getElementById('rqOff').checked;
+  const okk=await safe(async()=>{if(ok&&off){const car=C(r.carId)||carOf(r.driverId);await put('offdays',r.kind==='leave'?{kind:'driver',driverId:r.driverId,carId:null,from:r.from,to:r.to||r.from,reason:'ลา: '+r.reason,fromRequest:id}:{kind:'car',carId:car?.id||null,driverId:null,from:r.from,to:r.to||r.from,reason:'รถเสีย: '+r.reason,fromRequest:id})}
+    await FB.fs.doc('requests/'+id).update({status:ok?'approved':'rejected',reply,reviewedBy:S.me.id,reviewedAt:new Date().toISOString()})},ok?'อนุมัติแล้ว':'แจ้งไม่อนุมัติแล้ว');
+  if(okk){log(ok?'อนุมัติคำขอ':'ไม่อนุมัติคำขอ',`${r.kind==='leave'?'ลา':'รถเสีย'} ${dName(r.driverId)} ${fd(r.from)}`);closeModal()}}
+
+/* staff management */
+function staffPanel(){if(!S.fb)return '';const roles={owner:'เจ้าของระบบ',manager:'ผู้จัดการ',cashier:'พนักงานเก็บเงิน'};
+  return `<section class="panel"><h2>พนักงานที่เข้าระบบได้ ${mgr()?'<button type="button" class="btn sm pri" data-act="staffForm">+ เพิ่มพนักงาน</button>':''}</h2><div class="tw"><table><thead><tr><th>ชื่อ</th><th>อีเมล</th><th>สิทธิ์</th><th></th></tr></thead><tbody>
+  ${S.staff.map(x=>`<tr><td><div class="pp">${av(x.name||x.email)}<span>${esc(x.name||'')}</span></div></td><td class="small">${esc(x.email||'')}</td><td><span class="tag">${roles[x.role]||x.role}</span></td><td>${S.me.owner&&x.role!=='owner'?`<button type="button" class="btn sm" data-act="staffRole" data-id="${x.id}">${x.role==='manager'?'ลดเป็นพนักงานเก็บเงิน':'ตั้งเป็นผู้จัดการ'}</button> <button type="button" class="btn sm dng" data-act="staffDel" data-id="${x.id}">ถอนสิทธิ์</button>`:''}</td></tr>`).join('')}</tbody></table></div>
+  <div class="pb small muted">ผู้จัดการทำได้ทุกอย่าง · พนักงานเก็บเงินออกบิล รับชำระ และตรวจสลิปได้ แต่ยกเลิกบิล ยกเว้นค่าปรับ ลบการชำระ แก้ตั้งค่า แคมเปญ และข้อมูลรถหรือคนขับไม่ได้ สิทธิ์ถูกล็อกในฐานข้อมูลด้วยกฎของ Firebase</div></section>`}
+function staffForm(){if(!needMgr())return;openModal(`${hdr('เพิ่มพนักงาน')}<form id="sfF"><div class="mb"><div class="frm"><label class="fld full"><span>ชื่อ</span><input type="text" name="name" required></label><label class="fld full"><span>อีเมล</span><input type="text" name="email" inputmode="email" required></label><label class="fld"><span>รหัสผ่านเริ่มต้น (8 ตัวขึ้นไป)</span><input type="text" name="pw" required></label><label class="fld"><span>สิทธิ์</span><select name="role"><option value="cashier">พนักงานเก็บเงิน</option><option value="manager">ผู้จัดการ</option></select></label></div><div class="err" id="sfErr"></div></div><footer><button type="button" class="btn" data-act="close">ยกเลิก</button><button class="btn pri" id="sfGo">เพิ่มพนักงาน</button></footer></form>`,'narrow');
+  const F=document.getElementById('sfF');F.onsubmit=async e=>{e.preventDefault();const err=document.getElementById('sfErr');if(F.pw.value.length<8){err.textContent='รหัสผ่านอย่างน้อย 8 ตัว';return}
+    document.getElementById('sfGo').disabled=true;try{const id=await createAccount(F.email.value.trim(),F.pw.value);await FB.fs.doc('staff/'+id).set({name:F.name.value.trim(),email:F.email.value.trim(),role:F.role.value,createdAt:new Date().toISOString()});log('เพิ่มพนักงาน',F.name.value+' '+F.role.value);closeModal();toast('เพิ่มพนักงานแล้ว แจ้งอีเมลและรหัสผ่านให้พนักงาน')}
+    catch(x){console.error(x);err.textContent=x.code==='auth/email-already-in-use'?'อีเมลนี้มีบัญชีแล้ว':'เพิ่มไม่สำเร็จ: '+(x.code||x.message);document.getElementById('sfGo').disabled=false}}}
+
+/* export / import all data as JSON */
+const EXPORT_COLS=['cars','drivers','bills','swaps','maint','campaigns','offdays'];
+function exportJSON(){const c={};EXPORT_COLS.forEach(k=>{c[k]={};S[k].forEach(d=>{const {id,...x}=d;c[k][id]=x})});if(S.config)c.config={main:S.config};
+  saveFile(`vip-taxi-data-${today()}.json`,JSON.stringify({format:'vip-taxi-export-v1',exportedAt:new Date().toISOString(),collections:c},null,1))}
+async function importJSON(file){if(!needMgr())return;let j;try{j=JSON.parse(await file.text())}catch(e){toast('ไฟล์ไม่ใช่ JSON ที่ถูกต้อง','bad');return}
+  const cols=j.collections||{};const n=Object.values(cols).reduce((s,o)=>s+Object.keys(o).length,0);if(!n){toast('ไม่พบข้อมูลในไฟล์','bad');return}
+  if(!await confirmBox(`นำเข้าข้อมูล ${n} รายการ? รายการที่มีรหัสซ้ำกับของเดิมจะถูกเขียนทับ`,'นำเข้าข้อมูล'))return;
+  const ok=await safe(async()=>{for(const [k,docs] of Object.entries(cols)){const ent=Object.entries(docs);
+      if(k==='config'){if(docs.main)await putConfig(docs.main);continue}if(!EXPORT_COLS.includes(k))continue;
+      for(let i=0;i<ent.length;i+=10)await Promise.all(ent.slice(i,i+10).map(([id,d])=>put(k,{...d,id})))}},`นำเข้าข้อมูล ${n} รายการแล้ว`);
+  if(ok)log('นำเข้าข้อมูล',n+' รายการ')}
+
+/* ---------- downloads ---------- */
+async function saveFile(filename,data){
+  if(!DL){try{const blob=data instanceof Blob?data:new Blob([data],{type:/\.csv$/.test(filename)?'text/csv;charset=utf-8':/\.json$/.test(filename)?'application/json':'text/html;charset=utf-8'});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast('ดาวน์โหลดไฟล์แล้ว')}catch(e){toast('ดาวน์โหลดไฟล์ไม่ได้ในหน้าที่เปิดอยู่นี้','bad')}return}
+  try{const r=await DL.save({filename,data});if(r.status==='saved')toast('บันทึกไฟล์แล้ว')}catch(e){if(e?.code!=='declined')toast('ดาวน์โหลดไม่สำเร็จ','bad')}
+}
+function csv(rep){const q=v=>{const s=String(v??'');return /[",\n]/.test(s)?`"${s.replace(/"/g,'""')}"`:s};return '﻿'+[rep.head,...rep.rows].map(r=>r.map(q).join(',')).join('\r\n')}
+function billDoc(b){
+  const css=`body{font-family:"IBM Plex Sans Thai",Tahoma,sans-serif;color:#14171c;max-width:760px;margin:24px auto;padding:0 16px;font-size:14px}table{border-collapse:collapse;width:100%}th,td{padding:8px;border-bottom:1px solid #d6dae1;text-align:left}.r{text-align:right}.top{display:flex;justify-content:space-between;border-bottom:2px solid #14171c;padding-bottom:12px;gap:16px}.meta{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;margin:12px 0}.meta span{color:#5b6270;margin-right:8px}.words{background:#eef0f3;padding:6px 10px;margin-top:8px}.small{font-size:12.5px}.muted{color:#5b6270}.stamp{border:2px solid;padding:2px 10px;display:inline-block}.pill{font-size:12px}.sign{display:flex;justify-content:space-between;margin-top:56px;gap:24px}.sign div{flex:1;text-align:center;border-top:1px solid #14171c;padding-top:6px}`;
+  return `<!doctype html><html lang="th"><head><meta charset="utf-8"><title>${esc(b.no)}</title><style>${css}</style></head><body>${invoiceInner(b).replace(/class="inv"/,'')}${bBal(b)>0?ppBlock(bBal(b)):''}<div class="sign"><div>ผู้รับเงิน</div><div>ผู้ชำระเงิน (คนขับ)</div></div></body></html>`;
+}
+
+/* ---------- actions ---------- */
+const ACT={
+  go:d=>{S.page=d.p;try{history.replaceState(null,'','#'+d.p)}catch(e){}closeModal();render();window.scrollTo(0,0)},
+  close:closeModal,
+  ovClose:(d,el,e)=>{if(e.target===el)closeModal()},
+  view:(d,el,e)=>{if(e.target.closest('[data-act="pay"]')&&e.target.closest('[data-act="pay"]')!==el)return;viewBill(d.id)},
+  pay:(d,el,e)=>{e.stopPropagation();payForm(d.id)},
+  newBill:d=>billForm(d.t),
+  editBill:d=>{const b=S.bills.find(x=>x.id===d.id);billForm(b.type,b)},
+  batch:()=>batchForm(),
+  clrMonth:d=>{U.bill[d.t].month='';render()},
+  addItem:()=>{document.getElementById('items').insertAdjacentHTML('beforeend',itemRow());M.calc&&M.calc()},
+  rmItem:(d,el)=>{const rows=document.querySelectorAll('#items .row');if(rows.length>1)el.closest('.row').remove();M.calc&&M.calc()},
+  rmPay:async d=>{if(!needMgr())return;const b=S.bills.find(x=>x.id===d.id);const p=b.payments.find(x=>x.id===d.p);
+    if(!await confirmBox(`ลบรายการรับชำระ ฿${money(p.amount)} วันที่ ${fd(p.date)} ออกจากบิล ${esc(b.no)}?`,'ลบรายการ',true)){viewBill(b.id);return}
+    let saved;await safe(async()=>{saved=await put('bills',{...b,payments:b.payments.filter(x=>x.id!==d.p)})},'ลบรายการชำระแล้ว');log('ลบรายการชำระ',`บิล ${b.no} ฿${money(p.amount)} ${p.receiptNo||''}`);viewBill(b.id,saved)},
+  voidBill:async d=>{if(!needMgr())return;const b=S.bills.find(x=>x.id===d.id);
+    if(!await confirmBox(`ยกเลิกบิล <b>${esc(b.no)}</b> ของ ${esc(dName(b.driverId))} ยอด ฿${money(bTotal(b))}? บิลที่ยกเลิกจะไม่นับในยอดค้างและรายงาน`,'ยกเลิกบิล',true)){viewBill(b.id);return}
+    let saved;await safe(async()=>{saved=await put('bills',{...b,void:true,voidDate:today()})},'ยกเลิกบิลแล้ว');log('ยกเลิกบิล',`${b.no} ${dName(b.driverId)} ฿${money(bTotal(b))}`);viewBill(b.id,saved)},
+  dlBill:d=>{const b=S.bills.find(x=>x.id===d.id);saveFile(`${b.no}.html`,billDoc(b))},
+  csv:()=>{if(R.cur)saveFile(R.cur.name+'.csv',csv(R.cur))},
+  repTab:d=>{U.rep.tab=d.k;render()},
+  multiPay:d=>multiPay(d.id),
+  fbLogout:()=>{FB.auth.signOut().then(()=>location.reload())},
+  ibTab:d=>{U.ib.tab=d.k;render()},
+  slipView:d=>slipView(d.id),slipYes:d=>slipDecide(d.id,true),slipNo:d=>slipDecide(d.id,false),
+  reqView:d=>reqView(d.id),reqYes:d=>reqDecide(d.id,true),reqNo:d=>reqDecide(d.id,false),
+  appPin:d=>appPinForm(d.id),
+  staffForm:()=>staffForm(),
+  staffRole:async d=>{const x=S.staff.find(y=>y.id===d.id);const nr=x.role==='manager'?'cashier':'manager';if(await safe(()=>FB.fs.doc('staff/'+d.id).update({role:nr}),'เปลี่ยนสิทธิ์แล้ว'))log('เปลี่ยนสิทธิ์พนักงาน',`${x.name} → ${nr}`)},
+  staffDel:async d=>{const x=S.staff.find(y=>y.id===d.id);if(!await confirmBox(`ถอนสิทธิ์ ${esc(x.name||x.email)} ออกจากระบบ?`,'ถอนสิทธิ์',true))return;if(await safe(()=>FB.fs.doc('staff/'+d.id).delete(),'ถอนสิทธิ์แล้ว'))log('ถอนสิทธิ์พนักงาน',x.name||x.email)},
+  exportJSON:()=>exportJSON(),
+  receipt:(d,el,e)=>{e.stopPropagation?.();viewReceipt(d.no)},
+  dlReceipt:d=>{const r=receipts().find(x=>x.no===d.no);if(r)saveFile(`${r.no}.html`,docWrap(r.no,receiptInner(r),['ผู้รับเงิน','ผู้ชำระเงิน']))},
+  settle:d=>settleForm(d.id),
+  settleView:d=>settleView(d.id),
+  dlSettle:d=>{const x=D(d.id);if(x?.settlement)saveFile(`ปิดบัญชี-${x.code||x.name}.html`,docWrap('ปิดบัญชี '+x.name,settleInner(x),['ผู้จ่ายเงิน (บริษัท)','ผู้รับเงินคืน (คนขับ)']))},
+  stmt:d=>stmtView(d.id),
+  dlStmt:d=>{const f=document.getElementById('st-f')?.value||thisMonth()+'-01',t=document.getElementById('st-t')?.value||today();const x=D(d.id);saveFile(`สรุปยอด-${x?.code||x?.name}-${f}-${t}.html`,docWrap('สรุปยอด '+(x?.name||''),stmtInner(d.id,f,t),null))},
+  maintForm:d=>maintForm(d.id),
+  delMaint:async d=>{if(!needMgr())return;const m=S.maint.find(x=>x.id===d.id);if(!await confirmBox(`ลบบันทึกการซ่อม "${esc(m.desc)}"? บิลที่เรียกเก็บจากคนขับจะไม่ถูกลบ`,'ลบ',true)){maintForm(d.id);return}if(await safe(()=>del('maint',d.id),'ลบแล้ว'))log('ลบบันทึกซ่อม',m.desc)},
+  offForm:d=>offForm(d.id),
+  delOff:async d=>{if(!needMgr())return;const o=S.offdays.find(x=>x.id===d.id);if(!await confirmBox('ลบวันงดเก็บค่าเช่านี้?','ลบ',true)){offForm(d.id);return}if(await safe(()=>del('offdays',d.id),'ลบแล้ว'))log('ลบวันงดเก็บ',`${fd(o.from)} ${o.reason||''}`)},
+  campForm:d=>campForm(d.id),
+  delCamp:async d=>{if(!needMgr())return;const c=S.campaigns.find(x=>x.id===d.id);if(!await confirmBox(`ลบแคมเปญ ${esc(c.name)}? ส่วนลดในบิลที่ออกไปแล้วยังคงอยู่`,'ลบ',true)){campForm(d.id);return}if(await safe(()=>del('campaigns',d.id),'ลบแคมเปญแล้ว'))log('ลบแคมเปญ',c.name)},
+  autoNow:()=>{autoBlocked=false;autoIssue(true)},
+  waive:async d=>{if(!needMgr())return;const b=S.bills.find(x=>x.id===d.id);const fee=bFee(b);
+    if(!await confirmBox(`ยกเว้นค่าปรับชำระล่าช้า ฿${money(fee)} ของบิล <b>${esc(b.no)}</b>?`,'ยกเว้นค่าปรับ')){viewBill(b.id);return}
+    let saved;await safe(async()=>{saved=await put('bills',{...b,waiveLate:true})},'ยกเว้นค่าปรับแล้ว');log('ยกเว้นค่าปรับ',`${b.no} ฿${money(fee)}`);viewBill(b.id,saved)},
+  unwaive:async d=>{if(!needMgr())return;const b=S.bills.find(x=>x.id===d.id);let saved;await safe(async()=>{saved=await put('bills',{...b,waiveLate:false})},'คิดค่าปรับตามปกติแล้ว');log('ยกเลิกการยกเว้นค่าปรับ',b.no);viewBill(b.id,saved)},
+  fleetTab:d=>{U.fleet.tab=d.k;render()},
+  mShift:d=>{const [y,m]=U.sched.month.split('-').map(Number);const n=new Date(y,m-1+(+d.d),1);U.sched.month=`${n.getFullYear()}-${pad(n.getMonth()+1)}`;render()},
+  carForm:d=>{if(needMgr())carForm(d.id)},
+  drvForm:d=>{if(needMgr())drvForm(d.id)},
+  delCar:async d=>{if(!needMgr())return;const c=C(d.id);if(S.bills.some(b=>b.carId===d.id)||driverOn(d.id)){toast('ลบไม่ได้ รถคันนี้มีบิลหรือคนขับผูกอยู่ ให้เปลี่ยนสถานะเป็นเลิกใช้แทน','bad');return}
+    if(await confirmBox(`ลบรถ ${esc(c.plate)} ออกจากระบบ?`,'ลบรถ',true))await safe(()=>del('cars',d.id),'ลบรถแล้ว')},
+  doSwap:async()=>{if(!needMgr())return;const f=U.swap,car=C(f.carId),nd=D(f.newId);if(!car||!nd)return;const old=driverOn(car.id);
+    const other=nd.carId&&nd.carId!==car.id?nd.carId:null;
+    const msg=other?`สลับรถระหว่าง ${esc(nd.name)} และ ${old?esc(old.name):'(รถว่าง)'} มีผล ${fd(f.date)}`:`ให้ ${esc(nd.name)} ขับ ${esc(car.plate)} ${old?'แทน '+esc(old.name):''} มีผล ${fd(f.date)}`;
+    if(!await confirmBox(msg+'?','ยืนยันเปลี่ยนคนขับ'))return;
+    const ok=await safe(async()=>{
+      await put('drivers',{...nd,carId:car.id,status:'active',since:f.date});
+      if(old){if(other)await put('drivers',{...old,carId:other,since:f.date});else await put('drivers',{...old,carId:null,status:f.endOld?'inactive':old.status})}
+      await put('swaps',{date:f.date,carId:car.id,fromDriverId:old?.id||null,toDriverId:nd.id,otherCarId:other,mode:other?'swap':'replace',reason:f.reason,note:f.note.trim(),createdAt:new Date().toISOString()});
+    },'เปลี่ยนคนขับเรียบร้อย');
+    if(ok){log('เปลี่ยนคนขับ',`${car.plate}: ${old?old.name:'ว่าง'} → ${nd.name}${other?' (สลับรถ)':''}`);U.swap={...U.swap,carId:'',newId:'',note:'',endOld:false};render()}},
+  clearSample:async()=>{if(!needMgr())return;const list=COLS.flatMap(k=>S[k].filter(x=>x.sample).map(x=>[k,x.id]));
+    if(!await confirmBox(`ลบข้อมูลตัวอย่าง ${list.length} รายการ? ข้อมูลที่คุณเพิ่มเองจะไม่ถูกลบ`,'ลบข้อมูลตัวอย่าง',true))return;
+    await safe(async()=>{for(let i=0;i<list.length;i+=10)await Promise.all(list.slice(i,i+10).map(([k,id])=>del(k,id)))},'ลบข้อมูลตัวอย่างแล้ว')}
+};
+document.addEventListener('click',e=>{const a=e.target.closest('[data-act]');if(!a)return;const fn=ACT[a.dataset.act];if(!fn)return;if(a.tagName==='A')e.preventDefault();
+  if(a.dataset.act==='view'&&e.target.closest('button[data-act="pay"]'))return;fn(a.dataset,a,e)});
+document.addEventListener('input',e=>{const el=e.target;
+  if(el.dataset.f){setPath(U,el.dataset.f,el.type==='checkbox'?el.checked:el.value);if(el.dataset.rr!=='0'&&el.type!=='date'&&el.type!=='month')render()}
+  if(el.closest('#billForm')&&M.calc&&('calc' in el.dataset))M.calc(el.dataset.calc)});
+document.addEventListener('change',e=>{const el=e.target;
+  if(el.id==='importFile'&&el.files[0]){importJSON(el.files[0]);el.value='';return}
+  if(el.dataset.f&&(el.type==='date'||el.type==='month'||el.tagName==='SELECT'||el.type==='checkbox')){setPath(U,el.dataset.f,el.type==='checkbox'?el.checked:el.value);render()}
+  if(el.closest('#billForm')&&M.calc&&el.tagName==='SELECT')M.calc(el.dataset.calc)});
+document.addEventListener('submit',async e=>{if(e.target.id!=='setForm')return;e.preventDefault();if(!needMgr())return;const F=e.target;const lines=s=>s.split('\n').map(x=>x.trim()).filter(Boolean);
+  const ok=await safe(()=>putConfig({...(S.config||{}),company:F.company.value.trim(),address:F.address.value.trim(),phone:F.phone.value.trim(),taxId:F.taxId.value.trim(),rentDueDays:+F.rentDueDays.value||0,otherDueDays:+F.otherDueDays.value||0,insuranceTypes:lines(F.insuranceTypes.value),otherTypes:lines(F.otherTypes.value),
+    autoRent:F.autoRent.checked,promptpay:F.promptpay.value.replace(/\D/g,''),promptpayName:F.promptpayName.value.trim(),expiryWarnDays:+F.expiryWarnDays.value||30,autoTime:F.autoTime.value||'06:00',autoFrom:F.autoFrom.value||'',
+    late:{on:F.lateOn.checked,types:[...F.querySelectorAll('[name=lateType]:checked')].map(x=>x.value),mode:F.lateMode.value,amount:+F.lateAmount.value||0,grace:+F.lateGrace.value||0,cap:+F.lateCap.value||0}}),'บันทึกการตั้งค่าแล้ว');
+  if(ok){log('แก้ไขการตั้งค่า','');setTimeout(()=>autoIssue(),800)}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.querySelector('.ov'))closeModal()});
+
+/* ---------- init ---------- */
+(function(){const h=(location.hash||'').slice(1);if(PAGES[h])S.page=h})();
+async function init(){
+  render();
+  let db=null,dl=null,us=null;
+  try{if(window.claude?.use)[db,dl,us]=await Promise.all([window.claude.use('db'),window.claude.use('downloads'),window.claude.use('user')])}catch(e){}
+  DB=db;DL=dl;USER=us;
+  if(USER){try{const [own,ed,id]=await Promise.all([USER.isOwner(),USER.canEdit(),USER.id()]);S.me={id,owner:!!own,manager:!!(own||ed)};resolveNames([id])}catch(e){}}
+  setInterval(()=>autoIssue(),60000);
+  if(DB){S.mode='db';startDb()}
+  else if(window.FIREBASE_CONFIG&&window.FIREBASE_CONFIG.apiKey){try{await fbBoot(window.FIREBASE_CONFIG)}catch(e){console.error(e);document.getElementById('main').innerHTML='<div class="loading">เชื่อมต่อ Firebase ไม่ได้ ตรวจอินเทอร์เน็ตและไฟล์ firebase-config.js</div>'}}
+  else{S.mode='local';loadLocal();S.ready=true;render();setTimeout(()=>autoIssue(),1500)}
+}
+function startDb(){const reg=f=>{if(FB&&FB.unsubs)FB.unsubs.push(f)};
+    const pending=new Set([...COLS,'config','auto']);
+    const done=k=>{pending.delete(k);if(!pending.size&&!S.ready){S.ready=true;setTimeout(()=>autoIssue(),1500)}schedule()};
+    const onErr=e=>toast('เชื่อมต่อข้อมูลไม่สำเร็จ ลองรีเฟรชหน้า','bad');
+    COLS.forEach(c=>reg(DB.collection(c).onSnapshot(s=>{S[c]=s.docs.map(d=>({...d.data(),id:d.id}));done(c)},onErr)));
+    reg(DB.doc('config/main').onSnapshot(s=>{S.config=s.exists?s.data():null;done('config')},onErr));
+    reg(DB.doc('state/auto').onSnapshot(s=>{S.auto=s.exists?s.data():{};done('auto')},()=>done('auto')));
+    reg(DB.collection('logs').orderBy('date','desc').limit(62).onSnapshot(s=>{S.logs=s.docs.map(d=>({...d.data(),id:d.id}));schedule()},()=>{}));
+}
+init();
+</script>
+
+</body>
+</html>

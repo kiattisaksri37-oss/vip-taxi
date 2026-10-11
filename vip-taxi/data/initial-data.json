@@ -1,0 +1,1233 @@
+{
+ "format": "vip-taxi-export-v1",
+ "exportedAt": "2026-10-11",
+ "collections": {
+  "bills": {
+   "r-d1-03": {
+    "carId": "c1",
+    "createdAt": "2026-10-03T08:00:00Z",
+    "discount": 0,
+    "driverId": "d1",
+    "dueDate": "2026-10-03",
+    "from": "2026-10-03",
+    "issueDate": "2026-10-03",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2101 3 ต.ค. 2569",
+      "price": 1200,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0007",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1200,
+      "date": "2026-10-03",
+      "id": "pd13",
+      "method": "เงินสด",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-03",
+    "type": "rent"
+   },
+   "o-1": {
+    "carId": "c2",
+    "category": "ค่าซ่อมบำรุง",
+    "createdAt": "2026-10-05T09:00:00Z",
+    "discount": 0,
+    "driverId": "d2",
+    "dueDate": "2026-10-12",
+    "issueDate": "2026-10-05",
+    "items": [
+     {
+      "desc": "เปลี่ยนผ้าเบรกหน้า",
+      "price": 1800,
+      "qty": 1
+     }
+    ],
+    "no": "OT6910-0001",
+    "note": "",
+    "payments": [
+     {
+      "amount": 1000,
+      "date": "2026-10-06",
+      "id": "po1",
+      "method": "เงินสด",
+      "note": "ผ่อนงวดแรก"
+     }
+    ],
+    "period": "ใบสั่งซ่อม 6910-14",
+    "sample": true,
+    "type": "other"
+   },
+   "i-3": {
+    "carId": "c3",
+    "category": "พ.ร.บ.",
+    "createdAt": "2026-10-04T09:00:00Z",
+    "discount": 0,
+    "driverId": "d3",
+    "dueDate": "2026-10-15",
+    "issueDate": "2026-10-04",
+    "items": [
+     {
+      "desc": "พ.ร.บ. รถยนต์รับจ้าง",
+      "price": 650,
+      "qty": 1
+     }
+    ],
+    "no": "IN6910-0003",
+    "note": "",
+    "payments": [],
+    "period": "ต.ค. 2569 – ก.ย. 2570",
+    "sample": true,
+    "type": "insurance"
+   },
+   "r-d3-05": {
+    "carId": "c3",
+    "createdAt": "2026-10-05T08:00:00Z",
+    "discount": 0,
+    "driverId": "d3",
+    "dueDate": "2026-10-05",
+    "from": "2026-10-05",
+    "issueDate": "2026-10-05",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 2ขค 3203 5 ต.ค. 2569",
+      "price": 1100,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0015",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1100,
+      "date": "2026-10-05",
+      "id": "pd35",
+      "method": "เงินสด",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-05",
+    "type": "rent"
+   },
+   "i-1": {
+    "carId": "c1",
+    "category": "ประกันภัยรถยนต์ชั้น 1",
+    "createdAt": "2026-10-01T09:00:00Z",
+    "discount": 0,
+    "driverId": "d1",
+    "dueDate": "2026-10-08",
+    "issueDate": "2026-10-01",
+    "items": [
+     {
+      "desc": "ประกันภัยรถยนต์ชั้น 1",
+      "price": 2500,
+      "qty": 1
+     }
+    ],
+    "no": "IN6910-0001",
+    "note": "",
+    "payments": [
+     {
+      "amount": 2500,
+      "date": "2026-10-05",
+      "id": "pi1",
+      "method": "โอนเงิน",
+      "note": "สลิป 0510"
+     }
+    ],
+    "period": "งวด 3/12",
+    "sample": true,
+    "type": "insurance"
+   },
+   "r-d1-02": {
+    "carId": "c1",
+    "createdAt": "2026-10-02T08:00:00Z",
+    "discount": 0,
+    "driverId": "d1",
+    "dueDate": "2026-10-02",
+    "from": "2026-10-02",
+    "issueDate": "2026-10-02",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2101 2 ต.ค. 2569",
+      "price": 1200,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0004",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1200,
+      "date": "2026-10-02",
+      "id": "pd12",
+      "method": "โอนเงิน",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-02",
+    "type": "rent"
+   },
+   "r-d2-06": {
+    "carId": "c2",
+    "createdAt": "2026-10-06T08:00:00Z",
+    "discount": 0,
+    "driverId": "d2",
+    "dueDate": "2026-10-06",
+    "from": "2026-10-06",
+    "issueDate": "2026-10-06",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2102 6 ต.ค. 2569",
+      "price": 1300,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0017",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [],
+    "sample": true,
+    "to": "2026-10-06",
+    "type": "rent"
+   },
+   "r-d1-01": {
+    "carId": "c1",
+    "createdAt": "2026-10-01T08:00:00Z",
+    "discount": 0,
+    "driverId": "d1",
+    "dueDate": "2026-10-01",
+    "from": "2026-10-01",
+    "issueDate": "2026-10-01",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2101 1 ต.ค. 2569",
+      "price": 1200,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0001",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1200,
+      "date": "2026-10-01",
+      "id": "pd11",
+      "method": "เงินสด",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-01",
+    "type": "rent"
+   },
+   "r-d1-10": {
+    "carId": "c1",
+    "createdAt": "2026-10-10T08:00:00Z",
+    "discount": 0,
+    "driverId": "d1",
+    "dueDate": "2026-10-10",
+    "from": "2026-10-10",
+    "issueDate": "2026-10-10",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2101 10 ต.ค. 2569",
+      "price": 1200,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0028",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [],
+    "sample": true,
+    "to": "2026-10-10",
+    "type": "rent"
+   },
+   "mv3clwwn55dti9": {
+    "carId": "c1",
+    "createdAt": "2026-10-11T04:53:58.869Z",
+    "discount": 0,
+    "driverId": "d1",
+    "dueDate": "2026-10-11",
+    "from": "2026-10-11",
+    "issueDate": "2026-10-11",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2101 11 ต.ค. 2569",
+      "price": 1200,
+      "qty": 1
+     }
+    ],
+    "lateRule": {
+     "amount": 50,
+     "cap": 500,
+     "grace": 0,
+     "mode": "perDay"
+    },
+    "no": "RN6910-0031",
+    "note": "ออกบิลอัตโนมัติ",
+    "payments": [],
+    "to": "2026-10-11",
+    "type": "rent"
+   },
+   "r-d4-03": {
+    "carId": "c3",
+    "createdAt": "2026-10-03T08:00:00Z",
+    "discount": 0,
+    "driverId": "d4",
+    "dueDate": "2026-10-03",
+    "from": "2026-10-03",
+    "issueDate": "2026-10-03",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 2ขค 3203 3 ต.ค. 2569",
+      "price": 1100,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0009",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [],
+    "sample": true,
+    "to": "2026-10-03",
+    "type": "rent"
+   },
+   "r-d1-07": {
+    "carId": "c1",
+    "createdAt": "2026-10-07T08:00:00Z",
+    "discount": 0,
+    "driverId": "d1",
+    "dueDate": "2026-10-07",
+    "from": "2026-10-07",
+    "issueDate": "2026-10-07",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2101 7 ต.ค. 2569",
+      "price": 1200,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0019",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1200,
+      "date": "2026-10-07",
+      "id": "pd17",
+      "method": "เงินสด",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-07",
+    "type": "rent"
+   },
+   "r-d4-01": {
+    "carId": "c3",
+    "createdAt": "2026-10-01T08:00:00Z",
+    "discount": 0,
+    "driverId": "d4",
+    "dueDate": "2026-10-01",
+    "from": "2026-10-01",
+    "issueDate": "2026-10-01",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 2ขค 3203 1 ต.ค. 2569",
+      "price": 1100,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0003",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1100,
+      "date": "2026-10-01",
+      "id": "pd41",
+      "method": "เงินสด",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-01",
+    "type": "rent"
+   },
+   "i-2": {
+    "carId": "c2",
+    "category": "ประกันภัยรถยนต์ชั้น 1",
+    "createdAt": "2026-10-01T09:00:00Z",
+    "discount": 0,
+    "driverId": "d2",
+    "dueDate": "2026-10-08",
+    "issueDate": "2026-10-01",
+    "items": [
+     {
+      "desc": "ประกันภัยรถยนต์ชั้น 1",
+      "price": 2500,
+      "qty": 1
+     }
+    ],
+    "no": "IN6910-0002",
+    "note": "",
+    "payments": [],
+    "period": "งวด 6/12",
+    "sample": true,
+    "type": "insurance"
+   },
+   "r-d3-10": {
+    "carId": "c3",
+    "createdAt": "2026-10-10T08:00:00Z",
+    "discount": 0,
+    "driverId": "d3",
+    "dueDate": "2026-10-10",
+    "from": "2026-10-10",
+    "issueDate": "2026-10-10",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 2ขค 3203 10 ต.ค. 2569",
+      "price": 1100,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0030",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [],
+    "sample": true,
+    "to": "2026-10-10",
+    "type": "rent"
+   },
+   "r-d4-02": {
+    "carId": "c3",
+    "createdAt": "2026-10-02T08:00:00Z",
+    "discount": 0,
+    "driverId": "d4",
+    "dueDate": "2026-10-02",
+    "from": "2026-10-02",
+    "issueDate": "2026-10-02",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 2ขค 3203 2 ต.ค. 2569",
+      "price": 1100,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0006",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1100,
+      "date": "2026-10-02",
+      "id": "pd42",
+      "method": "โอนเงิน",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-02",
+    "type": "rent"
+   },
+   "r-d2-10": {
+    "carId": "c2",
+    "createdAt": "2026-10-10T08:00:00Z",
+    "discount": 0,
+    "driverId": "d2",
+    "dueDate": "2026-10-10",
+    "from": "2026-10-10",
+    "issueDate": "2026-10-10",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2102 10 ต.ค. 2569",
+      "price": 1300,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0029",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [],
+    "sample": true,
+    "to": "2026-10-10",
+    "type": "rent"
+   },
+   "r-d2-07": {
+    "carId": "c2",
+    "createdAt": "2026-10-07T08:00:00Z",
+    "discount": 0,
+    "driverId": "d2",
+    "dueDate": "2026-10-07",
+    "from": "2026-10-07",
+    "issueDate": "2026-10-07",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2102 7 ต.ค. 2569",
+      "price": 1300,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0020",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [],
+    "sample": true,
+    "to": "2026-10-07",
+    "type": "rent"
+   },
+   "mv3clwwodw67ts": {
+    "carId": "c3",
+    "createdAt": "2026-10-11T04:53:58.871Z",
+    "discount": 0,
+    "driverId": "d3",
+    "dueDate": "2026-10-11",
+    "from": "2026-10-11",
+    "issueDate": "2026-10-11",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 2ขค 3203 11 ต.ค. 2569",
+      "price": 1100,
+      "qty": 1
+     }
+    ],
+    "lateRule": {
+     "amount": 50,
+     "cap": 500,
+     "grace": 0,
+     "mode": "perDay"
+    },
+    "no": "RN6910-0033",
+    "note": "ออกบิลอัตโนมัติ",
+    "payments": [],
+    "to": "2026-10-11",
+    "type": "rent"
+   },
+   "r-d3-08": {
+    "carId": "c3",
+    "createdAt": "2026-10-08T08:00:00Z",
+    "discount": 0,
+    "driverId": "d3",
+    "dueDate": "2026-10-08",
+    "from": "2026-10-08",
+    "issueDate": "2026-10-08",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 2ขค 3203 8 ต.ค. 2569",
+      "price": 1100,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0024",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1100,
+      "date": "2026-10-08",
+      "id": "pd38",
+      "method": "โอนเงิน",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-08",
+    "type": "rent"
+   },
+   "r-d2-02": {
+    "carId": "c2",
+    "createdAt": "2026-10-02T08:00:00Z",
+    "discount": 0,
+    "driverId": "d2",
+    "dueDate": "2026-10-02",
+    "from": "2026-10-02",
+    "issueDate": "2026-10-02",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2102 2 ต.ค. 2569",
+      "price": 1300,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0005",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1300,
+      "date": "2026-10-02",
+      "id": "pd22",
+      "method": "โอนเงิน",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-02",
+    "type": "rent"
+   },
+   "r-d3-09": {
+    "carId": "c3",
+    "createdAt": "2026-10-09T08:00:00Z",
+    "discount": 0,
+    "driverId": "d3",
+    "dueDate": "2026-10-09",
+    "from": "2026-10-09",
+    "issueDate": "2026-10-09",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 2ขค 3203 9 ต.ค. 2569",
+      "price": 1100,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0027",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1100,
+      "date": "2026-10-09",
+      "id": "pd39",
+      "method": "เงินสด",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-09",
+    "type": "rent"
+   },
+   "r-d2-03": {
+    "carId": "c2",
+    "createdAt": "2026-10-03T08:00:00Z",
+    "discount": 0,
+    "driverId": "d2",
+    "dueDate": "2026-10-03",
+    "from": "2026-10-03",
+    "issueDate": "2026-10-03",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2102 3 ต.ค. 2569",
+      "price": 1300,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0008",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1300,
+      "date": "2026-10-03",
+      "id": "pd23",
+      "method": "เงินสด",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-03",
+    "type": "rent"
+   },
+   "r-d3-06": {
+    "carId": "c3",
+    "createdAt": "2026-10-06T08:00:00Z",
+    "discount": 0,
+    "driverId": "d3",
+    "dueDate": "2026-10-06",
+    "from": "2026-10-06",
+    "issueDate": "2026-10-06",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 2ขค 3203 6 ต.ค. 2569",
+      "price": 1100,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0018",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1100,
+      "date": "2026-10-06",
+      "id": "pd36",
+      "method": "โอนเงิน",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-06",
+    "type": "rent"
+   },
+   "r-d2-04": {
+    "carId": "c2",
+    "createdAt": "2026-10-04T08:00:00Z",
+    "discount": 0,
+    "driverId": "d2",
+    "dueDate": "2026-10-04",
+    "from": "2026-10-04",
+    "issueDate": "2026-10-04",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2102 4 ต.ค. 2569",
+      "price": 1300,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0011",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1300,
+      "date": "2026-10-04",
+      "id": "pd24",
+      "method": "โอนเงิน",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-04",
+    "type": "rent"
+   },
+   "r-d1-05": {
+    "carId": "c1",
+    "createdAt": "2026-10-05T08:00:00Z",
+    "discount": 0,
+    "driverId": "d1",
+    "dueDate": "2026-10-05",
+    "from": "2026-10-05",
+    "issueDate": "2026-10-05",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2101 5 ต.ค. 2569",
+      "price": 1200,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0013",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1200,
+      "date": "2026-10-05",
+      "id": "pd15",
+      "method": "เงินสด",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-05",
+    "type": "rent"
+   },
+   "r-d3-07": {
+    "carId": "c3",
+    "createdAt": "2026-10-07T08:00:00Z",
+    "discount": 0,
+    "driverId": "d3",
+    "dueDate": "2026-10-07",
+    "from": "2026-10-07",
+    "issueDate": "2026-10-07",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 2ขค 3203 7 ต.ค. 2569",
+      "price": 1100,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0021",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1100,
+      "date": "2026-10-07",
+      "id": "pd37",
+      "method": "เงินสด",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-07",
+    "type": "rent"
+   },
+   "o-2": {
+    "carId": "c1",
+    "category": "ค่าล้างรถ",
+    "createdAt": "2026-10-09T09:00:00Z",
+    "discount": 0,
+    "driverId": "d1",
+    "dueDate": "2026-10-16",
+    "issueDate": "2026-10-09",
+    "items": [
+     {
+      "desc": "ล้างรถ-ดูดฝุ่น",
+      "price": 150,
+      "qty": 4
+     }
+    ],
+    "no": "OT6910-0002",
+    "note": "",
+    "payments": [],
+    "period": "",
+    "sample": true,
+    "type": "other"
+   },
+   "r-d3-04": {
+    "carId": "c3",
+    "createdAt": "2026-10-04T08:00:00Z",
+    "discount": 0,
+    "driverId": "d3",
+    "dueDate": "2026-10-04",
+    "from": "2026-10-04",
+    "issueDate": "2026-10-04",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 2ขค 3203 4 ต.ค. 2569",
+      "price": 1100,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0012",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1100,
+      "date": "2026-10-04",
+      "id": "pd34",
+      "method": "โอนเงิน",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-04",
+    "type": "rent"
+   },
+   "r-d2-01": {
+    "carId": "c2",
+    "createdAt": "2026-10-01T08:00:00Z",
+    "discount": 0,
+    "driverId": "d2",
+    "dueDate": "2026-10-01",
+    "from": "2026-10-01",
+    "issueDate": "2026-10-01",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2102 1 ต.ค. 2569",
+      "price": 1300,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0002",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1300,
+      "date": "2026-10-01",
+      "id": "pd21",
+      "method": "เงินสด",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-01",
+    "type": "rent"
+   },
+   "r-d2-05": {
+    "carId": "c2",
+    "createdAt": "2026-10-05T08:00:00Z",
+    "discount": 0,
+    "driverId": "d2",
+    "dueDate": "2026-10-05",
+    "from": "2026-10-05",
+    "issueDate": "2026-10-05",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2102 5 ต.ค. 2569",
+      "price": 1300,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0014",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1300,
+      "date": "2026-10-05",
+      "id": "pd25",
+      "method": "เงินสด",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-05",
+    "type": "rent"
+   },
+   "r-d1-08": {
+    "carId": "c1",
+    "createdAt": "2026-10-08T08:00:00Z",
+    "discount": 0,
+    "driverId": "d1",
+    "dueDate": "2026-10-08",
+    "from": "2026-10-08",
+    "issueDate": "2026-10-08",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2101 8 ต.ค. 2569",
+      "price": 1200,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0022",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1200,
+      "date": "2026-10-08",
+      "id": "pd18",
+      "method": "โอนเงิน",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-08",
+    "type": "rent"
+   },
+   "r-d1-09": {
+    "carId": "c1",
+    "createdAt": "2026-10-09T08:00:00Z",
+    "discount": 0,
+    "driverId": "d1",
+    "dueDate": "2026-10-09",
+    "from": "2026-10-09",
+    "issueDate": "2026-10-09",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2101 9 ต.ค. 2569",
+      "price": 1200,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0025",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 600,
+      "date": "2026-10-09",
+      "id": "pd19",
+      "method": "เงินสด",
+      "note": "จ่ายครึ่งหนึ่ง"
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-09",
+    "type": "rent"
+   },
+   "r-d1-06": {
+    "carId": "c1",
+    "createdAt": "2026-10-06T08:00:00Z",
+    "discount": 0,
+    "driverId": "d1",
+    "dueDate": "2026-10-06",
+    "from": "2026-10-06",
+    "issueDate": "2026-10-06",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2101 6 ต.ค. 2569",
+      "price": 1200,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0016",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1200,
+      "date": "2026-10-06",
+      "id": "pd16",
+      "method": "โอนเงิน",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-06",
+    "type": "rent"
+   },
+   "r-d1-04": {
+    "carId": "c1",
+    "createdAt": "2026-10-04T08:00:00Z",
+    "discount": 0,
+    "driverId": "d1",
+    "dueDate": "2026-10-04",
+    "from": "2026-10-04",
+    "issueDate": "2026-10-04",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2101 4 ต.ค. 2569",
+      "price": 1200,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0010",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1200,
+      "date": "2026-10-04",
+      "id": "pd14",
+      "method": "โอนเงิน",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-04",
+    "type": "rent"
+   },
+   "r-d2-08": {
+    "carId": "c2",
+    "createdAt": "2026-10-08T08:00:00Z",
+    "discount": 0,
+    "driverId": "d2",
+    "dueDate": "2026-10-08",
+    "from": "2026-10-08",
+    "issueDate": "2026-10-08",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2102 8 ต.ค. 2569",
+      "price": 1300,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0023",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1300,
+      "date": "2026-10-08",
+      "id": "pd28",
+      "method": "โอนเงิน",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-08",
+    "type": "rent"
+   },
+   "r-d2-09": {
+    "carId": "c2",
+    "createdAt": "2026-10-09T08:00:00Z",
+    "discount": 0,
+    "driverId": "d2",
+    "dueDate": "2026-10-09",
+    "from": "2026-10-09",
+    "issueDate": "2026-10-09",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2102 9 ต.ค. 2569",
+      "price": 1300,
+      "qty": 1
+     }
+    ],
+    "no": "RN6910-0026",
+    "note": "ออกบิลรายวันอัตโนมัติ",
+    "payments": [
+     {
+      "amount": 1300,
+      "date": "2026-10-09",
+      "id": "pd29",
+      "method": "เงินสด",
+      "note": ""
+     }
+    ],
+    "sample": true,
+    "to": "2026-10-09",
+    "type": "rent"
+   },
+   "mv3clwwnw9anhk": {
+    "carId": "c2",
+    "createdAt": "2026-10-11T04:53:58.870Z",
+    "discount": 0,
+    "driverId": "d2",
+    "dueDate": "2026-10-11",
+    "from": "2026-10-11",
+    "issueDate": "2026-10-11",
+    "items": [
+     {
+      "desc": "ค่าเช่ารถ 1กข 2102 11 ต.ค. 2569",
+      "price": 1300,
+      "qty": 1
+     }
+    ],
+    "lateRule": {
+     "amount": 50,
+     "cap": 500,
+     "grace": 0,
+     "mode": "perDay"
+    },
+    "no": "RN6910-0032",
+    "note": "ออกบิลอัตโนมัติ",
+    "payments": [],
+    "to": "2026-10-11",
+    "type": "rent"
+   }
+  },
+  "swaps": {
+   "s-1": {
+    "carId": "c3",
+    "createdAt": "2026-10-04T07:00:00Z",
+    "date": "2026-10-04",
+    "fromDriverId": "d4",
+    "mode": "replace",
+    "note": "ตัวอย่าง: คืนเงินประกันหลังหักยอดค้าง",
+    "otherCarId": null,
+    "reason": "คนขับเดิมลาออก",
+    "sample": true,
+    "toDriverId": "d3"
+   }
+  },
+  "offdays": {
+   "of-1": {
+    "carId": null,
+    "driverId": "d2",
+    "from": "2026-10-14",
+    "kind": "driver",
+    "reason": "ลากิจ อนุมัติแล้ว (ตัวอย่าง)",
+    "sample": true,
+    "to": "2026-10-15"
+   }
+  },
+  "cars": {
+   "c4": {
+    "color": "ขาวมุก",
+    "dailyRate": 1800,
+    "model": "Toyota Alphard",
+    "plate": "2ขค 3204",
+    "province": "กรุงเทพมหานคร",
+    "sample": true,
+    "status": "repair",
+    "year": "2024"
+   },
+   "c2": {
+    "actExp": "2027-02-10",
+    "color": "ดำ",
+    "dailyRate": 1300,
+    "insExp": "2026-11-02",
+    "mileage": 84210,
+    "model": "Toyota Camry Hybrid",
+    "plate": "1กข 2102",
+    "province": "กรุงเทพมหานคร",
+    "sample": true,
+    "status": "active",
+    "taxExp": "2027-02-10",
+    "year": "2024"
+   },
+   "c3": {
+    "actExp": "2027-06-01",
+    "color": "เทาเข้ม",
+    "dailyRate": 1100,
+    "insExp": "2027-06-01",
+    "mileage": 45020,
+    "model": "Honda Accord",
+    "plate": "2ขค 3203",
+    "province": "กรุงเทพมหานคร",
+    "sample": true,
+    "status": "active",
+    "taxExp": "2027-06-01",
+    "year": "2024"
+   },
+   "c1": {
+    "actExp": "2026-10-25",
+    "color": "ดำ",
+    "dailyRate": 1200,
+    "insExp": "2027-03-01",
+    "mileage": 61530,
+    "model": "Toyota Camry Hybrid",
+    "plate": "1กข 2101",
+    "province": "กรุงเทพมหานคร",
+    "sample": true,
+    "status": "active",
+    "taxExp": "2026-10-25",
+    "year": "2024"
+   }
+  },
+  "maint": {
+   "mt-1": {
+    "billId": "o-1",
+    "carId": "c2",
+    "charge": 1800,
+    "cost": 1800,
+    "date": "2026-10-05",
+    "desc": "เปลี่ยนผ้าเบรกหน้า",
+    "mileage": 84210,
+    "sample": true,
+    "vendor": "อู่ช่างเอก (ตัวอย่าง)"
+   }
+  },
+  "drivers": {
+   "d3": {
+    "carId": "c3",
+    "code": "D003",
+    "deposit": 10000,
+    "license": "ท.2-00388",
+    "licenseExp": "2026-10-20",
+    "name": "ประเสริฐ มั่นคง (ตัวอย่าง)",
+    "nickname": "เสริฐ",
+    "note": "",
+    "phone": "081-234-5603",
+    "sample": true,
+    "since": "2026-10-04",
+    "startDate": "2026-10-04",
+    "status": "active"
+   },
+   "d1": {
+    "carId": "c1",
+    "code": "D001",
+    "deposit": 10000,
+    "license": "ท.2-00188",
+    "name": "สมชาย ใจดี (ตัวอย่าง)",
+    "nickname": "ชาย",
+    "note": "",
+    "phone": "081-234-5601",
+    "sample": true,
+    "since": "2026-10-01",
+    "startDate": "2026-03-01",
+    "status": "active"
+   },
+   "d2": {
+    "carId": "c2",
+    "code": "D002",
+    "deposit": 10000,
+    "license": "ท.2-00288",
+    "name": "วิชัย รักงาน (ตัวอย่าง)",
+    "nickname": "ชัย",
+    "note": "",
+    "phone": "081-234-5602",
+    "sample": true,
+    "since": "2026-10-01",
+    "startDate": "2026-05-15",
+    "status": "active"
+   },
+   "d4": {
+    "carId": null,
+    "code": "D004",
+    "deposit": 10000,
+    "license": "ท.2-00488",
+    "name": "อนุชา ขยัน (ตัวอย่าง)",
+    "nickname": "นุ",
+    "note": "",
+    "phone": "081-234-5604",
+    "sample": true,
+    "since": null,
+    "startDate": "2026-01-10",
+    "status": "inactive"
+   }
+  },
+  "campaigns": {
+   "cp-1": {
+    "active": true,
+    "carId": null,
+    "days": 0,
+    "every": 9,
+    "from": "2026-10-01",
+    "kind": "freeday",
+    "name": "เช่าขับ 9 วัน ฟรี 1 วัน (ตัวอย่าง)",
+    "pct": 0,
+    "perDay": 0,
+    "sample": true,
+    "to": "2026-10-31"
+   }
+  }
+ }
+}
